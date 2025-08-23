@@ -74,7 +74,7 @@ class Solver:
     def _end_step_solver(self) -> None:
         # Close the progress bar
         self.pbar.close()
-        self.plot_history_step_solver()
+        #self.plot_history_step_solver()
         
     def plot_history_step_solver(self) -> None:
         if self.history_step_solver is None:
