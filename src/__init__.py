@@ -7,6 +7,7 @@ from .whale_optimizer import *
 from .particleswarm_optimizer import *
 from .artificialbeecolony_optimizer import *
 from .antcolony_optimizer import *
+from .bat_optimizer import *
 
 __version__ = "0.1.0"
 __author__ = "HoangggNam"
@@ -18,7 +19,8 @@ _SOLVER_REGISTRY: Dict[str, Type[Solver]] = {
     "WhaleOptimizer": WhaleOptimizer,
     "ParticleSwarmOptimizer": ParticleSwarmOptimizer,
     "ArtificialBeeColonyOptimizer": ArtificialBeeColonyOptimizer,
-    "AntColonyOptimizer": AntColonyOptimizer
+    "AntColonyOptimizer": AntColonyOptimizer,
+    "BatOptimizer": BatOptimizer
 }
 
 
