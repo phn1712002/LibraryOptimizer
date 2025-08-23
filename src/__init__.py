@@ -1,7 +1,7 @@
 
 from typing import Dict, Type, Callable, Union
 import numpy as np
-from .core import *
+from ._core import *
 from .greywolf_optimizer import *
 from .whale_optimizer import *
 from .particleswarm_optimizer import *

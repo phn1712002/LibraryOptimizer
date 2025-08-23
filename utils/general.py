@@ -1,6 +1,6 @@
 import numpy as np
 from typing import Tuple, List
-from src.core import Member
+from src._core import Member
 import math
 
 def roulette_wheel_selection(probabilities: np.ndarray) -> int:

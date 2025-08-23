@@ -1,6 +1,6 @@
 import numpy as np
 from typing import Callable, Union, Tuple, List
-from .core import Solver, Member
+from ._core import Solver, Member
 from utils.general import sort_population
 
 class FireflyOptimizer(Solver):
