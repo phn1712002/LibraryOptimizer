@@ -9,7 +9,7 @@ class GreyWolfOptimizer(Solver):
         super().__init__(objective_func, lb, ub, dim, maximize)
         # Store additional parameters for later use
         self.kwargs = kwargs
-
+        self.name_solver = "Grey Wolf Optimizer"
     def solver(self, search_agents_no: int, max_iter: int) -> Tuple[List, Member]:
         # Initialize the population of search agents
         population = self._init_population(search_agents_no)

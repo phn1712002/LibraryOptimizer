@@ -8,6 +8,7 @@ class WhaleOptimizer(Solver):
         super().__init__(objective_func, lb, ub, dim, maximize)
         # Store additional parameters for later use
         self.kwargs = kwargs
+        self.name_solver = "Whale Optimizer"
 
     def solver(self, search_agents_no: int, max_iter: int) -> Tuple[List, Member]:
         # Initialize the population of search agents and history_step_solver

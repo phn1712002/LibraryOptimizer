@@ -22,6 +22,7 @@ class ParticleSwarmOptimizer(Solver):
         self.kwargs = kwargs
         
         # Set default PSO parameters
+        self.name_solver = "Particle Swarm Optimizer"
         self.w = kwargs.get('w', 1.0)  # Inertia weight
         self.wdamp = kwargs.get('wdamp', 0.99)  # Inertia weight damping ratio
         self.c1 = kwargs.get('c1', 1.5)  # Personal learning coefficient
