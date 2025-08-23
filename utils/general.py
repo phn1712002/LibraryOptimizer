@@ -1,6 +1,7 @@
 import numpy as np
 from typing import Tuple, List
 from src.core import Member
+import math
 
 def roulette_wheel_selection(probabilities: np.ndarray) -> int:
     r = np.random.random()
@@ -145,8 +146,8 @@ def levy_flight(dim: int, beta: float = 1.5) -> np.ndarray:
     np.ndarray
         Levy flight step vector
     """
-    sigma_u = (np.math.gamma(1 + beta) * np.sin(np.pi * beta / 2) / 
-              (np.math.gamma((1 + beta) / 2) * beta * 2 ** ((beta - 1) / 2))) ** (1 / beta)
+    sigma_u = (math.gamma(1 + beta) * math.sin(math.pi * beta / 2) / 
+              (math.gamma((1 + beta) / 2) * beta * 2 ** ((beta - 1) / 2))) ** (1 / beta)
     sigma_v = 1
     
     u = np.random.normal(0, sigma_u, dim)

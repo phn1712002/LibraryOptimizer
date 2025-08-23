@@ -9,6 +9,7 @@ from .artificialbeecolony_optimizer import *
 from .antcolony_optimizer import *
 from .bat_optimizer import *
 from .artificialecosystem_optimizer import *
+from .cuckoosearch_optimizer import *
 
 __version__ = "0.1.0"
 __author__ = "HoangggNam"
@@ -22,7 +23,8 @@ _SOLVER_REGISTRY: Dict[str, Type[Solver]] = {
     "ArtificialBeeColonyOptimizer": ArtificialBeeColonyOptimizer,
     "AntColonyOptimizer": AntColonyOptimizer,
     "BatOptimizer": BatOptimizer,
-    "ArtificialEcosystemOptimizer": ArtificialEcosystemOptimizer
+    "ArtificialEcosystemOptimizer": ArtificialEcosystemOptimizer,
+    "CuckooSearchOptimizer": CuckooSearchOptimizer
 }
 
 
