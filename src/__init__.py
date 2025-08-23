@@ -18,6 +18,7 @@ from .mossgrowth_optimizer import *
 from .shuffledfrogleaping_optimizer import *
 from .tlbo_optimizer import *
 from .prairiedogs_optimizer import *
+from .simulatedannealing_optimizer import *
 
 __version__ = "0.1.0"
 __author__ = "HoangggNam"
@@ -40,7 +41,8 @@ _SOLVER_REGISTRY: Dict[str, Type[Solver]] = {
     "MossGrowthOptimizer": MossGrowthOptimizer,
     "ShuffledFrogLeapingOptimizer": ShuffledFrogLeapingOptimizer,
     "TeachingLearningBasedOptimizer": TeachingLearningBasedOptimizer,
-    "PrairieDogsOptimizer": PrairieDogsOptimizer
+    "PrairieDogsOptimizer": PrairieDogsOptimizer,
+    "SimulatedAnnealingOptimizer": SimulatedAnnealingOptimizer
 }
 
 
