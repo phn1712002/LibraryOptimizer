@@ -232,14 +232,14 @@ def test_sphere_function():
         maximize=False
     )
     
-    _, best_position, best_fitness = method.solver(
+    _, best = method.solver(
         search_agents_no=100,
         max_iter=100
     )
     
     # Should find a solution close to [0, 0] with fitness near 0
-    assert best_fitness < 0.1
-    assert np.all(np.abs(best_position) < 0.5)
+    assert best.fitness < 0.1
+    assert np.all(np.abs(best.position) < 0.5)
 
 def test_rastrigin_function():
     '''Test method on Rastrigin function (minimization)'''
@@ -256,13 +256,13 @@ def test_rastrigin_function():
         maximize=False
     )
     
-    _, best_position, best_fitness = method.solver(
+    _, best = method.solver(
         search_agents_no=100,
         max_iter=100
     )
     
     # Should find a solution with fitness reasonably low
-    assert best_fitness < 5.0
+    assert best.fitness < 5.0
 
 def test_maximization():
     '''Test method on maximization problem'''
@@ -278,13 +278,13 @@ def test_maximization():
         maximize=True
     )
     
-    _, best_position, best_fitness = method.solver(
+    _, best = method.solver(
         search_agents_no=100,
         max_iter=100
     )
     
     # Should find a solution with fitness near 0 (maximizing negative sphere)
-    assert best_fitness > -0.1
+    assert best.fitness > -0.1
 ```
 
 ### 3. Running Tests
