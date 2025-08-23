@@ -1,6 +1,7 @@
 import numpy as np
 from typing import Callable, Union, Tuple, List
 import matplotlib.pyplot as plt
+from tqdm import tqdm
 
 class Member:
     def __init__(self, position:np.ndarray, fitness:float):
@@ -8,7 +9,7 @@ class Member:
         self.fitness = fitness
     
     def copy(self):
-        return Member(self.position, self.fitness)
+        return Member(self.position.copy(), self.fitness)
     
     def __gt__(self, other): 
         if isinstance(other, Member):
@@ -38,7 +39,9 @@ class Solver:
         self.maximize = maximize
         self.history_step_solver = []
         self.best_solver = Member(np.random.uniform(lb, ub, dim), -np.inf if maximize else np.inf)
+        
         self.pbar = None
+        self.name_solver = ""
 
     def solver(self) -> Tuple[List, Member]:
         return self.history_step_solver, self.best_solver
@@ -82,7 +85,10 @@ class Solver:
             'Iter': f'{iter+1}/{max_iter}',
             'Best Fitness': f'{best.fitness:.6f}'
         })
-    
+    def _begin_step_solver(self, max_iter) -> None:
+        # Initialize tqdm progress bar
+        self.pbar = tqdm(total=max_iter, desc=self.name_solver, unit="iter")
+
     def _end_step_solver(self) -> None:
         # Close the progress bar
         self.pbar.close()

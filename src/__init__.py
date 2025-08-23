@@ -10,6 +10,7 @@ import numpy as np
 from .core import Solver
 from .greywolf_optimizer import GreyWolfOptimizer
 from .whale_optimizer import WhaleOptimizer
+from .particleswarm_optimizer import ParticleSwarmOptimizer
 
 __version__ = "0.1.0"
 __author__ = "HoangggNam"
@@ -22,7 +23,8 @@ __all__ = [
 # Registry of available solvers
 _SOLVER_REGISTRY: Dict[str, Type[Solver]] = {
     "GreyWolfOptimizer": GreyWolfOptimizer,
-    "WhaleOptimizer": WhaleOptimizer
+    "WhaleOptimizer": WhaleOptimizer,
+    "ParticleSwarmOptimizer": ParticleSwarmOptimizer
 }
 
 

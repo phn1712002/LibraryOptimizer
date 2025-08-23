@@ -17,6 +17,9 @@ class WhaleOptimizer(Solver):
         history_step_solver = []
         best_solver = self.best_solver
         
+        # Call the begin function
+        self._begin_step_solver(max_iter)
+
         # Initialize leader
         _, idx = self._sort_population(population)
         leader = population[idx[0]].copy()

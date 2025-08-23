@@ -18,8 +18,8 @@ class GreyWolfOptimizer(Solver):
         history_step_solver = []
         best_solver = self.best_solver
         
-        # Initialize tqdm progress bar
-        self.pbar = tqdm(total=max_iter, desc="GWO Optimization", unit="iter")
+         # Call the begin function
+        self._begin_step_solver(max_iter)
 
         # Main optimization loop
         for iter in range(max_iter):
