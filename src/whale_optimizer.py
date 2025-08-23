@@ -1,6 +1,6 @@
 import numpy as np
 from typing import Callable, Union, Tuple, List
-from .core import Solver
+from .core import Solver, Member
 
 class WhaleOptimizer(Solver):
     def __init__(self, objective_func: Callable, lb: Union[float, np.ndarray], 
@@ -9,15 +9,17 @@ class WhaleOptimizer(Solver):
         # Store additional parameters for later use
         self.kwargs = kwargs
 
-    def solver(self, search_agents_no: int, max_iter: int) -> Tuple[List, np.ndarray, float]:
+    def solver(self, search_agents_no: int, max_iter: int) -> Tuple[List, Member]:
         # Initialize the population of search agents and history_step_solver
         population = self._init_population(search_agents_no)
+        
+        # Initialize storage variables
         history_step_solver = []
-
+        best_solver = self.best_solver
+        
         # Initialize leader
         _, idx = self._sort_population(population)
         leader = population[idx[0]].copy()
-        history_step_solver.append(leader.fitness)
 
         # Main optimization loop
         for iter in range(max_iter):
@@ -64,13 +66,20 @@ class WhaleOptimizer(Solver):
                 population[i].position = new_position
                 population[i].fitness = self.objective_func(new_position)
                 # Update leader immediately if better solution found (MATLAB-style)
-                if self._is_better(population[i].fitness, leader.fitness):
-                    leader = population[i].copy()
-            
+                if self._is_better(population[i], best_solver):
+                    best_solver = population[i].copy()
+
+           
             # Store the best solution at this iteration
-            history_step_solver.append(leader.fitness)
-        
+            history_step_solver.append(best_solver)
+            #  Call the callbacks 
+            self._callbacks(iter, max_iter, best_solver)
+
         # Final leader is the best solution found
         self.history_step_solver = history_step_solver
-        self.best_solver = leader
-        return history_step_solver, leader.position, leader.fitness
+        self.best_solver = best_solver
+
+        # Call the end function
+        self._end_step_solver()
+        return history_step_solver, best_solver
+        

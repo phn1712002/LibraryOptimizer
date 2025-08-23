@@ -1,6 +1,7 @@
 import numpy as np
 from typing import Callable, Union, Tuple, List
-from .core import Solver
+from tqdm import tqdm
+from .core import Solver, Member
 
 class GreyWolfOptimizer(Solver):
     def __init__(self, objective_func: Callable, lb: Union[float, np.ndarray], 
@@ -9,10 +10,16 @@ class GreyWolfOptimizer(Solver):
         # Store additional parameters for later use
         self.kwargs = kwargs
 
-    def solver(self, search_agents_no: int, max_iter: int) -> Tuple[List, np.ndarray, float]:
-        # Initialize the population of search agents and history_step_solver
+    def solver(self, search_agents_no: int, max_iter: int) -> Tuple[List, Member]:
+        # Initialize the population of search agents
         population = self._init_population(search_agents_no)
+
+        # Initialize storage variables
         history_step_solver = []
+        best_solver = self.best_solver
+        
+        # Initialize tqdm progress bar
+        self.pbar = tqdm(total=max_iter, desc="GWO Optimization", unit="iter")
 
         # Main optimization loop
         for iter in range(max_iter):
@@ -21,7 +28,6 @@ class GreyWolfOptimizer(Solver):
             alpha = population[idx[0]].copy()
             beta = population[idx[1]].copy()
             delta = population[idx[2]].copy()
-            history_step_solver.append(alpha.fitness)
 
             # Update a parameter (decreases linearly from 2 to 0)
             a = 2 - iter * (2 / max_iter)
@@ -69,14 +75,19 @@ class GreyWolfOptimizer(Solver):
                 population[i].position = new_position
                 population[i].fitness = self.objective_func(new_position)
                 
-                # Update alpha immediately if better solution found
-                if self._is_better(population[i].fitness, alpha.fitness):
-                    alpha = population[i].copy()
+                # Update best immediately if better solution found
+                if self._is_better(population[i], best_solver):
+                    best_solver = population[i].copy()
             
             # Store the best solution at this iteration
-            history_step_solver.append(alpha.fitness)
-                
+            history_step_solver.append(best_solver)
+            # Call the callbacks 
+            self._callbacks(iter, max_iter, best_solver) 
+            
         # Final evaluation of all positions to find the best solution
         self.history_step_solver = history_step_solver
-        self.best_solver = alpha
-        return history_step_solver, alpha.position, alpha.fitness
+        self.best_solver = best_solver
+        
+        # Call the end function
+        self._end_step_solver()
+        return history_step_solver, best_solver

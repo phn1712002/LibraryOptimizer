@@ -9,7 +9,25 @@ class Member:
     
     def copy(self):
         return Member(self.position, self.fitness)
+    
+    def __gt__(self, other): 
+        if isinstance(other, Member):
+            return self.fitness > other.fitness
+        return NotImplemented
 
+    def __lt__(self, other):
+        if isinstance(other, Member):
+            return self.fitness < other.fitness
+        return NotImplemented
+    
+    def __eq__(self, other):
+        if isinstance(other, Member):
+            return self.fitness == other.fitness
+        return NotImplemented
+    
+    def __str__(self):
+         return f"Position: {self.position} - Fitness: {self.fitness}"
+    
 class Solver:
     def __init__(self, objective_func: Callable, lb: Union[float, np.ndarray], 
                  ub: Union[float, np.ndarray], dim: int, maximize: bool = True):
@@ -18,18 +36,19 @@ class Solver:
         self.lb = np.array(lb) if hasattr(lb, '__iter__') else np.full(dim, lb)
         self.ub = np.array(ub) if hasattr(ub, '__iter__') else np.full(dim, ub)
         self.maximize = maximize
-        self.history_step_solver = None
-        self.best_solver = None
-        
-    def solver(self) -> Tuple[np.ndarray, float]:
-        pass
+        self.history_step_solver = []
+        self.best_solver = Member(np.random.uniform(lb, ub, dim), -np.inf if maximize else np.inf)
+        self.pbar = None
 
-    def _is_better(self, fitness1: float, fitness2: float) -> bool:
+    def solver(self) -> Tuple[List, Member]:
+        return self.history_step_solver, self.best_solver
+
+    def _is_better(self, member_1, menber_2) -> bool:
         """Check if fitness1 is better than fitness2 based on optimization direction"""
         if self.maximize:
-            return fitness1 > fitness2
+            return member_1 > menber_2
         else:
-            return fitness1 < fitness2
+            return member_1 < menber_2
     
     def _init_population(self, search_agents_no) -> List:
         population = []
@@ -55,8 +74,21 @@ class Solver:
         sorted_population = [population[i] for i in sorted_indices]
         
         return sorted_population, sorted_indices.tolist()
-
-    def plot_history_step_solver(self):
+    
+    def _callbacks(self, iter, max_iter, best) -> None:
+        # Update progress bar with current iteration and best fitness
+        self.pbar.update(1)
+        self.pbar.set_postfix({
+            'Iter': f'{iter+1}/{max_iter}',
+            'Best Fitness': f'{best.fitness:.6f}'
+        })
+    
+    def _end_step_solver(self) -> None:
+        # Close the progress bar
+        self.pbar.close()
+        self.plot_history_step_solver()
+        
+    def plot_history_step_solver(self) -> None:
         """Plot the optimization history showing best fitness over iterations"""
         if self.history_step_solver is None:
             print("No optimization history available. Run the solver first.")
@@ -71,37 +103,15 @@ class Solver:
         plt.xlabel('Iteration')
         plt.ylabel('Best Fitness')
         plt.title('Optimization History')
-        plt.grid(True, alpha=0.3)
+        plt.grid(True)
         
         if self.maximize:
-            plt.axhline(y=max(fitness_history), color='r', linestyle='--', alpha=0.7, 
+            plt.axhline(y=max(fitness_history), color='r', linestyle='--', 
                         label=f'Max Fitness: {max(fitness_history):.6f}')
         else:
-            plt.axhline(y=min(fitness_history), color='r', linestyle='--', alpha=0.7,
+            plt.axhline(y=min(fitness_history), color='r', linestyle='--',
                         label=f'Min Fitness: {min(fitness_history):.6f}')
         
         plt.legend()
         plt.tight_layout()
         plt.show()
-
-    def summary_solver(self):
-        """Print a summary of the optimization results"""
-        if self.best_solver is None:
-            print("No optimization results available. Run the solver first.")
-            return
-        
-        print("=" * 50)
-        print("OPTIMIZATION SUMMARY")
-        print("=" * 50)
-        print(f"Best solution position: {self.best_solver.position}")
-        print(f"Best fitness value: {self.best_solver.fitness}")
-        print(f"Optimization type: {'Maximization' if self.maximize else 'Minimization'}")
-        
-        if self.history_step_solver:
-            fitness_history = [member.fitness for member in self.history_step_solver]
-            print(f"Number of iterations: {len(fitness_history)}")
-            print(f"Final fitness: {fitness_history[-1]}")
-            print(f"Best fitness: {max(fitness_history) if self.maximize else min(fitness_history)}")
-            print(f"Fitness improvement: {fitness_history[-1] - fitness_history[0]:.6f}")
-        
-        print("=" * 50)
