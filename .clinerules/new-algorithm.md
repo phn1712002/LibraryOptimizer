@@ -7,152 +7,18 @@ Each new algorithm must follow these rules to ensure consistency with the librar
 ### 1. File and Class Naming
 - **File name**: `algorithm_name_optimizer.py` (snake_case)
 - **Class name**: `AlgorithmNameOptimizer` (PascalCase)
-- **Member class** (if needed): `AlgorithmMember` (PascalCase, simple)
+- **Member class** (if needed): `AlgorithmMember` (PascalCase, simple) - Only create custom Member classes when additional attributes are required
 
 ### 2. Inheritance from Base Class
-```python
-from ._core import Solver, Member
-```
-
-### 3. Algorithm Class Structure
-```python
-class AlgorithmNameOptimizer(Solver):
-    def __init__(self, objective_func: Callable, lb: Union[float, np.ndarray], 
-                 ub: Union[float, np.ndarray], dim: int, maximize: bool = True, **kwargs):
-        super().__init__(objective_func, lb, ub, dim, maximize)
-        # Store additional parameters for later use
-        self.kwargs = kwargs
-        
-        # Set solver name
-        self.name_solver = "Algorithm Name Optimizer"
-        
-        # Set default parameters
-        self.param1 = kwargs.get('param1', default_value)
-        self.param2 = kwargs.get('param2', default_value)
-```
-
-### 4. Custom Member Class (if needed)
-```python
-class AlgorithmMember(Member):
-    def __init__(self, position: np.ndarray, fitness: float, additional_attr=None):
-        super().__init__(position, fitness)
-        self.additional_attr = additional_attr  # Additional attributes
-    
-    def copy(self):
-        return AlgorithmMember(self.position.copy(), self.fitness, self.additional_attr)
-    
-    def __str__(self):
-        return f"Position: {self.position} - Fitness: {self.fitness} - Additional: {self.additional_attr}"
-```
-
-### 5. Main Solver Method
-```python
-def solver(self, search_agents_no: int, max_iter: int) -> Tuple[List, Member]:
-    # 1. Initialize population
-    population = self._init_population(search_agents_no)
-    
-    # 2. Initialize best solution
-    sorted_population, _ = self._sort_population(population)
-    best_solution = sorted_population[0].copy()
-    
-    # 3. Initialize history
-    history_step_solver = []
-    
-    # 4. Start solver (show progress bar)
-    self._begin_step_solver(max_iter)
-    
-    # 5. Main optimization loop
-    for iter in range(max_iter):
-        # Update parameters (if needed)
-        # a = 2 - iter * (2 / max_iter)  # Example
-        
-        # Update each search agent
-        for i in range(search_agents_no):
-            # Position update logic
-            new_position = self._update_position(population[i], iter, max_iter)
-            new_position = np.clip(new_position, self.lb, self.ub)
-            
-            # Evaluate new fitness
-            new_fitness = self.objective_func(new_position)
-            
-            # Compare and update
-            if self._is_better(AlgorithmMember(new_position, new_fitness), population[i]):
-                population[i].position = new_position
-                population[i].fitness = new_fitness
-        
-        # Update best solution
-        sorted_population, _ = self._sort_population(population)
-        current_best = sorted_population[0]
-        if self._is_better(current_best, best_solution):
-            best_solution = current_best.copy()
-        
-        # Save history
-        history_step_solver.append(best_solution.copy())
-        
-        # Call callback
-        self._callbacks(iter, max_iter, best_solution)
-    
-    # 6. End solver
-    self.history_step_solver = history_step_solver
-    self.best_solver = best_solution
-    self._end_step_solver()
-    
-    return history_step_solver, best_solution
-```
-
-### 6. Population Initialization Method
-```python
-def _init_population(self, search_agents_no) -> List:
-    population = []
-    for _ in range(search_agents_no):
-        position = np.random.uniform(self.lb, self.ub, self.dim)
-        fitness = self.objective_func(position)
-        # Use custom Member class if needed
-        population.append(AlgorithmMember(position, fitness, additional_attr=value))
-    return population
-```
-
-### 7. Register Algorithm
-In `src/__init__.py`, add to registry:
-```python
-from .algorithm_name_optimizer import AlgorithmNameOptimizer
-
-_SOLVER_REGISTRY: Dict[str, Type[Solver]] = {
-    # ... existing solvers
-    "AlgorithmNameOptimizer": AlgorithmNameOptimizer,
-}
-```
-
-## Available Methods from Solver Class
-
-### Utility Methods
-- `_is_better(member1, member2)`: Compare two solutions
-- `sort_population(population, maximize)`: Sort population
-- `_begin_step_solver(max_iter)`: Initialize progress bar
-- `_callbacks(iter, max_iter, best)`: Update progress
-- `_end_step_solver()`: Close progress bar and plot history
-
-### Available Attributes
-- `self.lb`, `self.ub`: Lower and upper bounds
-- `self.dim`: Problem dimension
-- `self.maximize`: Optimization direction (True: maximize, False: minimize)
-- `self.objective_func`: Objective function
-
-## Code Style Rules
-
-### Import
 ```python
 import numpy as np
 from typing import Callable, Union, Tuple, List
 from ._core import Solver, Member
-from utils.general import sort_population, roulette_wheel_selection  # If needed
+# Note: Use inherited utilities from Solver class instead of importing from utils.general
+# Only import specific utilities that are not available through inheritance
 ```
 
-### Type Hints
-Always use complete type hints for public methods.
-
-### Documentation
-Add docstring for class and main methods:
+### 3. Algorithm Class Structure
 ```python
 class AlgorithmNameOptimizer(Solver):
     """
@@ -173,7 +39,166 @@ class AlgorithmNameOptimizer(Solver):
     **kwargs
         Additional algorithm parameters
     """
+    
+    def __init__(self, objective_func: Callable, lb: Union[float, np.ndarray], 
+                 ub: Union[float, np.ndarray], dim: int, maximize: bool = True, **kwargs):
+        super().__init__(objective_func, lb, ub, dim, maximize)
+        
+        # Store additional parameters for later use
+        self.kwargs = kwargs
+        
+        # Set solver name (descriptive)
+        self.name_solver = "Descriptive Algorithm Name"
+        
+        # Set algorithm-specific parameters with defaults
+        self.param1 = kwargs.get('param1', default_value)
+        self.param2 = kwargs.get('param2', default_value)
+        # ... more parameters as needed
 ```
+
+### 4. Custom Member Class (Only when needed)
+```python
+class AlgorithmMember(Member):
+    def __init__(self, position: np.ndarray, fitness: float, additional_attr=None):
+        super().__init__(position, fitness)
+        self.additional_attr = additional_attr  # Additional algorithm-specific attributes
+    
+    def copy(self):
+        return AlgorithmMember(self.position.copy(), self.fitness, self.additional_attr)
+    
+    def __str__(self):
+        return f"Position: {self.position} - Fitness: {self.fitness} - Additional: {self.additional_attr}"
+```
+
+### 5. Main Solver Method (Standard Signature)
+```python
+def solver(self, search_agents_no: int, max_iter: int) -> Tuple[List, Member]:
+    """
+    Main optimization method.
+    
+    Parameters:
+    -----------
+    search_agents_no : int
+        Number of search agents (population size)
+    max_iter : int
+        Maximum number of iterations
+        
+    Returns:
+    --------
+    Tuple[List, Member]
+        History of best solutions and the best solution found
+    """
+    # Initialize storage variables
+    history_step_solver = []
+    
+    # Initialize population
+    population = self._init_population(search_agents_no)
+    
+    # Initialize best solution using _sort_population
+    sorted_population, _ = self._sort_population(population)
+    best_solution = sorted_population[0].copy()
+    
+    # Start solver (show progress bar)
+    self._begin_step_solver(max_iter)
+    
+    # Main optimization loop
+    for iter in range(max_iter):
+        # Algorithm-specific update logic here
+        
+        # Update best solution
+        sorted_population, _ = self._sort_population(population)
+        current_best = sorted_population[0]
+        if self._is_better(current_best, best_solution):
+            best_solution = current_best.copy()
+        
+        # Save history
+        history_step_solver.append(best_solution.copy())
+        
+        # Call callback for progress tracking
+        self._callbacks(iter, max_iter, best_solution)
+    
+    # End solver
+    self.history_step_solver = history_step_solver
+    self.best_solver = best_solution
+    self._end_step_solver()
+    
+    return history_step_solver, best_solution
+```
+
+### 6. Population Initialization Method
+```python
+def _init_population(self, search_agents_no) -> List:
+    population = []
+    for _ in range(search_agents_no):
+        position = np.random.uniform(self.lb, self.ub, self.dim)
+        fitness = self.objective_func(position)
+        # Use custom Member class if needed, otherwise use base Member
+        population.append(Member(position, fitness))  # or AlgorithmMember if custom
+    return population
+```
+
+### 7. Utility Methods (Use inherited utilities)
+```python
+# Use inherited methods from Solver class instead of importing external functions
+# For example, use self._sort_population() instead of importing sort_population
+# Use self._is_better() for comparison, self._begin_step_solver() for progress tracking, etc.
+
+# If you need to override a method, inherit and extend functionality
+def _init_population(self, search_agents_no) -> List:
+    # Override to provide custom initialization if needed
+    # Otherwise, use the inherited method
+    return super()._init_population(search_agents_no)
+```
+
+### 8. Register Algorithm
+In `src/__init__.py`, add to registry:
+```python
+from .algorithm_name_optimizer import AlgorithmNameOptimizer
+
+_SOLVER_REGISTRY: Dict[str, Type[Solver]] = {
+    # ... existing solvers
+    "AlgorithmNameOptimizer": AlgorithmNameOptimizer,
+}
+```
+
+## Available Methods from Solver Class
+
+### Utility Methods
+- `_is_better(member1, member2)`: Compare two solutions
+- `_sort_population(population)`: Sort population using utility function
+- `_begin_step_solver(max_iter)`: Initialize progress bar
+- `_callbacks(iter, max_iter, best)`: Update progress
+- `_end_step_solver()`: Close progress bar and plot history
+
+### Available Attributes
+- `self.lb`, `self.ub`: Lower and upper bounds
+- `self.dim`: Problem dimension
+- `self.maximize`: Optimization direction (True: maximize, False: minimize)
+- `self.objective_func`: Objective function
+- `self.kwargs`: Additional parameters passed during initialization
+
+## Code Style Rules
+
+### Import Structure
+```python
+# Standard library imports
+import numpy as np
+from typing import Callable, Union, Tuple, List
+
+# Third-party imports (if needed)
+import matplotlib.pyplot as plt
+
+# Local imports (relative)
+from ._core import Solver, Member
+# Note: Use inherited utilities from Solver class instead of importing from utils.general
+# Only import specific utilities that are not available through inheritance
+```
+
+### Type Hints
+Always use complete type hints for public methods.
+
+### Documentation
+Comprehensive docstrings for classes and main methods following the established pattern.
 
 ### Boundary Handling
 Always use `np.clip()` to ensure positions stay within bounds:
@@ -188,38 +213,43 @@ best_solution = current_best.copy()
 history_step_solver.append(best_solution.copy())
 ```
 
-## Example References
+## Implementation Patterns from Existing Code
 
-Check existing files for reference:
-- `greywolf_optimizer.py` - Simple algorithm
-- `particleswarm_optimizer.py` - Algorithm with custom Member class
-- `artificialbeecolony_optimizer.py` - Complex algorithm with multiple phases
-- `whale_optimizer.py` - Algorithm with multiple strategies
+### Pattern 1: Simple Algorithm (GWO, Whale)
+- No custom Member class
+- Basic population initialization
+- Simple update rules in main loop
+
+### Pattern 2: Algorithm with Custom Member (PSO, ABC)
+- Custom Member class with additional attributes
+- Specialized initialization
+- Complex update logic requiring additional state
+
+### Pattern 3: Complex Algorithm (SFLA, MGO)
+- Multiple phases or complex update strategies
+- Additional utility methods
+- Sophisticated parameter handling
 
 ## Best Practices
 
 1. **Performance**: Use NumPy vectorization when possible
 2. **Memory**: Avoid creating unnecessary large arrays
 3. **Readability**: Use clear variable names, add comments for complex logic
-4. **Modularity**: Separate logic into individual methods if needed
+4. **Modularity**: Separate complex logic into individual methods
 5. **Error handling**: Handle special cases (division by zero, etc.)
-6. **Reproducibility**: Ensure results are reproducible (seed random if needed)
-
-By following these rules, new algorithms will integrate well with the existing library and be easy to maintain.
+6. **Reproducibility**: Ensure results are reproducible
 
 ## Testing Guidelines
 
-### 1. Test File Structure
-Each algorithm must have corresponding test files following this pattern:
-- **Test file name**: `test-algorithm_name.py` (snake_case)
-- **Test functions**: Use descriptive names starting with `test_`
+### Standard Test Functions
+Every algorithm should be tested with standard benchmark functions:
+- Sphere function (minimization)
+- Rastrigin function (minimization) 
+- Negative sphere (maximization)
 
-### 2. Standard Test Functions
-Every algorithm should be tested with these standard benchmark functions:
-
+### Test Structure
 ```python
 def test_sphere_function():
-    '''Test method on sphere function (minimization)'''
     def sphere_function(x):
         return np.sum(x**2)
     
@@ -237,148 +267,37 @@ def test_sphere_function():
         max_iter=100
     )
     
-    # Should find a solution close to [0, 0] with fitness near 0
     assert best.fitness < 0.1
     assert np.all(np.abs(best.position) < 0.5)
-
-def test_rastrigin_function():
-    '''Test method on Rastrigin function (minimization)'''
-    def rastrigin_function(x):
-        A = 10
-        return A * len(x) + np.sum(x**2 - A * np.cos(2 * np.pi * x))
-    
-    method = create_solver(
-        solver_name='AlgorithmNameOptimizer',
-        objective_func=rastrigin_function,
-        lb=-5.12,
-        ub=5.12,
-        dim=2,
-        maximize=False
-    )
-    
-    _, best = method.solver(
-        search_agents_no=100,
-        max_iter=100
-    )
-    
-    # Should find a solution with fitness reasonably low
-    assert best.fitness < 5.0
-
-def test_maximization():
-    '''Test method on maximization problem'''
-    def negative_sphere(x):
-        return -np.sum(x**2)
-    
-    method = create_solver(
-        solver_name='AlgorithmNameOptimizer',
-        objective_func=negative_sphere,
-        lb=-2.0,
-        ub=2.0,
-        dim=2,
-        maximize=True
-    )
-    
-    _, best = method.solver(
-        search_agents_no=100,
-        max_iter=100
-    )
-    
-    # Should find a solution with fitness near 0 (maximizing negative sphere)
-    assert best.fitness > -0.1
 ```
 
-### 3. Running Tests
-```bash
-# Run specific test file
-python -m pytest test/test-algorithm_name.py -v
+## Utility Functions Available
 
-# Run all tests
-python -m pytest test/ -v
+Note: These utility functions should be accessed through inherited methods from the Solver class rather than imported directly:
+- `self._sort_population()`: For sorting population (inherited from Solver)
+- `self._is_better()`: For comparing solutions (inherited from Solver)
+- `self._begin_step_solver()`: For progress tracking (inherited from Solver)
+- `self._callbacks()`: For iteration callbacks (inherited from Solver)
+- `self._end_step_solver()`: For finalizing solver (inherited from Solver)
 
-# Run with coverage
-python -m pytest test/ --cov=src --cov-report=html
-```
+Only import specific utilities from `utils/general.py` if they are not available through inheritance and are truly needed for the algorithm.
 
-### 4. Test Assertions
-- Use meaningful assertions that verify algorithm behavior
-- Test both minimization and maximization problems
-- Verify boundary handling and constraint satisfaction
-- Check convergence properties
+## Common Implementation Issues to Avoid
 
-### Best Practices for Utility Functions
+1. **Direct import of utility functions**: Use inherited methods from Solver class instead of importing from utils.general
+2. **Missing type hints**: Always include complete type annotations
+3. **Incomplete docstrings**: Follow the established documentation pattern
+4. **Hard-coded parameters**: Use kwargs with defaults instead
+5. **Memory leaks**: Always use `.copy()` for Member objects
 
-1. **Import correctly**: Always import from `utils.general`
-2. **Type safety**: Utility functions validate input types where appropriate
-3. **Reusability**: Use these functions instead of reimplementing common operations
-4. **Consistency**: Ensures uniform behavior across different algorithms
-5. **Documentation**: All utility functions include comprehensive docstrings
+## Example References
 
-### Adding New Utility Functions
+Check existing files for reference:
+- `greywolf_optimizer.py` - Simple algorithm pattern
+- `particleswarm_optimizer.py` - Custom Member class pattern  
+- `shuffledfrogleaping_optimizer.py` - Complex algorithm pattern
+- `artificialbeecolony_optimizer.py` - Multi-phase algorithm
 
-When adding new utility functions to `utils/general.py`:
+By following these updated rules, new algorithms will integrate well with the existing library and maintain consistency with your implementation patterns.
 
-1. **Function signature**: Use proper type hints
-2. **Documentation**: Add comprehensive docstrings
-3. **Testing**: Include tests for new utility functions
-4. **Backward compatibility**: Ensure existing functionality is not broken
-
-```python
-def new_utility_function(param1: Type, param2: Type) -> ReturnType:
-    """
-    Brief description of the function.
-    
-    Parameters:
-    -----------
-    param1 : Type
-        Description of param1
-    param2 : Type  
-        Description of param2
-        
-    Returns:
-    --------
-    ReturnType
-        Description of return value
-    """
-    # Implementation
-    pass
-```
-
-## Performance Testing
-
-### Benchmark Functions
-Test algorithms with standard benchmark functions:
-- Sphere function (convex, easy)
-- Rastrigin function (multimodal, difficult)
-- Ackley function (multimodal, moderate)
-- Rosenbrock function (non-convex, difficult)
-
-### Performance Metrics
-- Convergence speed
-- Solution quality
-- Computational efficiency
-- Memory usage
-
-
-## Code Quality
-
-### Linting and Formatting
-```bash
-# Run flake8 for code quality
-flake8 src/ --max-line-length=120
-
-# Run black for code formatting
-black src/
-
-# Run isort for import sorting
-isort src/
-```
-
-### Type Checking
-```bash
-# Run mypy for type checking
-mypy src/ --ignore-missing-imports
-```
-
-By following these comprehensive guidelines, new algorithms will be well-tested, maintainable, and consistent with the library's standards.
-
-*This document was last updated: 2025-01-23*
+*This document was last updated: 2025-08-23*

@@ -14,7 +14,8 @@ A comprehensive Python library for metaheuristic optimization algorithms, featur
 ## Installation
 
 ```bash
-pip install library-optimizer
+git clone https://github.com/phn1712002/LibraryOptimizer
+pip install -e . 
 ```
 
 ## Quick Start

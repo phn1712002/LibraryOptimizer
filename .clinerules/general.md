@@ -118,7 +118,7 @@ utils/
 ├── general.py           # Common utilities
 └── ...
 
-rules/
+.clinerules/
 ├── general.md           # General rules (this document)
 └── new-algorithm.md     # Template for new algorithms
 
@@ -138,7 +138,8 @@ from tqdm import tqdm
 
 # Local imports (relative)
 from ._core import Solver, Member
-from utils.general import sort_population
+# Note: Use inherited utilities from Solver class instead of importing from utils.general
+# Only import specific utilities that are not available through inheritance
 ```
 
 ### 3. File Naming
@@ -221,7 +222,7 @@ function_call( arg1, arg2 )
 
 ### 1. Code Reusability
 - Use inheritance from base `Solver` class
-- Reuse utilities from `utils/general.py`
+- Reuse utilities from inherited methods instead of importing from utils.general
 - Avoid code duplication
 
 ### 2. Maintainability
@@ -241,7 +242,7 @@ function_call( arg1, arg2 )
 
 ## 📋 Template for New Algorithms
 
-See `rules/new-algorithm.md` for detailed template when adding new algorithms.
+See `.clinerules/new-algorithm.md` for detailed template when adding new algorithms.
 
 ## 🔍 Code Review Checklist
 
@@ -262,4 +263,4 @@ For questions about these rules, contact:
 
 ---
 
-*This document was last updated: 2025-01-23*
+*This document was last updated: 2025-08-23*
