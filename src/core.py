@@ -60,23 +60,6 @@ class Solver:
             fitness = self.objective_func(position)
             population.append(Member(position, fitness))
         return population
-
-    def _sort_population(self, population) -> Tuple[List, List]:
-        # Extract fitness values from population
-        fitness_values = [member.fitness for member in population]
-        
-        # Sort indices based on optimization direction
-        if self.maximize:
-            # Sort in descending order for maximization
-            sorted_indices = np.argsort(fitness_values)[::-1]
-        else:
-            # Sort in ascending order for minimization
-            sorted_indices = np.argsort(fitness_values)
-        
-        # Sort population based on sorted indices
-        sorted_population = [population[i] for i in sorted_indices]
-        
-        return sorted_population, sorted_indices.tolist()
     
     def _callbacks(self, iter, max_iter, best) -> None:
         # Update progress bar with current iteration and best fitness

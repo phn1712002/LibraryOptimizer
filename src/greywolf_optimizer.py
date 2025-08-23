@@ -2,6 +2,7 @@ import numpy as np
 from typing import Callable, Union, Tuple, List
 from tqdm import tqdm
 from .core import Solver, Member
+from utils.general import sort_population
 
 class GreyWolfOptimizer(Solver):
     def __init__(self, objective_func: Callable, lb: Union[float, np.ndarray], 
@@ -24,7 +25,7 @@ class GreyWolfOptimizer(Solver):
         # Main optimization loop
         for iter in range(max_iter):
             # Update alpha, beta, delta based on current population
-            _, idx = self._sort_population(population)
+            _, idx = sort_population(population)
             alpha = population[idx[0]].copy()
             beta = population[idx[1]].copy()
             delta = population[idx[2]].copy()

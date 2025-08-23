@@ -1,7 +1,7 @@
 import numpy as np
 from typing import Callable, Union, Tuple, List
 from .core import Solver, Member
-from utils.general import roulette_wheel_selection
+from utils.general import roulette_wheel_selection, sort_population
 
 class Bee(Member):
     """Bee class that extends Member with trial counter for ABC"""
@@ -38,7 +38,7 @@ class ArtificialBeeColonyOptimizer(Solver):
             population.append(Bee(position, fitness, 0))
         return population
 
-    def solver(self, search_agents_no: int, max_iter: int) -> Tuple[List, Member]:
+    def solver(self, search_agents_no: int, max_iter: int) -> Tuple[List, Bee]:
         # Initialize parameters
         if self.n_onlooker is None:
             self.n_onlooker = search_agents_no  # Default: same as population size
@@ -51,7 +51,7 @@ class ArtificialBeeColonyOptimizer(Solver):
         population = self._init_population(search_agents_no)
         
         # Initialize best solution
-        sorted_population, _ = self._sort_population(population)
+        sorted_population, _ = sort_population(population)
         best_solution = sorted_population[0].copy()
         
         # Initialize storage variables
@@ -140,7 +140,7 @@ class ArtificialBeeColonyOptimizer(Solver):
                     population[i].trial = 0  # Reset trial counter
             
             # Update best solution using _sort_population
-            sorted_population, _ = self._sort_population(population)
+            sorted_population, _ = sort_population(population)
             current_best = sorted_population[0]
             if self._is_better(current_best, best_solution):
                 best_solution = current_best.copy()

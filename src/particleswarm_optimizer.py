@@ -1,6 +1,7 @@
 import numpy as np
 from typing import Callable, Union, Tuple, List
 from .core import Solver, Member
+from utils.general import sort_population
 
 class Particle(Member):
     """Particle class that extends Member with velocity for PSO"""
@@ -43,7 +44,7 @@ class ParticleSwarmOptimizer(Solver):
             population.append(Particle(position, fitness, velocity))
         return population
 
-    def solver(self, search_agents_no: int, max_iter: int) -> Tuple[List, Member]:
+    def solver(self, search_agents_no: int, max_iter: int) -> Tuple[List, Particle]:
         # Initialize the population of particles
         population = self._init_population(search_agents_no)
         
@@ -51,7 +52,7 @@ class ParticleSwarmOptimizer(Solver):
         personal_best = [particle.copy() for particle in population]
         
         # Initialize global best using _sort_population method
-        sorted_personal_best, _ = self._sort_population(personal_best)
+        sorted_personal_best, _ = sort_population(personal_best)
         global_best = sorted_personal_best[0].copy()
         
         # Initialize storage variables
