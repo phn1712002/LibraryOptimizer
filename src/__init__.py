@@ -16,6 +16,7 @@ from .jaya_optimizer import *
 from .modifiedsocialgroup_optimizer import *
 from .mossgrowth_optimizer import *
 from .shuffledfrogleaping_optimizer import *
+from .tlbo_optimizer import *
 
 __version__ = "0.1.0"
 __author__ = "HoangggNam"
@@ -36,7 +37,8 @@ _SOLVER_REGISTRY: Dict[str, Type[Solver]] = {
     "JAYAOptimizer": JAYAOptimizer,
     "ModifiedSocialGroupOptimizer": ModifiedSocialGroupOptimizer,
     "MossGrowthOptimizer": MossGrowthOptimizer,
-    "ShuffledFrogLeapingOptimizer": ShuffledFrogLeapingOptimizer
+    "ShuffledFrogLeapingOptimizer": ShuffledFrogLeapingOptimizer,
+    "TeachingLearningBasedOptimizer": TeachingLearningBasedOptimizer
 }
 
 
