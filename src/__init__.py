@@ -16,7 +16,7 @@ from .jaya_optimizer import *
 from .modifiedsocialgroup_optimizer import *
 from .mossgrowth_optimizer import *
 from .shuffledfrogleaping_optimizer import *
-from .tlbo_optimizer import *
+from .teachinglearningbased_optimizer import *
 from .prairiedogs_optimizer import *
 from .simulatedannealing_optimizer import *
 
