@@ -17,6 +17,7 @@ from .modifiedsocialgroup_optimizer import *
 from .mossgrowth_optimizer import *
 from .shuffledfrogleaping_optimizer import *
 from .tlbo_optimizer import *
+from .prairiedogs_optimizer import *
 
 __version__ = "0.1.0"
 __author__ = "HoangggNam"
@@ -38,7 +39,8 @@ _SOLVER_REGISTRY: Dict[str, Type[Solver]] = {
     "ModifiedSocialGroupOptimizer": ModifiedSocialGroupOptimizer,
     "MossGrowthOptimizer": MossGrowthOptimizer,
     "ShuffledFrogLeapingOptimizer": ShuffledFrogLeapingOptimizer,
-    "TeachingLearningBasedOptimizer": TeachingLearningBasedOptimizer
+    "TeachingLearningBasedOptimizer": TeachingLearningBasedOptimizer,
+    "PrairieDogsOptimizer": PrairieDogsOptimizer
 }
 
 

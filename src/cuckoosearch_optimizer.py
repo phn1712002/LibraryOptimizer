@@ -124,7 +124,7 @@ class CuckooSearchOptimizer(Solver):
         
         for member in population:
             # Generate Levy flight step
-            step = levy_flight(self.dim, self.beta)
+            step = self._levy_flight()
             
             # Scale step size (0.01 factor as in original implementation)
             step_size = 0.01 * step * (member.position - best_solution.position)
@@ -211,3 +211,6 @@ class CuckooSearchOptimizer(Solver):
                 updated_population.append(current)
         
         return updated_population
+
+    def _levy_flight(self):
+        return levy_flight(self.dim, self.beta)
