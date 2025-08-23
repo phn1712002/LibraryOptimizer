@@ -208,3 +208,6 @@ docs/_templates/
 
 # Sphinx
 docs/_build/
+
+# Windowns
+desktop.ini
