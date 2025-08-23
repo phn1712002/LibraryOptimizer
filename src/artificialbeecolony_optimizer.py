@@ -40,7 +40,7 @@ class ArtificialBeeColonyOptimizer(Solver):
        
         # Initialize storage variables
         history_step_solver = []
-        maximize = self.maximize
+        
 
         # Initialize parameters
         if self.n_onlooker is None:
@@ -54,7 +54,7 @@ class ArtificialBeeColonyOptimizer(Solver):
         population = self._init_population(search_agents_no)
         
         # Initialize best solution
-        sorted_population, _ = sort_population(population, maximize)
+        sorted_population, _ = self._sort_population(population)
         best_solution = sorted_population[0].copy()
         
         # Call the begin function
@@ -140,7 +140,7 @@ class ArtificialBeeColonyOptimizer(Solver):
                     population[i].trial = 0  # Reset trial counter
             
             # Update best solution using _sort_population
-            sorted_population, _ = sort_population(population, maximize)
+            sorted_population, _ = self._sort_population(population)
             current_best = sorted_population[0]
             if self._is_better(current_best, best_solution):
                 best_solution = current_best.copy()
@@ -158,3 +158,6 @@ class ArtificialBeeColonyOptimizer(Solver):
         # Call the end function
         self._end_step_solver()
         return history_step_solver, best_solution
+    
+    def _sort_population(self, population):
+        return sort_population(population, self.maximize)

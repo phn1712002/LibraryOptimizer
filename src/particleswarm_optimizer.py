@@ -46,7 +46,7 @@ class ParticleSwarmOptimizer(Solver):
 
         # Initialize storage variables
         history_step_solver = []
-        maximize = self.maximize
+        
 
         # Initialize the population of particles
         population = self._init_population(search_agents_no)
@@ -55,7 +55,7 @@ class ParticleSwarmOptimizer(Solver):
         personal_best = [particle.copy() for particle in population]
         
         # Initialize global best using sort_population method)
-        sorted_personal_best, _ = sort_population(personal_best, maximize)
+        sorted_personal_best, _ = self._sort_population(personal_best)
         global_best = sorted_personal_best[0].copy()
         best_solver = global_best.copy()
         
@@ -123,3 +123,6 @@ class ParticleSwarmOptimizer(Solver):
         # Call the end function
         self._end_step_solver()
         return history_step_solver, best_solver
+    
+    def _sort_population(self, population):
+        return sort_population(population, self.maximize)

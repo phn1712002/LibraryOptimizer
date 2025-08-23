@@ -18,13 +18,13 @@ class WhaleOptimizer(Solver):
         # Initialize storage variables
         history_step_solver = []
         best_solver = self.best_solver
-        maximize = self.maximize
+        
          
         # Call the begin function
         self._begin_step_solver(max_iter)
 
         # Initialize leader
-        _, idx = sort_population(population, maximize)
+        _, idx = self._sort_population(population)
         leader = population[idx[0]].copy()
 
         # Main optimization loop
@@ -89,3 +89,5 @@ class WhaleOptimizer(Solver):
         self._end_step_solver()
         return history_step_solver, best_solver
         
+    def _sort_population(self, population):
+        return sort_population(population, self.maximize)

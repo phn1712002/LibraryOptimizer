@@ -52,7 +52,7 @@ def solver(self, search_agents_no: int, max_iter: int) -> Tuple[List, Member]:
     population = self._init_population(search_agents_no)
     
     # 2. Initialize best solution
-    sorted_population, _ = sort_population(population, maximize)
+    sorted_population, _ = self._sort_population(population)
     best_solution = sorted_population[0].copy()
     
     # 3. Initialize history
@@ -81,7 +81,7 @@ def solver(self, search_agents_no: int, max_iter: int) -> Tuple[List, Member]:
                 population[i].fitness = new_fitness
         
         # Update best solution
-        sorted_population, _ = sort_population(population, maximize)
+        sorted_population, _ = self._sort_population(population)
         current_best = sorted_population[0]
         if self._is_better(current_best, best_solution):
             best_solution = current_best.copy()
@@ -127,7 +127,7 @@ _SOLVER_REGISTRY: Dict[str, Type[Solver]] = {
 
 ### Utility Methods
 - `_is_better(member1, member2)`: Compare two solutions
-- `_sort_population(population)`: Sort population
+- `sort_population(population, maximize)`: Sort population
 - `_begin_step_solver(max_iter)`: Initialize progress bar
 - `_callbacks(iter, max_iter, best)`: Update progress
 - `_end_step_solver()`: Close progress bar and plot history

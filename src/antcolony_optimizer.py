@@ -62,13 +62,13 @@ class AntColonyOptimizer(Solver):
         """
         # Initialize storage variables
         history_step_solver = []
-        maximize = self.maximize
+        
 
         # Initialize population (archive)
         population = self._init_population(search_agents_no)
         
         # Sort initial population
-        sorted_population, _ = sort_population(population, maximize)
+        sorted_population, _ = self._sort_population(population)
         best_solution = sorted_population[0].copy()
 
         # Start solver (show progress bar)
@@ -116,6 +116,9 @@ class AntColonyOptimizer(Solver):
         
         return history_step_solver, best_solution
     
+    def _sort_population(self, population):
+        return sort_population(population, self.maximize)
+
     def _calculate_weights(self, n_pop: int) -> np.ndarray:
         """
         Calculate Gaussian kernel weights for solution selection.

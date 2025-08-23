@@ -18,7 +18,7 @@ class GreyWolfOptimizer(Solver):
         # Initialize storage variables
         history_step_solver = []
         best_solver = self.best_solver
-        maximize = self.maximize
+        
 
         # Call the begin function
         self._begin_step_solver(max_iter)
@@ -26,7 +26,7 @@ class GreyWolfOptimizer(Solver):
         # Main optimization loop
         for iter in range(max_iter):
             # Update alpha, beta, delta based on current population
-            _, idx = sort_population(population, maximize)
+            _, idx = self._sort_population(population)
             alpha = population[idx[0]].copy()
             beta = population[idx[1]].copy()
             delta = population[idx[2]].copy()
@@ -93,3 +93,6 @@ class GreyWolfOptimizer(Solver):
         # Call the end function
         self._end_step_solver()
         return history_step_solver, best_solver
+    
+    def _sort_population(self, population):
+        return sort_population(population, self.maximize)
