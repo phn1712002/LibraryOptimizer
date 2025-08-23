@@ -50,7 +50,7 @@ class ParticleSwarmOptimizer(Solver):
         personal_best = [particle.copy() for particle in population]
         
         # Initialize global best using _sort_population method
-        sorted_personal_best, _ = sort_population(personal_best)
+        sorted_personal_best, _ = self._sort_population(personal_best)
         global_best = sorted_personal_best[0].copy()
         
         # Initialize storage variables

@@ -8,12 +8,17 @@ def roulette_wheel_selection(probabilities: np.ndarray) -> int:
     return np.argmax(r <= cumulative_sum)
 
 
-def sort_population(self, population) -> Tuple[List, List]:
+def sort_population(population, maximize) -> Tuple[List, List]:
+    # Validate that all members are instances of Member class
+    for i, member in enumerate(population):
+        if not isinstance(member, Member):
+            raise TypeError(f"Population member at index {i} is not an instance of Member class. Got {type(member)}")
+    
     # Extract fitness values from population
     fitness_values = [member.fitness for member in population]
     
     # Sort indices based on optimization direction
-    if self.maximize:
+    if maximize:
         # Sort in descending order for maximization
         sorted_indices = np.argsort(fitness_values)[::-1]
     else:

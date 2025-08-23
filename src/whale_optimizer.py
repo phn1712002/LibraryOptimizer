@@ -23,7 +23,7 @@ class WhaleOptimizer(Solver):
         self._begin_step_solver(max_iter)
 
         # Initialize leader
-        _, idx = sort_population(population)
+        _, idx = self._sort_population(population)
         leader = population[idx[0]].copy()
 
         # Main optimization loop
