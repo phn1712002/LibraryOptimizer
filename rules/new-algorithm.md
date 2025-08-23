@@ -207,4 +207,178 @@ Check existing files for reference:
 
 By following these rules, new algorithms will integrate well with the existing library and be easy to maintain.
 
+## Testing Guidelines
+
+### 1. Test File Structure
+Each algorithm must have corresponding test files following this pattern:
+- **Test file name**: `test-algorithm_name.py` (snake_case)
+- **Test functions**: Use descriptive names starting with `test_`
+
+### 2. Standard Test Functions
+Every algorithm should be tested with these standard benchmark functions:
+
+```python
+def test_sphere_function():
+    '''Test method on sphere function (minimization)'''
+    def sphere_function(x):
+        return np.sum(x**2)
+    
+    method = create_solver(
+        solver_name='AlgorithmNameOptimizer',
+        objective_func=sphere_function,
+        lb=-5.0,
+        ub=5.0,
+        dim=2,
+        maximize=False
+    )
+    
+    _, best_position, best_fitness = method.solver(
+        search_agents_no=100,
+        max_iter=100
+    )
+    
+    # Should find a solution close to [0, 0] with fitness near 0
+    assert best_fitness < 0.1
+    assert np.all(np.abs(best_position) < 0.5)
+
+def test_rastrigin_function():
+    '''Test method on Rastrigin function (minimization)'''
+    def rastrigin_function(x):
+        A = 10
+        return A * len(x) + np.sum(x**2 - A * np.cos(2 * np.pi * x))
+    
+    method = create_solver(
+        solver_name='AlgorithmNameOptimizer',
+        objective_func=rastrigin_function,
+        lb=-5.12,
+        ub=5.12,
+        dim=2,
+        maximize=False
+    )
+    
+    _, best_position, best_fitness = method.solver(
+        search_agents_no=100,
+        max_iter=100
+    )
+    
+    # Should find a solution with fitness reasonably low
+    assert best_fitness < 5.0
+
+def test_maximization():
+    '''Test method on maximization problem'''
+    def negative_sphere(x):
+        return -np.sum(x**2)
+    
+    method = create_solver(
+        solver_name='AlgorithmNameOptimizer',
+        objective_func=negative_sphere,
+        lb=-2.0,
+        ub=2.0,
+        dim=2,
+        maximize=True
+    )
+    
+    _, best_position, best_fitness = method.solver(
+        search_agents_no=100,
+        max_iter=100
+    )
+    
+    # Should find a solution with fitness near 0 (maximizing negative sphere)
+    assert best_fitness > -0.1
+```
+
+### 3. Running Tests
+```bash
+# Run specific test file
+python -m pytest test/test-algorithm_name.py -v
+
+# Run all tests
+python -m pytest test/ -v
+
+# Run with coverage
+python -m pytest test/ --cov=src --cov-report=html
+```
+
+### 4. Test Assertions
+- Use meaningful assertions that verify algorithm behavior
+- Test both minimization and maximization problems
+- Verify boundary handling and constraint satisfaction
+- Check convergence properties
+
+### Best Practices for Utility Functions
+
+1. **Import correctly**: Always import from `utils.general`
+2. **Type safety**: Utility functions validate input types where appropriate
+3. **Reusability**: Use these functions instead of reimplementing common operations
+4. **Consistency**: Ensures uniform behavior across different algorithms
+5. **Documentation**: All utility functions include comprehensive docstrings
+
+### Adding New Utility Functions
+
+When adding new utility functions to `utils/general.py`:
+
+1. **Function signature**: Use proper type hints
+2. **Documentation**: Add comprehensive docstrings
+3. **Testing**: Include tests for new utility functions
+4. **Backward compatibility**: Ensure existing functionality is not broken
+
+```python
+def new_utility_function(param1: Type, param2: Type) -> ReturnType:
+    """
+    Brief description of the function.
+    
+    Parameters:
+    -----------
+    param1 : Type
+        Description of param1
+    param2 : Type  
+        Description of param2
+        
+    Returns:
+    --------
+    ReturnType
+        Description of return value
+    """
+    # Implementation
+    pass
+```
+
+## Performance Testing
+
+### Benchmark Functions
+Test algorithms with standard benchmark functions:
+- Sphere function (convex, easy)
+- Rastrigin function (multimodal, difficult)
+- Ackley function (multimodal, moderate)
+- Rosenbrock function (non-convex, difficult)
+
+### Performance Metrics
+- Convergence speed
+- Solution quality
+- Computational efficiency
+- Memory usage
+
+
+## Code Quality
+
+### Linting and Formatting
+```bash
+# Run flake8 for code quality
+flake8 src/ --max-line-length=120
+
+# Run black for code formatting
+black src/
+
+# Run isort for import sorting
+isort src/
+```
+
+### Type Checking
+```bash
+# Run mypy for type checking
+mypy src/ --ignore-missing-imports
+```
+
+By following these comprehensive guidelines, new algorithms will be well-tested, maintainable, and consistent with the library's standards.
+
 *This document was last updated: 2025-01-23*
