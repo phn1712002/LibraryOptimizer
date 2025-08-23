@@ -70,7 +70,8 @@ class Solver:
         
     def _begin_step_solver(self, max_iter) -> None:
         # Print algorithm start message with parameters
-        print(f"\n🚀 Starting {self.name_solver} algorithm")
+        print("-" * 50)
+        print(f"🚀 Starting {self.name_solver} algorithm")
         print(f"📊 Parameters:")
         print(f"   - Problem dimension: {self.dim}")
         print(f"   - Lower bounds: {self.lb}")
@@ -79,17 +80,16 @@ class Solver:
         print(f"   - Maximum iterations: {max_iter}")
         if hasattr(self, 'kwargs') and self.kwargs:
             print(f"   - Additional parameters: {self.kwargs}")
-        print("-" * 50)
-        
+        print(f"\n")
         # Initialize tqdm progress bar
         self.pbar = tqdm(total=max_iter, desc=self.name_solver, unit="iter")
 
     def _end_step_solver(self) -> None:
         # Close the progress bar
         self.pbar.close()
-        
+        print(f"\n")
         # Print algorithm completion message with results
-        print(f"\n✅ {self.name_solver} algorithm completed!")
+        print(f"✅ {self.name_solver} algorithm completed!")
         print(f"🏆 Best solution found:")
         print(f"   - Position: {self.best_solver.position}")
         print(f"   - Fitness: {self.best_solver.fitness:.6f}")
