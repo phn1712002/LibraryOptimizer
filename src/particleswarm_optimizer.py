@@ -4,7 +4,6 @@ from .core import Solver, Member
 from utils.general import sort_population
 
 class Particle(Member):
-    """Particle class that extends Member with velocity for PSO"""
     def __init__(self, position: np.ndarray, fitness: float, velocity: np.ndarray = None):
         super().__init__(position, fitness)
         self.velocity = velocity if velocity is not None else np.zeros_like(position)
@@ -35,7 +34,6 @@ class ParticleSwarmOptimizer(Solver):
         self.vel_min = kwargs.get('vel_min', -vel_range)
 
     def _init_population(self, search_agents_no) -> List:
-        """Initialize population with Particle objects that include velocities"""
         population = []
         for _ in range(search_agents_no):
             position = np.random.uniform(self.lb, self.ub, self.dim)

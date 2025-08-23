@@ -47,7 +47,6 @@ class Solver:
         return self.history_step_solver, self.best_solver
 
     def _is_better(self, member_1, menber_2) -> bool:
-        """Check if fitness1 is better than fitness2 based on optimization direction"""
         if self.maximize:
             return member_1 > menber_2
         else:
@@ -78,7 +77,6 @@ class Solver:
         self.plot_history_step_solver()
         
     def plot_history_step_solver(self) -> None:
-        """Plot the optimization history showing best fitness over iterations"""
         if self.history_step_solver is None:
             print("No optimization history available. Run the solver first.")
             return

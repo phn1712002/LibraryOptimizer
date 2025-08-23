@@ -4,7 +4,6 @@ from .core import Solver, Member
 from utils.general import roulette_wheel_selection, sort_population
 
 class Bee(Member):
-    """Bee class that extends Member with trial counter for ABC"""
     def __init__(self, position: np.ndarray, fitness: float, trial: int = 0):
         super().__init__(position, fitness)
         self.trial = trial  # Trial counter for abandonment
@@ -30,7 +29,6 @@ class ArtificialBeeColonyOptimizer(Solver):
         
 
     def _init_population(self, search_agents_no) -> List:
-        """Initialize population with Bee objects"""
         population = []
         for _ in range(search_agents_no):
             position = np.random.uniform(self.lb, self.ub, self.dim)
