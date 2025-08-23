@@ -2,7 +2,6 @@ import numpy as np
 from typing import Callable, Union, Tuple, List
 import matplotlib.pyplot as plt
 from tqdm import tqdm
-from utils.general import sort_population
 
 class Member:
     def __init__(self, position:np.ndarray, fitness:float):
@@ -77,9 +76,6 @@ class Solver:
         self.pbar.close()
         self.plot_history_step_solver()
         
-    def _sort_population(self, population):
-        return sort_population(population, self.maximize)
-    
     def plot_history_step_solver(self) -> None:
         if self.history_step_solver is None:
             print("No optimization history available. Run the solver first.")

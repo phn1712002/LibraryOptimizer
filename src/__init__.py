@@ -1,25 +1,24 @@
 
 from typing import Dict, Type, Callable, Union
 import numpy as np
-from .core import Solver
-from .greywolf_optimizer import GreyWolfOptimizer
-from .whale_optimizer import WhaleOptimizer
-from .particleswarm_optimizer import ParticleSwarmOptimizer
-from .artificialbeecolony_optimizer import ArtificialBeeColonyOptimizer
+from .core import *
+from .greywolf_optimizer import *
+from .whale_optimizer import *
+from .particleswarm_optimizer import *
+from .artificialbeecolony_optimizer import *
+from .antcolony_optimizer import *
+
 __version__ = "0.1.0"
 __author__ = "HoangggNam"
 __email__ = "phn1712002@gmai.com"
-__all__ = [
-    "Solver",
-    "GreyWolfOptimizer",
-    "create_solver",
-]
+
 # Registry of available solvers
 _SOLVER_REGISTRY: Dict[str, Type[Solver]] = {
     "GreyWolfOptimizer": GreyWolfOptimizer,
     "WhaleOptimizer": WhaleOptimizer,
     "ParticleSwarmOptimizer": ParticleSwarmOptimizer,
-    "ArtificialBeeColonyOptimizer": ArtificialBeeColonyOptimizer
+    "ArtificialBeeColonyOptimizer": ArtificialBeeColonyOptimizer,
+    "AntColonyOptimizer": AntColonyOptimizer
 }
 
 

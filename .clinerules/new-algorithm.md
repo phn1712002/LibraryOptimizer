@@ -52,7 +52,7 @@ def solver(self, search_agents_no: int, max_iter: int) -> Tuple[List, Member]:
     population = self._init_population(search_agents_no)
     
     # 2. Initialize best solution
-    sorted_population, _ = self._sort_population(population)
+    sorted_population, _ = sort_population(population, maximize)
     best_solution = sorted_population[0].copy()
     
     # 3. Initialize history
@@ -81,7 +81,7 @@ def solver(self, search_agents_no: int, max_iter: int) -> Tuple[List, Member]:
                 population[i].fitness = new_fitness
         
         # Update best solution
-        sorted_population, _ = self._sort_population(population)
+        sorted_population, _ = sort_population(population, maximize)
         current_best = sorted_population[0]
         if self._is_better(current_best, best_solution):
             best_solution = current_best.copy()

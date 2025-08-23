@@ -43,18 +43,20 @@ class ParticleSwarmOptimizer(Solver):
         return population
 
     def solver(self, search_agents_no: int, max_iter: int) -> Tuple[List, Particle]:
+
+        # Initialize storage variables
+        history_step_solver = []
+        maximize = self.maximize
+
         # Initialize the population of particles
         population = self._init_population(search_agents_no)
         
         # Initialize personal best particles (copy of initial particles)
         personal_best = [particle.copy() for particle in population]
         
-        # Initialize global best using _sort_population method
-        sorted_personal_best, _ = self._sort_population(personal_best)
+        # Initialize global best using sort_population method)
+        sorted_personal_best, _ = sort_population(personal_best, maximize)
         global_best = sorted_personal_best[0].copy()
-        
-        # Initialize storage variables
-        history_step_solver = []
         best_solver = global_best.copy()
         
         # Call the begin function

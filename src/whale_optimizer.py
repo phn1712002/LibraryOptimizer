@@ -1,7 +1,7 @@
 import numpy as np
 from typing import Callable, Union, Tuple, List
 from .core import Solver, Member
-from utils.general import sort_population
+from utils.general import sort_population, sort_population
 
 class WhaleOptimizer(Solver):
     def __init__(self, objective_func: Callable, lb: Union[float, np.ndarray], 
@@ -18,12 +18,13 @@ class WhaleOptimizer(Solver):
         # Initialize storage variables
         history_step_solver = []
         best_solver = self.best_solver
-        
+        maximize = self.maximize
+         
         # Call the begin function
         self._begin_step_solver(max_iter)
 
         # Initialize leader
-        _, idx = self._sort_population(population)
+        _, idx = sort_population(population, maximize)
         leader = population[idx[0]].copy()
 
         # Main optimization loop
