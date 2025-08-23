@@ -11,6 +11,7 @@ from .bat_optimizer import *
 from .artificialecosystem_optimizer import *
 from .cuckoosearch_optimizer import *
 from .dingo_optimizer import *
+from .firefly_optimizer import *
 
 __version__ = "0.1.0"
 __author__ = "HoangggNam"
@@ -26,7 +27,8 @@ _SOLVER_REGISTRY: Dict[str, Type[Solver]] = {
     "BatOptimizer": BatOptimizer,
     "ArtificialEcosystemOptimizer": ArtificialEcosystemOptimizer,
     "CuckooSearchOptimizer": CuckooSearchOptimizer,
-    "DingoOptimizer": DingoOptimizer
+    "DingoOptimizer": DingoOptimizer,
+    "FireflyOptimizer": FireflyOptimizer
 }
 
 
