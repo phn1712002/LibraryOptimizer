@@ -11,7 +11,7 @@ Each new algorithm must follow these rules to ensure consistency with the librar
 
 ### 2. Inheritance from Base Class
 ```python
-from .core import Solver, Member
+from ._core import Solver, Member
 ```
 
 ### 3. Algorithm Class Structure
@@ -144,7 +144,7 @@ _SOLVER_REGISTRY: Dict[str, Type[Solver]] = {
 ```python
 import numpy as np
 from typing import Callable, Union, Tuple, List
-from .core import Solver, Member
+from ._core import Solver, Member
 from utils.general import sort_population, roulette_wheel_selection  # If needed
 ```
 

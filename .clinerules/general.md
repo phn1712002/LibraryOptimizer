@@ -108,7 +108,7 @@ def solver(self, search_agents_no: int, max_iter: int) -> Tuple[List, Member]:
 ```
 src/
 ├── __init__.py          # Module exports and registry
-├── core.py              # Base class and common utilities
+├── _core.py              # Base class and common utilities
 ├── algorithm1_optimizer.py  # Specific algorithm implementation
 ├── algorithm2_optimizer.py
 └── ...
@@ -137,7 +137,7 @@ import matplotlib.pyplot as plt
 from tqdm import tqdm
 
 # Local imports (relative)
-from .core import Solver, Member
+from ._core import Solver, Member
 from utils.general import sort_population
 ```
 
