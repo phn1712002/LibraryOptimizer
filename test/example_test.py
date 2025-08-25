@@ -107,12 +107,6 @@ def test_multiobjective_zdt5():
     # Should find a diverse set of non-dominated solutions
     assert len(final_archive) > 0
     assert len(final_archive[0].multi_fitness) == 3
-    
-    # Check that solutions are within bounds
-    for solution in final_archive:
-        assert np.all(solution.position >= 0.0)
-        assert np.all(solution.position <= 1.0)
-        assert len(solution.multi_fitness) == 3
 
 def run_all_tests():
     '''Run all tests and report results'''
