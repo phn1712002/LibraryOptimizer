@@ -28,6 +28,7 @@ from .multiobjective.whale_optimizer import *
 from .multiobjective.particleswarm_optimizer import *
 from .multiobjective.antcolony_optimizer import MultiObjectiveAntColonyOptimizer
 from .multiobjective.bat_optimizer import MultiObjectiveBatOptimizer
+from .multiobjective.artificialecosystem_optimizer import MultiObjectiveArtificialEcosystemOptimizer
 
 __version__ = "0.1.0"
 __author__ = "HoangggNam"
@@ -58,7 +59,8 @@ _SOLVER_REGISTRY: Dict[str, Type[Solver]] = {
     "MultiObjectiveWhaleOptimizer": MultiObjectiveWhaleOptimizer,
     "MultiObjectiveParticleSwarmOptimizer": MultiObjectiveParticleSwarmOptimizer,
     "MultiObjectiveAntColonyOptimizer": MultiObjectiveAntColonyOptimizer,
-    "MultiObjectiveBatOptimizer": MultiObjectiveBatOptimizer
+    "MultiObjectiveBatOptimizer": MultiObjectiveBatOptimizer,
+    "MultiObjectiveArtificialEcosystemOptimizer": MultiObjectiveArtificialEcosystemOptimizer
 }
 
 # Mapping of single-objective solvers to their multi-objective counterparts
@@ -69,6 +71,7 @@ _MULTI_OBJECTIVE_MAPPING: Dict[str, str] = {
     "ParticleSwarmOptimizer": "MultiObjectiveParticleSwarmOptimizer",
     "AntColonyOptimizer": "MultiObjectiveAntColonyOptimizer",
     "BatOptimizer": "MultiObjectiveBatOptimizer",
+    "ArtificialEcosystemOptimizer": "MultiObjectiveArtificialEcosystemOptimizer",
 }
 
 
