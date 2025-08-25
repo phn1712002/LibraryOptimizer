@@ -372,7 +372,6 @@ method = create_solver(
     multi_obj_function,
     lb, ub, dim,
     archive_size=100,
-    n_objectives=3
 )
 ```
 

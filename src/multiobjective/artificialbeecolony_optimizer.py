@@ -39,8 +39,8 @@ class MultiObjectiveArtificialBeeColonyOptimizer(MultiObjectiveSolver):
     **kwargs
         Additional parameters:
         - archive_size: Size of the external archive (default: 100)
-        - n_objectives: Number of objectives (default: 2)
-        - limit_trial: Trial limit for scout bees (default: 100)
+        - abandonment_limit: Trial limit for scout bees (default: calculated as 0.6 * dim * population_size)
+        - n_onlooker: Number of onlooker bees (default: same as population size)
         - alpha: Grid inflation parameter (default: 0.1)
         - n_grid: Number of grids per dimension (default: 7)
         - beta: Leader selection pressure (default: 2)
@@ -56,9 +56,18 @@ class MultiObjectiveArtificialBeeColonyOptimizer(MultiObjectiveSolver):
         self.name_solver = "Multi-Objective Artificial Bee Colony Optimizer"
         
         # ABC-specific parameters
-        self.limit_trial = kwargs.get('limit_trial', 100)
         self.acceleration_coef = kwargs.get('acceleration_coef', 1.0)
         self.n_onlooker = kwargs.get('n_onlooker', None)
+        self.abandonment_limit = kwargs.get('abandonment_limit', None)
+    
+    
+    def _init_population(self, search_agents_no) -> List[BeeMulti]:
+        population = []
+        for _ in range(search_agents_no):
+            position = np.random.uniform(self.lb, self.ub, self.dim)
+            fitness = self.objective_func(position)
+            population.append(BeeMulti(position, fitness, 0))
+        return population
     
     def solver(self, search_agents_no: int, max_iter: int) -> Tuple[List, List[BeeMulti]]:
         """
@@ -83,6 +92,11 @@ class MultiObjectiveArtificialBeeColonyOptimizer(MultiObjectiveSolver):
         if self.n_onlooker is None:
             self.n_onlooker = search_agents_no
         
+        # Set default abandonment limit
+        if self.abandonment_limit is None:
+            # Default: 60% of variable dimension * population size (as in MATLAB code)
+            self.abandonment_limit = int(0.6 * self.dim * search_agents_no)
+        
         # Initialize population
         population = self._init_population(search_agents_no)
         
@@ -106,16 +120,16 @@ class MultiObjectiveArtificialBeeColonyOptimizer(MultiObjectiveSolver):
             # Phase 1: Employed Bees
             bee_population = [bee.copy() for bee in population]
             
-            # Select leader from archive
-            leader = self._select_leader()
-            if leader is None:
-                # If no leader in archive, use random bee
-                leader = np.random.choice(population)
-            
             for i in range(search_agents_no):
-                # Generate new candidate solution using leader guidance
+                # Choose a random neighbor different from current bee
+                neighbors = [j for j in range(search_agents_no) if j != i]
+                k = np.random.choice(neighbors)
+                
+                # Define acceleration coefficient
                 phi = self.acceleration_coef * np.random.uniform(-1, 1, self.dim)
-                new_position = population[i].position + phi * (leader.position - population[i].position)
+                
+                # Generate new candidate solution using neighbor guidance
+                new_position = population[i].position + phi * (population[i].position - population[k].position)
                 
                 # Apply bounds
                 new_position = np.clip(new_position, self.lb, self.ub)
@@ -135,29 +149,39 @@ class MultiObjectiveArtificialBeeColonyOptimizer(MultiObjectiveSolver):
             population = bee_population
             
             # Phase 2: Onlooker Bees
-            # Calculate selection probabilities based on non-domination
-            self._determine_domination(population)
-            non_dominated_count = sum(1 for p in population if not p.dominated)
-            
-            if non_dominated_count > 0:
-                # Use roulette wheel selection based on non-domination status
-                fitness_values = np.array([0 if p.dominated else 1 for p in population])
+            # Calculate fitness values for selection probabilities
+            # For multi-objective, we use a simple aggregation approach for selection
+            # Sum of normalized objectives (assuming minimization for all objectives)
+            costs = self._get_costs(population)
+            if costs.size > 0:
+                # Normalize costs and sum them (lower sum is better)
+                min_costs = np.min(costs, axis=0)
+                max_costs = np.max(costs, axis=0)
+                range_costs = max_costs - min_costs
+                range_costs[range_costs == 0] = 1  # Avoid division by zero
+                
+                normalized_costs = (costs - min_costs) / range_costs
+                fitness_values = 1.0 / (np.sum(normalized_costs, axis=1) + 1e-10)
+                
+                # Normalize to get probabilities
                 probabilities = fitness_values / np.sum(fitness_values)
                 
-                for m in range(self.n_onlooker):
-                    # Select source site
+                for _ in range(self.n_onlooker):
+                    # Select source site using roulette wheel selection
                     i = roulette_wheel_selection(probabilities)
                     
-                    # Select leader
-                    leader = self._select_leader()
-                    if leader is None:
-                        leader = np.random.choice(population)
+                    # Choose a random neighbor different from current bee
+                    neighbors = [j for j in range(search_agents_no) if j != i]
+                    k = np.random.choice(neighbors)
                     
-                    # Generate new candidate
+                    # Define acceleration coefficient
                     phi = self.acceleration_coef * np.random.uniform(-1, 1, self.dim)
-                    new_position = population[i].position + phi * (leader.position - population[i].position)
+                    
+                    # Generate new candidate solution using neighbor guidance
+                    new_position = population[i].position + phi * (population[i].position - population[k].position)
                     new_position = np.clip(new_position, self.lb, self.ub)
                     
+                    # Evaluate new fitness
                     new_fitness = self.objective_func(new_position)
                     new_bee = BeeMulti(new_position, new_fitness)
                     
@@ -170,7 +194,7 @@ class MultiObjectiveArtificialBeeColonyOptimizer(MultiObjectiveSolver):
             
             # Phase 3: Scout Bees
             for i in range(search_agents_no):
-                if population[i].trial >= self.limit_trial:
+                if population[i].trial >= self.abandonment_limit:
                     # Replace abandoned solution
                     position = np.random.uniform(self.lb, self.ub, self.dim)
                     fitness = self.objective_func(position)

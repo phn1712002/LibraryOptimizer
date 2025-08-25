@@ -57,8 +57,8 @@ class MultiObjectiveSolver(Solver):
         super().__init__(objective_func, lb, ub, dim, True)  # maximize=True for compatibility
         
         # Multi-objective specific parameters
+        self.n_objectives = len(self._init_population(1))
         self.archive_size = kwargs.get('archive_size', 100)
-        self.n_objectives = kwargs.get('n_objectives', 2)
         self.archive = []
         
         # Grid-based selection parameters
@@ -251,7 +251,6 @@ class MultiObjectiveAlgorithmNameOptimizer(MultiObjectiveSolver):
     **kwargs
         Additional parameters:
         - archive_size: Size of external archive (default: 100)
-        - n_objectives: Number of objectives (default: 2)
         - param1: Algorithm-specific parameter
     """
     
@@ -289,7 +288,6 @@ def test_multiobjective_algorithm():
         lb=np.array([0.0, 0.0]),
         ub=np.array([1.0, 1.0]),
         dim=2,
-        n_objectives=2,
         archive_size=50
     )
     

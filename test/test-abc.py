@@ -68,7 +68,6 @@ def test_multiobjective_zdt1():
         lb=np.array([0.0, 0.0]),
         ub=np.array([1.0, 1.0]),
         dim=2,
-        n_objectives=2,
         archive_size=50,
         limit_trial=50
     )
@@ -96,7 +95,6 @@ def test_multiobjective_zdt1_higher_dim():
         lb=np.array([0.0] * 10),
         ub=np.array([1.0] * 10),
         dim=10,
-        n_objectives=2,
         archive_size=100,
         limit_trial=100
     )

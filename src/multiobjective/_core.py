@@ -29,8 +29,8 @@ class MultiObjectiveSolver(Solver):
         super().__init__(objective_func, lb, ub, dim, True)
         
         # Multi-objective specific parameters
+        self.n_objectives = len(self._init_population(1))
         self.archive_size = kwargs.get('archive_size', 100)
-        self.n_objectives = kwargs.get('n_objectives', 2)
         self.archive = []
         
         # Grid-based selection parameters
@@ -73,6 +73,19 @@ class MultiObjectiveSolver(Solver):
         if not population:
             return np.array([])
         return np.array([p.multi_fitness for p in population]).T
+    
+    def _get_normalized_costs(self, population: List[MultiObjectiveMember]) -> np.ndarray:
+        """Get normalized cost matrix from population for aggregation methods"""
+        costs = self._get_costs(population)
+        
+        # Normalize each objective separately
+        min_costs = np.min(costs, axis=0)
+        max_costs = np.max(costs, axis=0)
+        range_costs = max_costs - min_costs
+        range_costs[range_costs == 0] = 1  # Avoid division by zero
+        
+        normalized_costs = (costs - min_costs) / range_costs
+        return normalized_costs
     
     def _create_hypercubes(self, costs: np.ndarray) -> List[dict]:
         """Create hypercubes for grid-based selection"""
@@ -224,7 +237,7 @@ class MultiObjectiveSolver(Solver):
             return
         
         costs = self._get_costs(self.archive)
-        n_objectives = costs.shape[0]
+        n_objectives = self.n_objectives
         
         if n_objectives == 2:
             # 2D plot

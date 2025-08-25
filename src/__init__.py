@@ -58,14 +58,14 @@ _MULTI_OBJECTIVE_MAPPING: Dict[str, str] = {
 
 
 def find_solver(solver_name: str) -> Type[Solver]:
-    solver_name_lower = solver_name.strip()
-    if solver_name_lower not in _SOLVER_REGISTRY:
+    solver_name = solver_name.strip()
+    if solver_name not in _SOLVER_REGISTRY:
         available_solvers = list(_SOLVER_REGISTRY.keys())
         raise ValueError(
             f"Solver '{solver_name}' not found. "
             f"Available solvers: {available_solvers}"
         )
-    return _SOLVER_REGISTRY[solver_name_lower]
+    return _SOLVER_REGISTRY[solver_name]
 
 
 def register_solver(name: str, solver_class: Type[Solver]) -> None:
@@ -87,10 +87,10 @@ def create_solver(
     Automatically detects whether to use single-objective or multi-objective version
     based on objective function output for algorithms that have both versions.
     """
-    solver_name_lower = solver_name.strip()
+    solver_name = solver_name.strip()
     
     # Check if this solver has a multi-objective counterpart
-    if solver_name_lower in _MULTI_OBJECTIVE_MAPPING:
+    if solver_name in _MULTI_OBJECTIVE_MAPPING:
         # Test the objective function to determine its output type
         try:
             # Create a test point within bounds
@@ -101,11 +101,10 @@ def create_solver(
             if hasattr(result, '__len__') and len(result) > 1:
                 # Multi-objective function detected
                 n_objectives = len(result)
-                multi_solver_name = _MULTI_OBJECTIVE_MAPPING[solver_name_lower]
+                multi_solver_name = _MULTI_OBJECTIVE_MAPPING[solver_name]
                 print(f"Detected multi-objective function with {n_objectives} objectives. Using {multi_solver_name}.")
                 solver_class = find_solver(multi_solver_name)
-                return solver_class(objective_func, lb, ub, dim, maximize, 
-                                  n_objectives=n_objectives, **kwargs)
+                return solver_class(objective_func, lb, ub, dim, maximize, **kwargs)
             else:
                 # Single-objective function detected
                 print(f"Detected single-objective function. Using {solver_name}.")
