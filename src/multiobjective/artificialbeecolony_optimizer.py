@@ -1,7 +1,7 @@
 import numpy as np
 from typing import Callable, Union, Tuple, List
 from ._core import MultiObjectiveSolver, MultiObjectiveMember
-from utils.general import roulette_wheel_selection
+from utils.general import roulette_wheel_selection, normalized_values
 
 class BeeMulti(MultiObjectiveMember):
     def __init__(self, position: np.ndarray, fitness: np.ndarray, trial: int = 0):
@@ -211,3 +211,8 @@ class MultiObjectiveArtificialBeeColonyOptimizer(MultiObjectiveSolver):
         self._end_step_solver()
         
         return history_archive, self.archive
+    
+    def _get_normalized_costs(self, population: List[MultiObjectiveMember]) -> np.ndarray:
+        """Get normalized cost matrix from population for aggregation methods"""
+        costs = self._get_costs(population)
+        return normalized_values(costs)

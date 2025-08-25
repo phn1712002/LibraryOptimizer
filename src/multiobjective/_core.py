@@ -80,19 +80,6 @@ class MultiObjectiveSolver(Solver):
             return np.array([])
         return np.array([p.multi_fitness for p in population]).T
     
-    def _get_normalized_costs(self, population: List[MultiObjectiveMember]) -> np.ndarray:
-        """Get normalized cost matrix from population for aggregation methods"""
-        costs = self._get_costs(population)
-        
-        # Normalize each objective separately
-        min_costs = np.min(costs, axis=0)
-        max_costs = np.max(costs, axis=0)
-        range_costs = max_costs - min_costs
-        range_costs[range_costs == 0] = 1  # Avoid division by zero
-        
-        normalized_costs = (costs - min_costs) / range_costs
-        return normalized_costs
-    
     def _create_hypercubes(self, costs: np.ndarray) -> List[dict]:
         """Create hypercubes for grid-based selection"""
         if costs.size == 0:
@@ -305,7 +292,7 @@ class MultiObjectiveSolver(Solver):
         # Ensure we return exactly the population size
         return sorted_population[:n_pop]
     
-    def _get_total_fitness(member) -> float:
+    def _get_total_fitness(member):
         return np.sum(member.multi_fitness)
     
     def _add_to_archive(self, new_solutions: List[MultiObjectiveMember]) -> None:
