@@ -177,6 +177,76 @@ _SOLVER_REGISTRY: Dict[str, Type[Solver]] = {
 - `self.objective_func`: Objective function
 - `self.kwargs`: Additional parameters passed during initialization
 
+## Multi-Objective Support
+
+### Automatic Multi-Objective Generation
+When creating a new single-objective algorithm, the system can automatically generate a multi-objective version. Follow these steps:
+
+1. **Create the single-objective algorithm** following the standard pattern
+2. **Create multi-objective version** in `src/multiobjective/` directory:
+   ```python
+   # File: src/multiobjective/algorithm_name_optimizer.py
+   import numpy as np
+   from typing import Callable, Union, Tuple, List
+   from ._core import MultiObjectiveSolver, MultiObjectiveMember
+   
+   class AlgorithmMultiMember(MultiObjectiveMember):
+       def __init__(self, position: np.ndarray, fitness: np.ndarray, additional_attr=None):
+           super().__init__(position, fitness)
+           self.additional_attr = additional_attr
+       
+       def copy(self):
+           new_member = AlgorithmMultiMember(self.position.copy(), self.multi_fitness.copy(), 
+                                           self.additional_attr)
+           new_member.dominated = self.dominated
+           new_member.grid_index = self.grid_index
+           new_member.grid_sub_index = self.grid_sub_index
+           return new_member
+   
+   class MultiObjectiveAlgorithmNameOptimizer(MultiObjectiveSolver):
+       def __init__(self, objective_func: Callable, lb: Union[float, np.ndarray], 
+                    ub: Union[float, np.ndarray], dim: int, **kwargs):
+           super().__init__(objective_func, lb, ub, dim, **kwargs)
+           self.name_solver = "Multi-Objective Algorithm Name Optimizer"
+           # Copy algorithm-specific parameters
+           self.param1 = kwargs.get('param1', default_value)
+       
+       def solver(self, search_agents_no: int, max_iter: int) -> Tuple[List, List[AlgorithmMultiMember]]:
+           # Implementation using algorithm-specific logic
+           # and inherited multi-objective utilities
+           pass
+   ```
+
+3. **Update registry mapping** in `src/__init__.py`:
+   ```python
+   _MULTI_OBJECTIVE_MAPPING: Dict[str, str] = {
+       "AlgorithmNameOptimizer": "MultiObjectiveAlgorithmNameOptimizer",
+       # ... existing mappings
+   }
+   ```
+
+4. **Add import** in `src/__init__.py`:
+   ```python
+   from .multiobjective.algorithm_name_optimizer import *
+   ```
+
+5. **Update registry** in `src/__init__.py`:
+   ```python
+   _SOLVER_REGISTRY: Dict[str, Type[Solver]] = {
+       # ... existing solvers
+       "MultiObjectiveAlgorithmNameOptimizer": MultiObjectiveAlgorithmNameOptimizer,
+   }
+   ```
+
+### Key Multi-Objective Concepts
+- Use `MultiObjectiveSolver` and `MultiObjectiveMember` as base classes
+- Fitness is stored in `multi_fitness` array, `fitness` is for compatibility
+- Solutions are compared using `_dominates()` instead of `_is_better()`
+- Return archive of non-dominated solutions instead of single best solution
+- Use grid-based selection for leader selection from archive
+
+See `rules/multi-objective.md` for detailed multi-objective implementation guidelines.
+
 ## Code Style Rules
 
 ### Import Structure
