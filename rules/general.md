@@ -110,6 +110,12 @@ src/
 ├── _core.py                # Base class and common utilities
 ├── algorithm1_optimizer.py  # Specific algorithm implementation
 ├── algorithm2_optimizer.py
+├── multiobjective/         # Multi-objective optimization algorithms
+│   ├── __init__.py         # Multi-objective module exports
+│   ├── _core.py            # Multi-objective base class
+│   ├── algorithm1_optimizer.py  # Multi-objective algorithm implementation
+│   ├── algorithm2_optimizer.py
+│   └── ...
 └── ...
 
 utils/
@@ -119,7 +125,9 @@ utils/
 
 rules/
 ├── general.md           # General rules (this document)
-└── new-algorithm.md     # Template for new algorithms
+├── new-algorithm.md     # Template for new algorithms
+├── multi-objective.md   # Multi-objective optimization guidelines
+└── auto-generation-multi.md  # Automatic multi-objective generation system
 
 docs/                    # Documentation
 tests/                   # Unit tests
