@@ -38,7 +38,7 @@ from .multiobjective.geneticalgorithm_optimizer import MultiObjectiveGeneticAlgo
 from .multiobjective.teachinglearningbased_optimizer import MultiObjectiveTeachingLearningBasedOptimizer
 from .multiobjective.prairiedogs_optimizer import MultiObjectivePrairieDogsOptimizer
 from .multiobjective.mossgrowth_optimizer import MultiObjectiveMossGrowthOptimizer
-
+from .multiobjective.simulatedannealing_optimizer import MultiObjectiveSimulatedAnnealingOptimizer
 __version__ = "0.1.0"
 __author__ = "HoangggNam"
 __email__ = "phn1712002@gmai.com"
@@ -78,7 +78,8 @@ _SOLVER_REGISTRY: Dict[str, Type[Solver]] = {
     "MultiObjectiveGeneticAlgorithmOptimizer": MultiObjectiveGeneticAlgorithmOptimizer,
     "MultiObjectiveTeachingLearningBasedOptimizer": MultiObjectiveTeachingLearningBasedOptimizer,
     "MultiObjectivePrairieDogsOptimizer": MultiObjectivePrairieDogsOptimizer,
-    "MultiObjectiveMossGrowthOptimizer": MultiObjectiveMossGrowthOptimizer
+    "MultiObjectiveMossGrowthOptimizer": MultiObjectiveMossGrowthOptimizer,
+    'MultiObjectiveSimulatedAnnealingOptimizer': MultiObjectiveSimulatedAnnealingOptimizer
 }
 
 # Mapping of single-objective solvers to their multi-objective counterparts
@@ -99,6 +100,7 @@ _MULTI_OBJECTIVE_MAPPING: Dict[str, str] = {
     "TeachingLearningBasedOptimizer": "MultiObjectiveTeachingLearningBasedOptimizer",
     "PrairieDogsOptimizer": "MultiObjectivePrairieDogsOptimizer",
     "MossGrowthOptimizer": "MultiObjectiveMossGrowthOptimizer",
+    'SimulatedAnnealingOptimizer': 'MultiObjectiveSimulatedAnnealingOptimizer'
 }
 
 
