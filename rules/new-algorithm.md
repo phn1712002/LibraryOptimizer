@@ -211,8 +211,8 @@ class AlgorithmNameOptimizer(Solver):
 # File: src/multiobjective/algorithm_name_optimizer.py (Multi-objective)
 class MultiObjectiveAlgorithmNameOptimizer(MultiObjectiveSolver):
     def __init__(self, objective_func: Callable, lb: Union[float, np.ndarray], 
-                 ub: Union[float, np.ndarray], dim: int, **kwargs):
-        super().__init__(objective_func, lb, ub, dim, **kwargs)
+                 ub: Union[float, np.ndarray], dim: int, maximize: bool = True, **kwargs):
+        super().__init__(objective_func, lb, ub, dim, maximize, **kwargs)
         self.name_solver = "Multi-Objective Algorithm Name Optimizer"
         # Copy algorithm-specific parameters
         self.param1 = kwargs.get('param1', default_value)

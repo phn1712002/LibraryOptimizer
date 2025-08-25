@@ -52,8 +52,8 @@ class MultiObjectiveMember(Member):
 ```python
 class MultiObjectiveSolver(Solver):
     def __init__(self, objective_func: Callable, lb: Union[float, np.ndarray], 
-                 ub: Union[float, np.ndarray], dim: int, **kwargs):
-        super().__init__(objective_func, lb, ub, dim, True)  # maximize=True for compatibility
+                 ub: Union[float, np.ndarray], dim: int, maximize:bool=True, **kwargs):
+        super().__init__(objective_func, lb, ub, dim, maximize) 
         
         # Multi-objective specific parameters
         self.n_objectives = objective_func(np.random.uniform(self.lb, self.ub, self.dim)).shape[0]
@@ -74,8 +74,8 @@ class MultiObjectiveSolver(Solver):
 ### 1. Constructor
 ```python
 def __init__(self, objective_func: Callable, lb: Union[float, np.ndarray], 
-             ub: Union[float, np.ndarray], dim: int, **kwargs):
-    super().__init__(objective_func, lb, ub, dim, **kwargs)
+             ub: Union[float, np.ndarray], dim: int, maximize:bool=True, **kwargs):
+    super().__init__(objective_func, lb, ub, dim, maximize, **kwargs)
     
     # Set solver name with "Multi-Objective" prefix
     self.name_solver = "Multi-Objective Algorithm Name Optimizer"
@@ -149,8 +149,8 @@ class MultiObjectiveAlgorithmNameOptimizer(MultiObjectiveSolver):
     """Multi-objective version of AlgorithmNameOptimizer"""
     
     def __init__(self, objective_func: Callable, lb: Union[float, np.ndarray], 
-                 ub: Union[float, np.ndarray], dim: int, **kwargs):
-        super().__init__(objective_func, lb, ub, dim, **kwargs)
+                 ub: Union[float, np.ndarray], dim: int, maximize:bool=True, **kwargs):
+        super().__init__(objective_func, lb, ub, dim, maximize, **kwargs)
         self.name_solver = "Multi-Objective Algorithm Name Optimizer"
         
         # Copy parameters from single-objective version

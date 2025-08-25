@@ -27,19 +27,21 @@ from .multiobjective.artificialbeecolony_optimizer import *
 from .multiobjective.greywolf_optimizer import *
 from .multiobjective.whale_optimizer import *
 from .multiobjective.particleswarm_optimizer import *
-from .multiobjective.antcolony_optimizer import MultiObjectiveAntColonyOptimizer
-from .multiobjective.bat_optimizer import MultiObjectiveBatOptimizer
-from .multiobjective.artificialecosystem_optimizer import MultiObjectiveArtificialEcosystemOptimizer
-from .multiobjective.cuckoosearch_optimizer import MultiObjectiveCuckooSearchOptimizer
-from .multiobjective.dingo_optimizer import MultiObjectiveDingoOptimizer
-from .multiobjective.firefly_optimizer import MultiObjectiveFireflyOptimizer
-from .multiobjective.modifiedsocialgroup_optimizer import MultiObjectiveModifiedSocialGroupOptimizer
-from .multiobjective.shuffledfrogleaping_optimizer import MultiObjectiveShuffledFrogLeapingOptimizer
-from .multiobjective.geneticalgorithm_optimizer import MultiObjectiveGeneticAlgorithmOptimizer
-from .multiobjective.teachinglearningbased_optimizer import MultiObjectiveTeachingLearningBasedOptimizer
-from .multiobjective.prairiedogs_optimizer import MultiObjectivePrairieDogsOptimizer
-from .multiobjective.mossgrowth_optimizer import MultiObjectiveMossGrowthOptimizer
-from .multiobjective.simulatedannealing_optimizer import MultiObjectiveSimulatedAnnealingOptimizer
+from .multiobjective.antcolony_optimizer import *
+from .multiobjective.bat_optimizer import *
+from .multiobjective.artificialecosystem_optimizer import *
+from .multiobjective.cuckoosearch_optimizer import *
+from .multiobjective.dingo_optimizer import *
+from .multiobjective.firefly_optimizer import *
+from .multiobjective.modifiedsocialgroup_optimizer import *
+from .multiobjective.shuffledfrogleaping_optimizer import *
+from .multiobjective.geneticalgorithm_optimizer import *
+from .multiobjective.teachinglearningbased_optimizer import *
+from .multiobjective.prairiedogs_optimizer import *
+from .multiobjective.mossgrowth_optimizer import *
+from .multiobjective.simulatedannealing_optimizer import *
+from .multiobjective.gravitationalsearch_optimizer import *
+
 __version__ = "0.1.0"
 __author__ = "HoangggNam"
 __email__ = "phn1712002@gmai.com"
@@ -81,7 +83,8 @@ _SOLVER_REGISTRY: Dict[str, Type[Solver]] = {
     "MultiObjectiveTeachingLearningBasedOptimizer": MultiObjectiveTeachingLearningBasedOptimizer,
     "MultiObjectivePrairieDogsOptimizer": MultiObjectivePrairieDogsOptimizer,
     "MultiObjectiveMossGrowthOptimizer": MultiObjectiveMossGrowthOptimizer,
-    'MultiObjectiveSimulatedAnnealingOptimizer': MultiObjectiveSimulatedAnnealingOptimizer
+    'MultiObjectiveSimulatedAnnealingOptimizer': MultiObjectiveSimulatedAnnealingOptimizer,
+    'MultiObjectiveGravitationalSearchOptimizer': MultiObjectiveGravitationalSearchOptimizer
 }
 
 # Mapping of single-objective solvers to their multi-objective counterparts

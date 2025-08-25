@@ -222,15 +222,15 @@ def create_solver(solver_name, objective_func, lb, ub, dim, **kwargs):
         
         if hasattr(result, '__len__') and len(result) > 1:
             # Multi-objective detected
-            return multi_objective_version(objective_func, lb, ub, dim, **kwargs)
+            return multi_objective_version(objective_func, lb, ub, dim, maximize, **kwargs)
         else:
             # Single-objective detected
-            return single_objective_version(objective_func, lb, ub, dim, **kwargs)
+            return single_objective_version(objective_func, lb, ub, dim, maximize, **kwargs)
             
     except Exception as e:
         print(f"Auto-detection failed: {e}")
         print("Falling back to single-objective version")
-        return single_objective_version(objective_func, lb, ub, dim, **kwargs)
+        return single_objective_version(objective_func, lb, ub, dim, maximize, **kwargs)
 ```
 
 ## Performance Optimization
