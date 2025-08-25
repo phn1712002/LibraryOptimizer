@@ -139,8 +139,8 @@ class AlgorithmMultiMember(MultiObjectiveMember):
                                   self.additional_attr)
 
 class MultiObjectiveAlgorithmNameOptimizer(MultiObjectiveSolver):
-    def __init__(self, objective_func, lb, ub, dim, **kwargs):
-        super().__init__(objective_func, lb, ub, dim, **kwargs)
+    def __init__(self, objective_func, lb, ub, dim, maximize, **kwargs):
+        super().__init__(objective_func, lb, ub, dim, maximize, **kwargs)
         self.name_solver = "Multi-Objective Algorithm Name Optimizer"
         # Copy parameters
         for key, value in kwargs.items():
@@ -271,6 +271,7 @@ def _update_positions(self, population, leaders):
     for i, agent in enumerate(population):
         agent.position = new_positions[i]
 ```
+
 
 ## Best Practices for Automatic Generation
 
