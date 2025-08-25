@@ -5,7 +5,7 @@ from utils.func_test import sphere_function, rastrigin_function, negative_sphere
 def test_sphere_function():
     '''Test ABC on sphere function (minimization)'''
     method = create_solver(
-        solver_name='BatOptimizer',
+        solver_name='NAME_SOLVER',
         objective_func=sphere_function,
         lb=-5.0,
         ub=5.0,
@@ -25,7 +25,7 @@ def test_sphere_function():
 def test_rastrigin_function():
     '''Test ABC on Rastrigin function (minimization)'''
     method = create_solver(
-        solver_name='BatOptimizer',
+        solver_name='NAME_SOLVER',
         objective_func=rastrigin_function,
         lb=-5.12,
         ub=5.12,
@@ -44,7 +44,7 @@ def test_rastrigin_function():
 def test_maximization():
     '''Test ABC on maximization problem'''
     method = create_solver(
-        solver_name='BatOptimizer',
+        solver_name='NAME_SOLVER',
         objective_func=negative_sphere,
         lb=-2.0,
         ub=2.0,
@@ -63,14 +63,12 @@ def test_maximization():
 def test_multiobjective_zdt1():
     '''Test Multi-Objective ABC on ZDT1 function'''
     method = create_solver(
-        solver_name='BatOptimizer',
+        solver_name='NAME_SOLVER',
         objective_func=zdt1_function,
         lb=np.array([0.0, 0.0]),
         ub=np.array([1.0, 1.0]),
         dim=2,
         archive_size=50,
-        limit_trial=50,
-        maximize=False
     )
     
     history_archive, final_archive = method.solver(
@@ -91,14 +89,12 @@ def test_multiobjective_zdt1():
 def test_multiobjective_zdt1_higher_dim():
     '''Test Multi-Objective ABC on ZDT1 with higher dimension'''
     method = create_solver(
-        solver_name='BatOptimizer',
+        solver_name='NAME_SOLVER',
         objective_func=zdt1_function,
         lb=np.array([0.0] * 10),
         ub=np.array([1.0] * 10),
         dim=10,
         archive_size=100,
-        limit_trial=100,
-        maximize=False
     )
     
     history_archive, final_archive = method.solver(
@@ -172,4 +168,3 @@ if __name__ == '__main__':
         print('\n🎉 All tests passed!')
     else:
         print('\n❌ Some tests failed!')
-        exit(1)

@@ -10,7 +10,6 @@ This document defines the standards and patterns for creating multi-objective ve
 src/
 ├── algorithm_name_optimizer.py          # Single-objective version
 └── multiobjective/
-    ├── __init__.py                      # Multi-objective module exports
     ├── _core.py                         # Multi-objective base classes
     └── algorithm_name_optimizer.py      # Multi-objective version
 ```

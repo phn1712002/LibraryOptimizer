@@ -117,7 +117,7 @@ utils/
 ├── general.py           # Common utilities
 └── ...
 
-.clinerules/
+rules/
 ├── general.md           # General rules (this document)
 └── new-algorithm.md     # Template for new algorithms
 
