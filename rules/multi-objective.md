@@ -288,7 +288,8 @@ def test_multiobjective_algorithm():
         lb=np.array([0.0, 0.0]),
         ub=np.array([1.0, 1.0]),
         dim=2,
-        archive_size=50
+        archive_size=50,
+        maximize=False
     )
     
     history_archive, final_archive = method.solver(

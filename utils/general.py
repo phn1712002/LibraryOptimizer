@@ -3,6 +3,16 @@ from typing import Tuple, List
 from src._core import Member
 import math
 
+def normalized_values(values):
+    # Normalize each objective separately
+    min_values = np.min(values, axis=0)
+    max_values = np.max(values, axis=0)
+    range_values = max_values - min_values
+    range_values[range_values == 0] = 1  # Avoid division by zero
+
+    normalized_values = (values - min_values) / range_values
+    return normalized_values
+
 def roulette_wheel_selection(probabilities: np.ndarray) -> int:
     r = np.random.random()
     cumulative_sum = np.cumsum(probabilities)

@@ -170,6 +170,143 @@ class MultiObjectiveSolver(Solver):
         # Randomly select a member from the cell
         return np.random.choice(cell_members)
     
+    def _select_multiple_leaders(self, n_leaders: int) -> List[MultiObjectiveMember]:
+        """
+        Select multiple unique leaders from archive using grid-based selection
+        
+        Parameters:
+        -----------
+        n_leaders : int
+            Number of leaders to select
+            
+        Returns:
+        --------
+        List[MultiObjectiveMember]
+            List of selected leaders (may be fewer than n_leaders if archive is small)
+        """
+        if not self.archive or n_leaders <= 0:
+            return []
+        
+        # Get grid indices of all archive members
+        grid_indices = [p.grid_index for p in self.archive if p.grid_index is not None]
+        
+        if not grid_indices:
+            # If no grid indices, return random unique members
+            n_available = min(n_leaders, len(self.archive))
+            return list(np.random.choice(self.archive, size=n_available, replace=False))
+        
+        # Get occupied cells and their counts
+        occupied_cells, counts = np.unique(grid_indices, return_counts=True)
+        n_cells = len(occupied_cells)
+        
+        # If we need more leaders than available cells, we'll have to reuse cells
+        if n_leaders > n_cells:
+            # First select one leader from each cell
+            leaders = []
+            for cell in occupied_cells:
+                cell_members = [p for p in self.archive if p.grid_index == cell]
+                leaders.append(np.random.choice(cell_members))
+            
+            # Then fill remaining with random selection from all archive
+            remaining = n_leaders - n_cells
+            if remaining > 0:
+                available_members = [p for p in self.archive if p not in leaders]
+                if available_members:
+                    additional = list(np.random.choice(available_members, 
+                                                     size=min(remaining, len(available_members)), 
+                                                     replace=False))
+                    leaders.extend(additional)
+            
+            return leaders
+        
+        # Selection probabilities (lower density cells have higher probability)
+        probabilities = np.exp(-self.beta * counts)
+        probabilities = probabilities / np.sum(probabilities)
+        
+        # Select multiple unique cells without replacement
+        selected_cells = []
+        temp_probabilities = probabilities.copy()
+        temp_cells = occupied_cells.copy()
+        
+        for _ in range(n_leaders):
+            if len(temp_cells) == 0:
+                break
+                
+            # Select a cell using roulette wheel
+            r = np.random.random()
+            cum_probs = np.cumsum(temp_probabilities)
+            selected_cell_idx = np.where(r <= cum_probs)[0][0]
+            selected_cell = temp_cells[selected_cell_idx]
+            selected_cells.append(selected_cell)
+            
+            # Remove selected cell from consideration
+            mask = temp_cells != selected_cell
+            temp_cells = temp_cells[mask]
+            temp_probabilities = temp_probabilities[mask]
+            if len(temp_probabilities) > 0:
+                temp_probabilities = temp_probabilities / np.sum(temp_probabilities)
+        
+        # Select one leader from each chosen cell
+        leaders = []
+        for cell in selected_cells:
+            cell_members = [p for p in self.archive if p.grid_index == cell]
+            leaders.append(np.random.choice(cell_members))
+        
+        return leaders
+    
+    def sort_population(self, population: List[MultiObjectiveMember]) -> List[MultiObjectiveMember]:
+        """
+        Sort population with multi fitness by selecting leaders and sorting remaining by total fitness
+        
+        Parameters:
+        -----------
+        population : List[MultiObjectiveMember]
+            Population to sort
+            
+        Returns:
+        --------
+        List[MultiObjectiveMember]
+            Sorted population
+        """
+        if not population:
+            return []
+        
+        n_pop = len(population)
+        
+        # Select multiple leaders from population
+        leaders = self._select_multiple_leaders(n_pop)
+        
+        # Remove leaders that don't exist in population
+        valid_leaders = [leader for leader in leaders if leader in population]
+        
+        # Get population members that are not in leaders
+        non_leader_population = [member for member in population if member not in valid_leaders]
+        
+        # Sort non-leader population by total fitness
+        # For maximization: higher total fitness is better
+        # For minimization: lower total fitness is better
+        def get_total_fitness(member):
+            return np.sum(member.multi_fitness)
+        
+        # Sort based on optimization direction
+        if self.maximize:
+            # For maximization: sort descending by total fitness
+            non_leader_population.sort(key=get_total_fitness, reverse=True)
+        else:
+            # For minimization: sort ascending by total fitness
+            non_leader_population.sort(key=get_total_fitness)
+        
+        # Combine leaders and sorted non-leaders
+        sorted_population = valid_leaders + non_leader_population
+        
+        # If we have fewer leaders than population size, fill with remaining sorted non-leaders
+        if len(sorted_population) < n_pop:
+            remaining_non_leaders = [m for m in non_leader_population if m not in sorted_population]
+            sorted_population.extend(remaining_non_leaders)
+        
+        # Ensure we return exactly the population size
+        return sorted_population[:n_pop]
+    
     def _add_to_archive(self, new_solutions: List[MultiObjectiveMember]) -> None:
         """Add new solutions to archive and maintain archive size"""
         # Determine domination of new solutions
@@ -306,9 +443,3 @@ class MultiObjectiveSolver(Solver):
                 if self.maximize:
                     print(f"Objective {i+1}: worst={np.min(costs[i]):.6f}, best={np.max(costs[i]):.6f}")
                 else:
-                    print(f"Objective {i+1}: best={np.min(costs[i]):.6f}, worst={np.max(costs[i]):.6f}")
-        print("-" * 50)
-        
-        # Plot Pareto front if we have at least 2 objectives
-        if self.archive and len(self.archive[0].multi_fitness) >= 2:
-            self.plot_pareto_front()
