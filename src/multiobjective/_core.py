@@ -80,6 +80,36 @@ class MultiObjectiveSolver(Solver):
         if not population:
             return np.array([])
         return np.array([p.multi_fitness for p in population]).T
+
+    def _get_random_population(self, population: List[MultiObjectiveMember], size: int) -> List[MultiObjectiveMember]:
+        """
+        Get a random sample of population with specified size
+        
+        Parameters:
+        -----------
+        population : List[MultiObjectiveMember]
+            Source population to sample from
+        size : int
+            Number of members to sample
+            
+        Returns:
+        --------
+        List[MultiObjectiveMember]
+            Random sample of population with specified size
+        """
+        if not population:
+            return []
+        
+        if size <= 0:
+            return []
+        
+        # If requested size is larger than population, return the entire population
+        if size >= len(population):
+            return population.copy()
+        
+        # Randomly select members from population
+        selected_indices = np.random.choice(len(population), size, replace=False)
+        return [population[i].copy() for i in selected_indices]
     
     def _create_hypercubes(self, costs: np.ndarray) -> List[dict]:
         """Create hypercubes for grid-based selection"""

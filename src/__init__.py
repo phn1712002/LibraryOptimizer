@@ -21,6 +21,7 @@ from .prairiedogs_optimizer import *
 from .simulatedannealing_optimizer import *
 from .geneticalgorithm_optimizer import *
 from .gravitationalsearch_optimizer import *
+from .biogeographybased_optimizer import *
 
 # Multi-objective optimizers
 from .multiobjective.artificialbeecolony_optimizer import *
@@ -41,6 +42,8 @@ from .multiobjective.prairiedogs_optimizer import *
 from .multiobjective.mossgrowth_optimizer import *
 from .multiobjective.simulatedannealing_optimizer import *
 from .multiobjective.gravitationalsearch_optimizer import *
+from .multiobjective.biogeographybased_optimizer import *
+
 
 __version__ = "0.1.0"
 __author__ = "HoangggNam"
@@ -67,6 +70,8 @@ _SOLVER_REGISTRY: Dict[str, Type[Solver]] = {
     "SimulatedAnnealingOptimizer": SimulatedAnnealingOptimizer,
     "GeneticAlgorithmOptimizer": GeneticAlgorithmOptimizer,
     "GravitationalSearchOptimizer": GravitationalSearchOptimizer,
+    "BiogeographyBasedOptimizer": BiogeographyBasedOptimizer,
+    # Multi
     "MultiObjectiveArtificialBeeColonyOptimizer": MultiObjectiveArtificialBeeColonyOptimizer,
     "MultiObjectiveGreyWolfOptimizer": MultiObjectiveGreyWolfOptimizer,
     "MultiObjectiveWhaleOptimizer": MultiObjectiveWhaleOptimizer,
@@ -84,7 +89,8 @@ _SOLVER_REGISTRY: Dict[str, Type[Solver]] = {
     "MultiObjectivePrairieDogsOptimizer": MultiObjectivePrairieDogsOptimizer,
     "MultiObjectiveMossGrowthOptimizer": MultiObjectiveMossGrowthOptimizer,
     'MultiObjectiveSimulatedAnnealingOptimizer': MultiObjectiveSimulatedAnnealingOptimizer,
-    'MultiObjectiveGravitationalSearchOptimizer': MultiObjectiveGravitationalSearchOptimizer
+    'MultiObjectiveGravitationalSearchOptimizer': MultiObjectiveGravitationalSearchOptimizer,
+    'MultiObjectiveBiogeographyBasedOptimizer': MultiObjectiveBiogeographyBasedOptimizer
 }
 
 # Mapping of single-objective solvers to their multi-objective counterparts
@@ -106,7 +112,8 @@ _MULTI_OBJECTIVE_MAPPING: Dict[str, str] = {
     "PrairieDogsOptimizer": "MultiObjectivePrairieDogsOptimizer",
     "MossGrowthOptimizer": "MultiObjectiveMossGrowthOptimizer",
     'SimulatedAnnealingOptimizer': 'MultiObjectiveSimulatedAnnealingOptimizer',
-    "GravitationalSearchOptimizer": "MultiObjectiveGravitationalSearchOptimizer"
+    "GravitationalSearchOptimizer": "MultiObjectiveGravitationalSearchOptimizer",
+    "BiogeographyBasedOptimizer": "MultiObjectiveBiogeographyBasedOptimizer"
 }
 
 
