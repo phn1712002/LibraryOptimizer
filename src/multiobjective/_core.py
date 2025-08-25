@@ -29,7 +29,7 @@ class MultiObjectiveSolver(Solver):
         super().__init__(objective_func, lb, ub, dim, maximize)
         
         # Multi-objective specific parameters
-        self.n_objectives = objective_func(self._init_population(1)).shape[0]
+        self.n_objectives = objective_func(self._init_population(1).multi_fitness).shape[0]
         self.archive_size = kwargs.get('archive_size', 100)
         self.archive = []
         
