@@ -2,7 +2,8 @@ import numpy as np
 from typing import Callable, Union, Tuple, List
 from .._core import Solver, Member
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
+from tqdm import tqdm
+import os
 
 class MultiObjectiveMember(Member):
     def __init__(self, position: np.ndarray, fitness: np.ndarray):
@@ -417,6 +418,32 @@ class MultiObjectiveSolver(Solver):
                     'Best Fitness': 'N/A'
                 })
     
+    def _begin_step_solver(self, max_iter) -> None:
+        """
+        Initialize solver execution and display startup information.
+        
+        Args:
+            max_iter (int): Maximum number of iterations for the solver
+        """
+        # Clear console for better visualization
+        os.system('cls' if os.name == 'nt' else 'clear')
+        
+        # Print algorithm start message with parameters
+        print("-" * 50)
+        print(f"🚀 Starting {self.name_solver} algorithm")
+        print(f"📊 Parameters:")
+        print(f"   - Objectives dimension: {self.n_objectives}")
+        print(f"   - Problem dimension: {self.dim}")
+        print(f"   - Lower bounds: {self.lb}")
+        print(f"   - Upper bounds: {self.ub}")
+        print(f"   - Optimization direction: {'Maximize' if self.maximize else 'Minimize'}")
+        print(f"   - Maximum iterations: {max_iter}")
+        if hasattr(self, 'kwargs') and self.kwargs:
+            print(f"   - Additional parameters: {self.kwargs}")
+        print(f"\n")
+        # Initialize tqdm progress bar
+        self.pbar = tqdm(total=max_iter, desc=self.name_solver, unit="iter")
+
     def _end_step_solver(self) -> None:
         """Custom end step for multi-objective optimization"""
         if self.pbar:
