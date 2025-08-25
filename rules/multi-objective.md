@@ -223,7 +223,7 @@ from utils.general import roulette_wheel_selection
 class AlgorithmMultiMember(MultiObjectiveMember):
     def __init__(self, position: np.ndarray, fitness: np.ndarray, additional_attr=None):
         super().__init__(position, fitness)
-        self.additional_attr = additional_attr
+        self.additional_attr = additional_attr # Please replace with desired properties
     
     def copy(self):
         new_member = AlgorithmMultiMember(self.position.copy(), self.multi_fitness.copy(), 
@@ -254,7 +254,7 @@ class MultiObjectiveAlgorithmNameOptimizer(MultiObjectiveSolver):
     """
     
     def __init__(self, objective_func: Callable, lb: Union[float, np.ndarray], 
-                 ub: Union[float, np.ndarray], dim: int, maximize, **kwargs):
+                 ub: Union[float, np.ndarray], dim: int, maximize: bool=True, **kwargs):
         super().__init__(objective_func, lb, ub, dim, maximize, **kwargs)
         
         self.name_solver = "Multi-Objective Algorithm Name Optimizer"

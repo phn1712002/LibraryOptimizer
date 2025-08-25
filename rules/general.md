@@ -106,8 +106,8 @@ def solver(self, search_agents_no: int, max_iter: int) -> Tuple[List, Member]:
 ### 1. Directory Structure
 ```
 src/
-├── __init__.py          # Module exports and registry
-├── _core.py              # Base class and common utilities
+├── __init__.py             # Module exports and registry
+├── _core.py                # Base class and common utilities
 ├── algorithm1_optimizer.py  # Specific algorithm implementation
 ├── algorithm2_optimizer.py
 └── ...

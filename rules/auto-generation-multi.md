@@ -43,8 +43,8 @@ The system automatically generates:
 ```python
 # File: src/multiobjective/your_algorithm_optimizer.py
 class MultiObjectiveYourAlgorithmOptimizer(MultiObjectiveSolver):
-    def __init__(self, objective_func, lb, ub, dim, **kwargs):
-        super().__init__(objective_func, lb, ub, dim, **kwargs)
+    def __init__(self, objective_func, lb, ub, dim, maximize=True, **kwargs):
+        super().__init__(objective_func, lb, ub, dim, maximize, **kwargs)
         self.name_solver = "Multi-Objective Your Algorithm Optimizer"
         # Copy all algorithm-specific parameters
         self.param1 = kwargs.get('param1', default_value)
@@ -113,8 +113,8 @@ Multi-objective versions automatically inherit:
 ### Template 1: Simple Algorithm (No Custom Member)
 ```python
 class MultiObjectiveAlgorithmNameOptimizer(MultiObjectiveSolver):
-    def __init__(self, objective_func, lb, ub, dim, **kwargs):
-        super().__init__(objective_func, lb, ub, dim, **kwargs)
+    def __init__(self, objective_func, lb, ub, dim, maximize=True, **kwargs):
+        super().__init__(objective_func, lb, ub, dim, maximize, **kwargs)
         self.name_solver = "Multi-Objective Algorithm Name Optimizer"
         # Copy parameters
         for key, value in kwargs.items():
@@ -131,7 +131,7 @@ class MultiObjectiveAlgorithmNameOptimizer(MultiObjectiveSolver):
 class AlgorithmMultiMember(MultiObjectiveMember):
     def __init__(self, position, fitness, additional_attr=None):
         super().__init__(position, fitness)
-        self.additional_attr = additional_attr
+        self.additional_attr = additional_attr # Please replace with desired properties
     
     def copy(self):
         return AlgorithmMultiMember(self.position.copy(), 
@@ -233,18 +233,6 @@ def create_solver(solver_name, objective_func, lb, ub, dim, **kwargs):
         return single_objective_version(objective_func, lb, ub, dim, **kwargs)
 ```
 
-### Parameter Validation
-```python
-def _validate_parameters(self):
-    """Validate multi-objective specific parameters"""
-    if self.archive_size <= 0:
-        raise ValueError("archive_size must be positive")
-    if self.n_objectives < 2:
-        raise ValueError("n_objectives must be at least 2 for multi-objective optimization")
-    if not hasattr(self.objective_func(np.zeros(self.dim)), '__len__'):
-        raise ValueError("Objective function must return array for multi-objective optimization")
-```
-
 ## Performance Optimization
 
 ### Memory Efficiency
@@ -311,7 +299,7 @@ The system automatically handles:
 method = create_solver(
     'YourAlgorithmOptimizer',
     objective_func,  # Auto-detected as single or multi-objective
-    lb, ub, dim
+    lb, ub, dim, maximize
 )
 ```
 
@@ -321,7 +309,7 @@ method = create_solver(
 method = create_solver(
     'MultiObjectiveYourAlgorithmOptimizer',
     multi_obj_function,
-    lb, ub, dim,
+    lb, ub, dim, maximize
     archive_size=100,
 )
 ```
@@ -332,7 +320,7 @@ method = create_solver(
 method = create_solver(
     'YourAlgorithmOptimizer',
     objective_func,
-    lb, ub, dim,
+    lb, ub, dim, maximize
     param1=0.5,
     param2=0.3,
     archive_size=150  # Multi-objective specific
@@ -363,7 +351,7 @@ import logging
 logging.basicConfig(level=logging.DEBUG)
 
 # Create solver with debug info
-method = create_solver('YourAlgorithmOptimizer', objective_func, lb, ub, dim)
+method = create_solver('YourAlgorithmOptimizer', objective_func, lb, ub, dim, maximize)
 ```
 
 ## Future Enhancements
