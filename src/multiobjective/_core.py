@@ -47,9 +47,15 @@ class MultiObjectiveSolver(Solver):
         x_costs = x.multi_fitness
         y_costs = y.multi_fitness
         
-        # x dominates y if x is not worse in any objective and better in at least one
-        not_worse = np.all(x_costs <= y_costs)
-        better = np.any(x_costs < y_costs)
+        if self.maximize:
+            # For maximization: x dominates y if x >= y in all objectives and > y in at least one
+            not_worse = np.all(x_costs >= y_costs)
+            better = np.any(x_costs > y_costs)
+        else:
+            # For minimization: x dominates y if x <= y in all objectives and < y in at least one
+            not_worse = np.all(x_costs <= y_costs)
+            better = np.any(x_costs < y_costs)
+        
         return not_worse and better
     
     def _determine_domination(self, population: List[MultiObjectiveMember]) -> None:
@@ -297,7 +303,10 @@ class MultiObjectiveSolver(Solver):
             print(f"📊 Pareto front statistics:")
             costs = self._get_costs(self.archive)
             for i in range(costs.shape[0]):
-                print(f"Objective {i+1}: min={np.min(costs[i]):.6f}, max={np.max(costs[i]):.6f}")
+                if self.maximize:
+                    print(f"Objective {i+1}: worst={np.min(costs[i]):.6f}, best={np.max(costs[i]):.6f}")
+                else:
+                    print(f"Objective {i+1}: best={np.min(costs[i]):.6f}, worst={np.max(costs[i]):.6f}")
         print("-" * 50)
         
         # Plot Pareto front if we have at least 2 objectives
