@@ -36,6 +36,7 @@ from .multiobjective.modifiedsocialgroup_optimizer import MultiObjectiveModified
 from .multiobjective.shuffledfrogleaping_optimizer import MultiObjectiveShuffledFrogLeapingOptimizer
 from .multiobjective.geneticalgorithm_optimizer import MultiObjectiveGeneticAlgorithmOptimizer
 from .multiobjective.teachinglearningbased_optimizer import MultiObjectiveTeachingLearningBasedOptimizer
+from .multiobjective.prairiedogs_optimizer import MultiObjectivePrairieDogsOptimizer
 
 __version__ = "0.1.0"
 __author__ = "HoangggNam"
@@ -74,7 +75,8 @@ _SOLVER_REGISTRY: Dict[str, Type[Solver]] = {
     "MultiObjectiveModifiedSocialGroupOptimizer": MultiObjectiveModifiedSocialGroupOptimizer,
     "MultiObjectiveShuffledFrogLeapingOptimizer": MultiObjectiveShuffledFrogLeapingOptimizer,
     "MultiObjectiveGeneticAlgorithmOptimizer": MultiObjectiveGeneticAlgorithmOptimizer,
-    "MultiObjectiveTeachingLearningBasedOptimizer": MultiObjectiveTeachingLearningBasedOptimizer
+    "MultiObjectiveTeachingLearningBasedOptimizer": MultiObjectiveTeachingLearningBasedOptimizer,
+    "MultiObjectivePrairieDogsOptimizer": MultiObjectivePrairieDogsOptimizer
 }
 
 # Mapping of single-objective solvers to their multi-objective counterparts
@@ -93,6 +95,7 @@ _MULTI_OBJECTIVE_MAPPING: Dict[str, str] = {
     "ShuffledFrogLeapingOptimizer": "MultiObjectiveShuffledFrogLeapingOptimizer",
     "GeneticAlgorithmOptimizer": "MultiObjectiveGeneticAlgorithmOptimizer",
     "TeachingLearningBasedOptimizer": "MultiObjectiveTeachingLearningBasedOptimizer",
+    "PrairieDogsOptimizer": "MultiObjectivePrairieDogsOptimizer",
 }
 
 

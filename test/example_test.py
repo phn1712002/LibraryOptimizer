@@ -3,7 +3,7 @@ from src import create_solver
 from utils.func_test import sphere_function, rastrigin_function, negative_sphere, zdt1_function
 
 def test_sphere_function():
-    '''Test ABC on sphere function (minimization)'''
+    '''Test NAME_SOLVER on sphere function (minimization)'''
     method = create_solver(
         solver_name='NAME_SOLVER',
         objective_func=sphere_function,
@@ -23,7 +23,7 @@ def test_sphere_function():
     assert np.all(np.abs(best.position) < 0.5)
 
 def test_rastrigin_function():
-    '''Test ABC on Rastrigin function (minimization)'''
+    '''Test NAME_SOLVER on Rastrigin function (minimization)'''
     method = create_solver(
         solver_name='NAME_SOLVER',
         objective_func=rastrigin_function,
@@ -42,7 +42,7 @@ def test_rastrigin_function():
     assert best.fitness < 5.0
 
 def test_maximization():
-    '''Test ABC on maximization problem'''
+    '''Test NAME_SOLVER on maximization problem'''
     method = create_solver(
         solver_name='NAME_SOLVER',
         objective_func=negative_sphere,
@@ -61,7 +61,7 @@ def test_maximization():
     assert best.fitness > -0.1
 
 def test_multiobjective_zdt1():
-    '''Test Multi-Objective ABC on ZDT1 function'''
+    '''Test Multi-Objective NAME_SOLVER on ZDT1 function'''
     method = create_solver(
         solver_name='NAME_SOLVER',
         objective_func=zdt1_function,
@@ -69,6 +69,7 @@ def test_multiobjective_zdt1():
         ub=np.array([1.0, 1.0]),
         dim=2,
         archive_size=50,
+        maximize=False
     )
     
     history_archive, final_archive = method.solver(
@@ -87,7 +88,7 @@ def test_multiobjective_zdt1():
         assert len(solution.multi_fitness) == 2
 
 def test_multiobjective_zdt1_higher_dim():
-    '''Test Multi-Objective ABC on ZDT1 with higher dimension'''
+    '''Test Multi-Objective NAME_SOLVER on ZDT1 with higher dimension'''
     method = create_solver(
         solver_name='NAME_SOLVER',
         objective_func=zdt1_function,
@@ -95,6 +96,7 @@ def test_multiobjective_zdt1_higher_dim():
         ub=np.array([1.0] * 10),
         dim=10,
         archive_size=100,
+        maximize=False
     )
     
     history_archive, final_archive = method.solver(
