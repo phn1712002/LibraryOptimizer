@@ -50,7 +50,7 @@ class MultiObjectiveArtificialBeeColonyOptimizer(MultiObjectiveSolver):
     
     def __init__(self, objective_func: Callable, lb: Union[float, np.ndarray], 
                  ub: Union[float, np.ndarray], dim: int, maximize: bool = True, **kwargs):
-        super().__init__(objective_func, lb, ub, dim, **kwargs)
+        super().__init__(objective_func, lb, ub, dim, maximize, **kwargs)
         
         # Set solver name
         self.name_solver = "Multi-Objective Artificial Bee Colony Optimizer"
@@ -152,45 +152,38 @@ class MultiObjectiveArtificialBeeColonyOptimizer(MultiObjectiveSolver):
             # Calculate fitness values for selection probabilities
             # For multi-objective, we use a simple aggregation approach for selection
             # Sum of normalized objectives (assuming minimization for all objectives)
-            costs = self._get_costs(population)
-            if costs.size > 0:
-                # Normalize costs and sum them (lower sum is better)
-                min_costs = np.min(costs, axis=0)
-                max_costs = np.max(costs, axis=0)
-                range_costs = max_costs - min_costs
-                range_costs[range_costs == 0] = 1  # Avoid division by zero
+            # Normalize costs and sum them (lower sum is better)
+            normalized_costs = self._get_normalized_costs(population)
+            fitness_values = 1.0 / (np.sum(normalized_costs, axis=1) + 1e-10)
+            
+            # Normalize to get probabilities
+            probabilities = fitness_values / np.sum(fitness_values)
+            
+            for _ in range(self.n_onlooker):
+                # Select source site using roulette wheel selection
+                i = roulette_wheel_selection(probabilities)
                 
-                normalized_costs = (costs - min_costs) / range_costs
-                fitness_values = 1.0 / (np.sum(normalized_costs, axis=1) + 1e-10)
+                # Choose a random neighbor different from current bee
+                neighbors = [j for j in range(search_agents_no) if j != i]
+                k = np.random.choice(neighbors)
                 
-                # Normalize to get probabilities
-                probabilities = fitness_values / np.sum(fitness_values)
+                # Define acceleration coefficient
+                phi = self.acceleration_coef * np.random.uniform(-1, 1, self.dim)
                 
-                for _ in range(self.n_onlooker):
-                    # Select source site using roulette wheel selection
-                    i = roulette_wheel_selection(probabilities)
-                    
-                    # Choose a random neighbor different from current bee
-                    neighbors = [j for j in range(search_agents_no) if j != i]
-                    k = np.random.choice(neighbors)
-                    
-                    # Define acceleration coefficient
-                    phi = self.acceleration_coef * np.random.uniform(-1, 1, self.dim)
-                    
-                    # Generate new candidate solution using neighbor guidance
-                    new_position = population[i].position + phi * (population[i].position - population[k].position)
-                    new_position = np.clip(new_position, self.lb, self.ub)
-                    
-                    # Evaluate new fitness
-                    new_fitness = self.objective_func(new_position)
-                    new_bee = BeeMulti(new_position, new_fitness)
-                    
-                    # Greedy selection
-                    if self._dominates(new_bee, population[i]):
-                        population[i] = new_bee
-                        population[i].trial = 0
-                    else:
-                        population[i].trial += 1
+                # Generate new candidate solution using neighbor guidance
+                new_position = population[i].position + phi * (population[i].position - population[k].position)
+                new_position = np.clip(new_position, self.lb, self.ub)
+                
+                # Evaluate new fitness
+                new_fitness = self.objective_func(new_position)
+                new_bee = BeeMulti(new_position, new_fitness)
+                
+                # Greedy selection
+                if self._dominates(new_bee, population[i]):
+                    population[i] = new_bee
+                    population[i].trial = 0
+                else:
+                    population[i].trial += 1
             
             # Phase 3: Scout Bees
             for i in range(search_agents_no):
