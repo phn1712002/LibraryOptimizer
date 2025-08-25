@@ -2,6 +2,7 @@ import numpy as np
 from typing import Callable, Union, Tuple, List
 from .._core import Solver, Member
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 
 class MultiObjectiveMember(Member):
     def __init__(self, position: np.ndarray, fitness: np.ndarray):
@@ -512,6 +513,7 @@ class MultiObjectiveSolver(Solver):
             ax.set_ylabel('Objective 2')
             ax.set_zlabel('Objective 3')
             ax.set_title('Pareto Front (3D)')
+            plt.grid(True)
             plt.tight_layout()
             plt.show()
         
