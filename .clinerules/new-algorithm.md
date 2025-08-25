@@ -177,6 +177,112 @@ _SOLVER_REGISTRY: Dict[str, Type[Solver]] = {
 - `self.objective_func`: Objective function
 - `self.kwargs`: Additional parameters passed during initialization
 
+## Automatic Algorithm Generation System
+
+### Automatic Single-Objective to Multi-Objective Conversion
+The library now supports automatic generation of multi-objective versions from single-objective algorithms. When you provide a new single-objective algorithm, the system can automatically create its multi-objective counterpart.
+
+### Automatic Code Generation Process
+
+1. **Single-Objective Algorithm Creation**: Create your algorithm following the standard pattern
+2. **Automatic Multi-Objective Generation**: The system will automatically:
+   - Create multi-objective version in `src/multiobjective/`
+   - Generate appropriate Member class if needed
+   - Set up registry mappings
+   - Handle objective function type detection
+
+### Template for Automatic Generation
+
+```python
+# File: src/algorithm_name_optimizer.py (Single-objective)
+class AlgorithmNameOptimizer(Solver):
+    def __init__(self, objective_func: Callable, lb: Union[float, np.ndarray], 
+                 ub: Union[float, np.ndarray], dim: int, maximize: bool = True, **kwargs):
+        super().__init__(objective_func, lb, ub, dim, maximize)
+        self.name_solver = "Algorithm Name Optimizer"
+        # Algorithm-specific parameters
+        self.param1 = kwargs.get('param1', default_value)
+    
+    def solver(self, search_agents_no: int, max_iter: int) -> Tuple[List, Member]:
+        # Your algorithm implementation here
+        pass
+
+# The system will automatically generate:
+# File: src/multiobjective/algorithm_name_optimizer.py (Multi-objective)
+class MultiObjectiveAlgorithmNameOptimizer(MultiObjectiveSolver):
+    def __init__(self, objective_func: Callable, lb: Union[float, np.ndarray], 
+                 ub: Union[float, np.ndarray], dim: int, **kwargs):
+        super().__init__(objective_func, lb, ub, dim, **kwargs)
+        self.name_solver = "Multi-Objective Algorithm Name Optimizer"
+        # Copy algorithm-specific parameters
+        self.param1 = kwargs.get('param1', default_value)
+    
+    def solver(self, search_agents_no: int, max_iter: int) -> Tuple[List, List[MultiObjectiveMember]]:
+        # Multi-objective implementation using inherited utilities
+        pass
+```
+
+### Automatic Registry Setup
+The system automatically handles registry updates:
+```python
+# Auto-generated in src/__init__.py
+_MULTI_OBJECTIVE_MAPPING: Dict[str, str] = {
+    "AlgorithmNameOptimizer": "MultiObjectiveAlgorithmNameOptimizer",
+    # ... other auto-generated mappings
+}
+
+_SOLVER_REGISTRY: Dict[str, Type[Solver]] = {
+    "AlgorithmNameOptimizer": AlgorithmNameOptimizer,
+    "MultiObjectiveAlgorithmNameOptimizer": MultiObjectiveAlgorithmNameOptimizer,
+    # ... other solvers
+}
+```
+
+### Key Features of Automatic Generation
+
+1. **Objective Function Detection**: The system automatically detects whether to use single or multi-objective version based on function output
+2. **Parameter Inheritance**: All algorithm-specific parameters are automatically copied to multi-objective version
+3. **Utility Integration**: Multi-objective versions inherit all necessary utilities from `MultiObjectiveSolver`
+4. **Error Handling**: Graceful fallback to single-objective if multi-objective detection fails
+
+### Usage Example
+```python
+# The system automatically chooses the right version
+method = create_solver(
+    solver_name='AlgorithmNameOptimizer',
+    objective_func=multi_obj_function,  # Returns array → uses multi-objective
+    lb=[0, 0], ub=[1, 1], dim=2
+)
+
+method2 = create_solver(
+    solver_name='AlgorithmNameOptimizer', 
+    objective_func=single_obj_function,  # Returns scalar → uses single-objective
+    lb=[0, 0], ub=[1, 1], dim=2
+)
+```
+
+See `rules/multi-objective.md` for detailed multi-objective implementation guidelines and `rules/auto-generation.md` for complete automatic generation system documentation.
+
+## Automatic Generation Quick Reference
+
+### For Single-Objective Algorithms
+1. Create your algorithm following the standard pattern
+2. The system automatically detects objective function type
+3. Multi-objective version is auto-generated when needed
+4. All parameters are automatically inherited
+
+### For Multi-Objective Usage
+```python
+# The system handles everything automatically
+method = create_solver(
+    'YourAlgorithmOptimizer',
+    objective_func,  # Auto-detected as single/multi
+    lb, ub, dim,
+    param1=value1,    # Algorithm-specific
+    archive_size=100  # Multi-objective specific
+)
+```
+
 ## Code Style Rules
 
 ### Import Structure

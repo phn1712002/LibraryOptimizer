@@ -2,8 +2,7 @@
 
 ## 📋 Overview
 
-This document defines programming standards for the Library Optimizer, including naming conventions, commenting standards, function structure, file organization, and general rules.
-
+This document defines programming standards for the Library Optimizer, including naming conventions, commenting standards, function structure, file organization, and general rules. The system now supports automatic generation of multi-objective versions from single-objective algorithms, following these unified standards.
 ## 🏷️ Naming Rules
 
 ### 1. Class Names
@@ -242,7 +241,7 @@ function_call( arg1, arg2 )
 
 ## 📋 Template for New Algorithms
 
-See `.clinerules/new-algorithm.md` for detailed template when adding new algorithms.
+See `rules/new-algorithm.md` for detailed template when adding new algorithms and `rules/auto-generation-multi.md` for automatic multi-objective generation system.
 
 ## 🔍 Code Review Checklist
 

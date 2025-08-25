@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document defines the standards and patterns for creating multi-objective versions of single-objective optimization algorithms in LibraryOptimizer. The goal is to enable automatic generation of multi-objective algorithms when new single-objective algorithms are added.
+This document defines the standards and patterns for creating multi-objective versions of single-objective optimization algorithms in LibraryOptimizer. The system now supports automatic generation of multi-objective algorithms when new single-objective algorithms are added, following the unified coding standards of the library.
 
 ## Directory Structure
 
