@@ -220,4 +220,7 @@ class MossGrowthOptimizer(Solver):
         return act
     
     def _sort_population(self, population):
+        """
+        Sort the population based on fitness.
+        """
         return sort_population(population, self.maximize)

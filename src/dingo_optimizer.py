@@ -251,4 +251,7 @@ class DingoOptimizer(Solver):
             return (current_fitness - min_fitness) / (max_fitness - min_fitness)
 
     def _sort_population(self, population):
+        """
+        Sort the population based on fitness.
+        """
         return sort_population(population, self.maximize)

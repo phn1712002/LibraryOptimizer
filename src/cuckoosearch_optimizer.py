@@ -213,4 +213,5 @@ class CuckooSearchOptimizer(Solver):
         return updated_population
 
     def _levy_flight(self):
+        """Generate Levy flight step using utility function"""
         return levy_flight(self.dim, self.beta)

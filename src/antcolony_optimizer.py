@@ -117,6 +117,9 @@ class AntColonyOptimizer(Solver):
         return history_step_solver, best_solution
     
     def _sort_population(self, population):
+        """
+        Sort the population based on fitness.
+        """
         return sort_population(population, self.maximize)
 
     def _calculate_weights(self, n_pop: int) -> np.ndarray:

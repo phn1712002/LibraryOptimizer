@@ -162,4 +162,5 @@ class PrairieDogsOptimizer(Solver):
         return sort_population(population, self.maximize)
 
     def _levy_flight(self):
+        """Generate Levy flight step using utility function"""
         return levy_flight(self.dim, self.beta)

@@ -160,4 +160,7 @@ class ArtificialBeeColonyOptimizer(Solver):
         return history_step_solver, best_solution
     
     def _sort_population(self, population):
+        """
+        Sort the population based on fitness.
+        """
         return sort_population(population, self.maximize)
