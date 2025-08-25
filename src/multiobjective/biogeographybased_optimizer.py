@@ -157,11 +157,6 @@ class MultiObjectiveBiogeographyBasedOptimizer(MultiObjectiveSolver):
             # For multi-objective, we use the sorted population
             next_population = sorted_population[:n_keep] + sorted_population_new[:n_new]
             
-            # Fix size population
-            size_fix = search_agents_no - len(next_population)
-            if size_fix > 0:
-                next_population += self._get_random_population(population, size_fix)
-            
             # Ensure we have exactly the population size
             population = next_population[:search_agents_no]
             

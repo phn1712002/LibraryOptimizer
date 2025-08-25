@@ -19,6 +19,7 @@ class MultiObjectiveMember(Member):
         new_member.grid_sub_index = self.grid_sub_index
         return new_member
     
+
     def __str__(self):
         return f"Position: {self.position} - Fitness: {self.multi_fitness} - Dominated: {self.dominated}"
 
@@ -293,12 +294,14 @@ class MultiObjectiveSolver(Solver):
         
         # Select multiple leaders from population
         leaders = self._select_multiple_leaders(n_pop)
-        
+        population_positions = self._get_positions(population)
+
         # Remove leaders that don't exist in population
-        valid_leaders = [leader for leader in leaders if leader in population]
+        valid_leaders = [leader for leader in leaders if leader.position in population_positions]
+        valid_leaders_positions = self._get_positions(valid_leaders)
         
         # Get population members that are not in leaders
-        non_leader_population = [member for member in population if member not in valid_leaders]
+        non_leader_population = [member for member in population if member.position not in valid_leaders_positions]
         
         # Sort non-leader population by random fitness
         # For maximization: higher random fitness is better
@@ -315,15 +318,10 @@ class MultiObjectiveSolver(Solver):
         # Combine leaders and sorted non-leaders
         sorted_population = valid_leaders + non_leader_population
         
-        # If we have fewer leaders than population size, fill with remaining sorted non-leaders
-        if len(sorted_population) < n_pop:
-            remaining_non_leaders = [m for m in non_leader_population if m not in sorted_population]
-            sorted_population.extend(remaining_non_leaders)
-        
         # Ensure we return exactly the population size
         return sorted_population[:n_pop]
     
-    def _get_random_fitness(member):
+    def _get_random_fitness(self, member):
         """Get fitness value based on random dice roll"""
         dice_roll = np.random.random()
         if dice_roll > 0.5:
