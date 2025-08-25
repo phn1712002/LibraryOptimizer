@@ -2,6 +2,8 @@ import numpy as np
 from typing import Callable, Union, Tuple, List
 import matplotlib.pyplot as plt
 from tqdm import tqdm
+import os
+
 
 class Member:
     """
@@ -176,6 +178,9 @@ class Solver:
         Args:
             max_iter (int): Maximum number of iterations for the solver
         """
+        # Clear console for better visualization
+        os.system('cls' if os.name == 'nt' else 'clear')
+        
         # Print algorithm start message with parameters
         print("-" * 50)
         print(f"🚀 Starting {self.name_solver} algorithm")
