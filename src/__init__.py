@@ -20,6 +20,7 @@ from .teachinglearningbased_optimizer import *
 from .prairiedogs_optimizer import *
 from .simulatedannealing_optimizer import *
 from .geneticalgorithm_optimizer import *
+from .gravitationalsearch_optimizer import *
 
 # Multi-objective optimizers
 from .multiobjective.artificialbeecolony_optimizer import *
@@ -63,6 +64,7 @@ _SOLVER_REGISTRY: Dict[str, Type[Solver]] = {
     "PrairieDogsOptimizer": PrairieDogsOptimizer,
     "SimulatedAnnealingOptimizer": SimulatedAnnealingOptimizer,
     "GeneticAlgorithmOptimizer": GeneticAlgorithmOptimizer,
+    "GravitationalSearchOptimizer": GravitationalSearchOptimizer,
     "MultiObjectiveArtificialBeeColonyOptimizer": MultiObjectiveArtificialBeeColonyOptimizer,
     "MultiObjectiveGreyWolfOptimizer": MultiObjectiveGreyWolfOptimizer,
     "MultiObjectiveWhaleOptimizer": MultiObjectiveWhaleOptimizer,
@@ -100,7 +102,8 @@ _MULTI_OBJECTIVE_MAPPING: Dict[str, str] = {
     "TeachingLearningBasedOptimizer": "MultiObjectiveTeachingLearningBasedOptimizer",
     "PrairieDogsOptimizer": "MultiObjectivePrairieDogsOptimizer",
     "MossGrowthOptimizer": "MultiObjectiveMossGrowthOptimizer",
-    'SimulatedAnnealingOptimizer': 'MultiObjectiveSimulatedAnnealingOptimizer'
+    'SimulatedAnnealingOptimizer': 'MultiObjectiveSimulatedAnnealingOptimizer',
+    "GravitationalSearchOptimizer": "MultiObjectiveGravitationalSearchOptimizer"
 }
 
 

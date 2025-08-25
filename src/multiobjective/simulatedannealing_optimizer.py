@@ -80,7 +80,7 @@ class MultiObjectiveSimulatedAnnealingOptimizer(MultiObjectiveSolver):
         self.archive = [current_solution.copy()]
         
         # Initialize grid for archive
-        costs = self._get_costs(self.archive)
+        costs = self._get_fitness(self.archive)
         if costs.size > 0:
             self.grid = self._create_hypercubes(costs)
             for particle in self.archive:

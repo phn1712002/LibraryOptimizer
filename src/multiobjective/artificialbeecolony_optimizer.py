@@ -106,7 +106,7 @@ class MultiObjectiveArtificialBeeColonyOptimizer(MultiObjectiveSolver):
         self.archive.extend(non_dominated)
         
         # Initialize grid for archive
-        costs = self._get_costs(self.archive)
+        costs = self._get_fitness(self.archive)
         if costs.size > 0:
             self.grid = self._create_hypercubes(costs)
             for particle in self.archive:
@@ -214,7 +214,7 @@ class MultiObjectiveArtificialBeeColonyOptimizer(MultiObjectiveSolver):
     
     def _get_normalized_costs(self, population: List[MultiObjectiveMember]) -> np.ndarray:
         """Get normalized cost matrix from population for aggregation methods"""
-        costs = self._get_costs(population)
+        costs = self._get_fitness(population)
         return normalized_values(costs)
     
     def _roulette_wheel_selection(self, probabilities):

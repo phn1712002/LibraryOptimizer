@@ -108,7 +108,7 @@ def solver(self, search_agents_no: int, max_iter: int) -> Tuple[List, List[Algor
     self.archive.extend(non_dominated)
     
     # Initialize grid
-    costs = self._get_costs(self.archive)
+    costs = self._get_fitness(self.archive)
     if costs.size > 0:
         self.grid = self._create_hypercubes(costs)
         for particle in self.archive:

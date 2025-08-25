@@ -122,6 +122,12 @@ class Solver:
         self.pbar = None  # Progress bar instance
         self.name_solver = ""  # Solver name for display
 
+    def _get_positions(self, population) -> np.ndarray:
+        return np.array([member.position for member in population])
+
+    def _get_fitness(self, population) -> np.ndarray:
+        return np.array([member.fitness for member in population])
+
     def _is_better(self, member_1, member_2) -> bool:
         """
         Compare two members to determine which is better based on optimization direction.

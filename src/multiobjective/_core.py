@@ -75,8 +75,8 @@ class MultiObjectiveSolver(Solver):
         """Get non-dominated particles from population"""
         return [p for p in population if not p.dominated]
     
-    def _get_costs(self, population: List[MultiObjectiveMember]) -> np.ndarray:
-        """Get cost matrix from population"""
+    def _get_fitness(self, population: List[MultiObjectiveMember]) -> np.ndarray:
+        """Get fitness matrix from population"""
         if not population:
             return np.array([])
         return np.array([p.multi_fitness for p in population]).T
@@ -319,7 +319,7 @@ class MultiObjectiveSolver(Solver):
         self.archive = self._get_non_dominated_particles(self.archive)
         
         # Update grid indices
-        costs = self._get_costs(self.archive)
+        costs = self._get_fitness(self.archive)
         if costs.size > 0:
             self.grid = self._create_hypercubes(costs)
             for particle in self.archive:
@@ -397,7 +397,7 @@ class MultiObjectiveSolver(Solver):
         print(f"🏆 Archive contains {len(self.archive)} non-dominated solutions")
         if self.archive:
             print(f"📊 Pareto front statistics:")
-            costs = self._get_costs(self.archive)
+            costs = self._get_fitness(self.archive)
             for i in range(costs.shape[0]):
                 if self.maximize:
                     print(f"Objective {i+1}: worst={np.min(costs[i]):.6f}, best={np.max(costs[i]):.6f}")
@@ -461,7 +461,7 @@ class MultiObjectiveSolver(Solver):
             print("No solutions in archive to plot.")
             return
         
-        costs = self._get_costs(self.archive)
+        costs = self._get_fitness(self.archive)
         n_objectives = self.n_objectives
         
         if n_objectives == 2:
