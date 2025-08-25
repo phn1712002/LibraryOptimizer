@@ -105,6 +105,25 @@ _MULTI_OBJECTIVE_MAPPING: Dict[str, str] = {
 
 
 def find_solver(solver_name: str) -> Type[Solver]:
+    """
+    Find and return a solver class by its registered name.
+    
+    This function looks up a solver class in the global solver registry
+    and returns the corresponding class object.
+    
+    Args:
+        solver_name (str): Name of the solver to find (case-sensitive)
+        
+    Returns:
+        Type[Solver]: The solver class corresponding to the given name
+        
+    Raises:
+        ValueError: If the solver name is not found in the registry
+        
+    Example:
+        solver_class = find_solver("NSGA2")
+        solver_instance = solver_class(population_size=100, max_generations=50)
+    """
     solver_name = solver_name.strip()
     if solver_name not in _SOLVER_REGISTRY:
         available_solvers = list(_SOLVER_REGISTRY.keys())
@@ -116,6 +135,20 @@ def find_solver(solver_name: str) -> Type[Solver]:
 
 
 def register_solver(name: str, solver_class: Type[Solver]) -> None:
+    """
+    Register a solver class with a given name in the global solver registry.
+    
+    This function allows new solver implementations to be registered and 
+    made available for use by the solver factory system.
+    
+    Args:
+        name (str): Name to register the solver under
+        solver_class (Type[Solver]): The solver class to register
+        
+    Example:
+        register_solver("MyCustomSolver", MyCustomSolverClass)
+        # Later usage: solver_class = find_solver("MyCustomSolver")
+    """
     _SOLVER_REGISTRY[name] = solver_class
 
 

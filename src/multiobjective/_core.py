@@ -369,43 +369,6 @@ class MultiObjectiveSolver(Solver):
             population.append(MultiObjectiveMember(position, fitness))
         return population
     
-    def plot_pareto_front(self) -> None:
-        """Plot Pareto front from archive"""
-        if not self.archive:
-            print("No solutions in archive to plot.")
-            return
-        
-        costs = self._get_costs(self.archive)
-        n_objectives = self.n_objectives
-        
-        if n_objectives == 2:
-            # 2D plot
-            plt.figure(figsize=(10, 6))
-            plt.scatter(costs[0, :], costs[1, :], c='blue', alpha=0.7, s=50)
-            plt.xlabel('Objective 1')
-            plt.ylabel('Objective 2')
-            plt.title('Pareto Front (2D)')
-            plt.grid(True)
-            plt.tight_layout()
-            plt.show()
-        
-        elif n_objectives == 3:
-            # 3D plot
-            fig = plt.figure(figsize=(10, 8))
-            ax = fig.add_subplot(111, projection='3d')
-            ax.scatter(costs[0, :], costs[1, :], costs[2, :], c='blue', alpha=0.7, s=50)
-            ax.set_xlabel('Objective 1')
-            ax.set_ylabel('Objective 2')
-            ax.set_zlabel('Objective 3')
-            ax.set_title('Pareto Front (3D)')
-            plt.tight_layout()
-            plt.show()
-        
-        else:
-            print(f"Cannot plot Pareto front for {n_objectives} objectives. Maximum 3D visualization supported.")
-            # Optionally, you could plot pairwise scatter plots here
-            print("Consider plotting pairwise scatter plots for higher dimensions.")
-
     def _callbacks(self, iter: int, max_iter: int, best: MultiObjectiveMember) -> None:
         """Custom callback for multi-objective optimization"""
         if self.pbar:
@@ -491,3 +454,43 @@ class MultiObjectiveSolver(Solver):
         
         # If no non-dominated members, use random selection
         return np.random.choice(tournament_members)
+    
+    def plot_pareto_front(self) -> None:
+        """Plot Pareto front from archive"""
+        if not self.archive:
+            print("No solutions in archive to plot.")
+            return
+        
+        costs = self._get_costs(self.archive)
+        n_objectives = self.n_objectives
+        
+        if n_objectives == 2:
+            # 2D plot
+            plt.figure(figsize=(10, 6))
+            plt.scatter(costs[0, :], costs[1, :], c='blue', alpha=0.7, s=50)
+            plt.xlabel('Objective 1')
+            plt.ylabel('Objective 2')
+            plt.title('Pareto Front (2D)')
+            plt.grid(True)
+            plt.tight_layout()
+            plt.show()
+        
+        elif n_objectives == 3:
+            # 3D plot
+            fig = plt.figure(figsize=(10, 8))
+            ax = fig.add_subplot(111, projection='3d')
+            ax.scatter(costs[0, :], costs[1, :], costs[2, :], c='blue', alpha=0.7, s=50)
+            ax.set_xlabel('Objective 1')
+            ax.set_ylabel('Objective 2')
+            ax.set_zlabel('Objective 3')
+            ax.set_title('Pareto Front (3D)')
+            plt.tight_layout()
+            plt.show()
+        
+        else:
+            print(f"Cannot plot Pareto front for {n_objectives} objectives. Maximum 3D visualization supported.")
+            # Optionally, you could plot pairwise scatter plots here
+            print("Consider plotting pairwise scatter plots for higher dimensions.")
+
+    def solver(self) -> Tuple[List, List]:
+        return self.history_step_archive, self.archive

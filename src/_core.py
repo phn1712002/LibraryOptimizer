@@ -44,9 +44,6 @@ class Solver:
         self.pbar = None
         self.name_solver = ""
 
-    def solver(self) -> Tuple[List, Member]:
-        return self.history_step_solver, self.best_solver
-
     def _is_better(self, member_1, menber_2) -> bool:
         if self.maximize:
             return member_1 > menber_2
@@ -124,3 +121,6 @@ class Solver:
         plt.legend()
         plt.tight_layout()
         plt.show()
+
+    def solver(self) -> Tuple[List, Member]:
+        return self.history_step_solver, self.best_solver

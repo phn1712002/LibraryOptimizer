@@ -4,6 +4,26 @@ from src._core import Member
 import math
 
 def normalized_values(values):
+    """
+    Perform roulette wheel selection (fitness proportionate selection).
+    
+    This selection method assigns each individual a probability of selection 
+    proportional to its fitness value. Individuals with higher fitness have 
+    higher probability of being selected.
+    
+    Args:
+        probabilities (np.ndarray): Array of selection probabilities for each individual
+                                   Should sum to 1.0 and contain non-negative values
+    
+    Returns:
+        int: Index of the selected individual
+    
+    Example:
+        If probabilities = [0.1, 0.3, 0.6], then:
+        - Individual 0 has 10% chance of selection
+        - Individual 1 has 30% chance of selection  
+        - Individual 2 has 60% chance of selection
+    """
     # Normalize each objective separately
     min_values = np.min(values, axis=0)
     max_values = np.max(values, axis=0)
@@ -14,12 +34,48 @@ def normalized_values(values):
     return normalized_values
 
 def roulette_wheel_selection(probabilities: np.ndarray) -> int:
+    """
+    Perform roulette wheel selection (fitness proportionate selection).
+    
+    This selection method assigns each individual a probability of selection 
+    proportional to its fitness value. Individuals with higher fitness have 
+    higher probability of being selected.
+    
+    Args:
+        probabilities (np.ndarray): Array of selection probabilities for each individual
+                                   Should sum to 1.0 and contain non-negative values
+    
+    Returns:
+        int: Index of the selected individual
+    
+    Example:
+        If probabilities = [0.1, 0.3, 0.6], then:
+        - Individual 0 has 10% chance of selection
+        - Individual 1 has 30% chance of selection  
+        - Individual 2 has 60% chance of selection
+    """
     r = np.random.random()
     cumulative_sum = np.cumsum(probabilities)
     return np.argmax(r <= cumulative_sum)
 
 
 def sort_population(population, maximize) -> Tuple[List, List]:
+    """
+    Sort population based on fitness values in ascending or descending order.
+    
+    Args:
+        population (List[Member]): List of population members to sort
+        maximize (bool): If True, sort in descending order (maximization problem)
+                        If False, sort in ascending order (minimization problem)
+    
+    Returns:
+        Tuple[List, List]: A tuple containing:
+            - sorted_population: List of population members sorted by fitness
+            - sorted_indices: List of original indices corresponding to sorted order
+    
+    Raises:
+        TypeError: If any member in the population is not an instance of Member class
+    """
     # Validate that all members are instances of Member class
     for i, member in enumerate(population):
         if not isinstance(member, Member):
