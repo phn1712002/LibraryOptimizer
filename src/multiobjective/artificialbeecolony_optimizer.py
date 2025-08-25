@@ -49,7 +49,7 @@ class MultiObjectiveArtificialBeeColonyOptimizer(MultiObjectiveSolver):
     """
     
     def __init__(self, objective_func: Callable, lb: Union[float, np.ndarray], 
-                 ub: Union[float, np.ndarray], dim: int, **kwargs):
+                 ub: Union[float, np.ndarray], dim: int, maximize: bool = True, **kwargs):
         super().__init__(objective_func, lb, ub, dim, **kwargs)
         
         # Set solver name

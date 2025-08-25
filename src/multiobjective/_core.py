@@ -24,9 +24,9 @@ class MultiObjectiveMember(Member):
 
 class MultiObjectiveSolver(Solver):
     def __init__(self, objective_func: Callable, lb: Union[float, np.ndarray], 
-                 ub: Union[float, np.ndarray], dim: int, **kwargs):
+                 ub: Union[float, np.ndarray], dim: int, maximize: bool = True, **kwargs):
         # Multi-objective doesn't use maximize flag in the same way
-        super().__init__(objective_func, lb, ub, dim, True)
+        super().__init__(objective_func, lb, ub, dim, maximize)
         
         # Multi-objective specific parameters
         self.n_objectives = len(self._init_population(1))
