@@ -57,7 +57,7 @@ class MultiObjectiveSolver(Solver):
         super().__init__(objective_func, lb, ub, dim, True)  # maximize=True for compatibility
         
         # Multi-objective specific parameters
-        self.n_objectives = objective_func(self._init_population(1)[0].multi_fitness).shape[0]
+        self.n_objectives = objective_func(np.random.uniform(self.lb, self.ub, self.dim)).shape[0]
         self.archive_size = kwargs.get('archive_size', 100)
         self.archive = []
         
