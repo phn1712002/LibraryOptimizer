@@ -1,19 +1,6 @@
 import numpy as np
 from typing import Callable, Union, Tuple, List
 from ._core import MultiObjectiveSolver, MultiObjectiveMember
-from utils.general import roulette_wheel_selection, tournament_selection
-
-
-class GeneticAlgorithmMultiMember(MultiObjectiveMember):
-    def __init__(self, position: np.ndarray, fitness: np.ndarray):
-        super().__init__(position, fitness)
-    
-    def copy(self):
-        new_member = GeneticAlgorithmMultiMember(self.position.copy(), self.multi_fitness.copy())
-        new_member.dominated = self.dominated
-        new_member.grid_index = self.grid_index
-        new_member.grid_sub_index = self.grid_sub_index
-        return new_member
 
 
 class MultiObjectiveGeneticAlgorithmOptimizer(MultiObjectiveSolver):
@@ -59,75 +46,21 @@ class MultiObjectiveGeneticAlgorithmOptimizer(MultiObjectiveSolver):
         self.mutation_rate = kwargs.get('mutation_rate', 0.1)
         self.tournament_size = kwargs.get('tournament_size', 3)
     
-    def _init_population(self, search_agents_no) -> List[GeneticAlgorithmMultiMember]:
-        """Initialize multi-objective population with custom member class"""
-        population = []
-        for _ in range(search_agents_no):
-            position = np.random.uniform(self.lb, self.ub, self.dim)
-            fitness = self.objective_func(position)
-            population.append(GeneticAlgorithmMultiMember(position, fitness))
-        return population
-    
-    def _tournament_selection_multi(self, population: List[GeneticAlgorithmMultiMember]) -> GeneticAlgorithmMultiMember:
-        """
-        Tournament selection for multi-objective optimization using grid-based diversity
-        
-        Parameters:
-        -----------
-        population : List[GeneticAlgorithmMultiMember]
-            Population to select from
-            
-        Returns:
-        --------
-        GeneticAlgorithmMultiMember
-            Selected individual
-        """
-        if len(population) < self.tournament_size:
-            return np.random.choice(population)
-        
-        # Randomly select tournament participants
-        tournament_indices = np.random.choice(len(population), self.tournament_size, replace=False)
-        tournament_members = [population[i] for i in tournament_indices]
-        
-        # For multi-objective, we need a different selection criteria
-        # Use non-dominated sorting if possible, otherwise use grid-based selection
-        
-        # First, check if any members are non-dominated
-        non_dominated = [m for m in tournament_members if not m.dominated]
-        
-        if non_dominated:
-            # If we have non-dominated members, select from them using grid-based diversity
-            if len(non_dominated) > 1:
-                # Use grid index for diversity-based selection
-                grid_indices = [m.grid_index for m in non_dominated if m.grid_index is not None]
-                if grid_indices:
-                    # Select the member from the least crowded cell
-                    unique_indices, counts = np.unique(grid_indices, return_counts=True)
-                    least_crowded_idx = unique_indices[np.argmin(counts)]
-                    least_crowded_members = [m for m in non_dominated if m.grid_index == least_crowded_idx]
-                    return np.random.choice(least_crowded_members)
-            
-            # Fallback: return random non-dominated member
-            return np.random.choice(non_dominated)
-        
-        # If no non-dominated members, use random selection
-        return np.random.choice(tournament_members)
-    
-    def _uniform_crossover(self, parent1: GeneticAlgorithmMultiMember, 
-                          parent2: GeneticAlgorithmMultiMember) -> GeneticAlgorithmMultiMember:
+    def _uniform_crossover(self, parent1: MultiObjectiveMember, 
+                          parent2: MultiObjectiveMember) -> MultiObjectiveMember:
         """
         Perform uniform crossover between two parents
         
         Parameters:
         -----------
-        parent1 : GeneticAlgorithmMultiMember
+        parent1 : MultiObjectiveMember
             First parent
-        parent2 : GeneticAlgorithmMultiMember
+        parent2 : MultiObjectiveMember
             Second parent
             
         Returns:
         --------
-        GeneticAlgorithmMultiMember
+        MultiObjectiveMember
             Offspring
         """
         child_position = np.zeros(self.dim)
@@ -143,20 +76,20 @@ class MultiObjectiveGeneticAlgorithmOptimizer(MultiObjectiveSolver):
         
         # Create child with evaluated fitness
         child_fitness = self.objective_func(child_position)
-        return GeneticAlgorithmMultiMember(child_position, child_fitness)
+        return MultiObjectiveMember(child_position, child_fitness)
     
-    def _mutation(self, individual: GeneticAlgorithmMultiMember) -> GeneticAlgorithmMultiMember:
+    def _mutation(self, individual: MultiObjectiveMember) -> MultiObjectiveMember:
         """
         Perform mutation on an individual
         
         Parameters:
         -----------
-        individual : GeneticAlgorithmMultiMember
+        individual : MultiObjectiveMember
             Individual to mutate
             
         Returns:
         --------
-        GeneticAlgorithmMultiMember
+        MultiObjectiveMember
             Mutated individual
         """
         mutated_position = individual.position.copy()
@@ -172,9 +105,9 @@ class MultiObjectiveGeneticAlgorithmOptimizer(MultiObjectiveSolver):
         
         # Create mutated individual with evaluated fitness
         mutated_fitness = self.objective_func(mutated_position)
-        return GeneticAlgorithmMultiMember(mutated_position, mutated_fitness)
+        return MultiObjectiveMember(mutated_position, mutated_fitness)
     
-    def solver(self, search_agents_no: int, max_iter: int) -> Tuple[List, List[GeneticAlgorithmMultiMember]]:
+    def solver(self, search_agents_no: int, max_iter: int) -> Tuple[List, List[MultiObjectiveMember]]:
         """
         Main optimization method for multi-objective GA
         
@@ -187,7 +120,7 @@ class MultiObjectiveGeneticAlgorithmOptimizer(MultiObjectiveSolver):
             
         Returns:
         --------
-        Tuple[List, List[GeneticAlgorithmMultiMember]]
+        Tuple[List, List[MultiObjectiveMember]]
             History of archive states and the final archive
         """
         # Initialize storage
@@ -227,8 +160,8 @@ class MultiObjectiveGeneticAlgorithmOptimizer(MultiObjectiveSolver):
                 # Generate offspring until we reach population size
                 while len(new_population) < search_agents_no:
                     # Selection
-                    parent1 = self._tournament_selection_multi(population)
-                    parent2 = self._tournament_selection_multi(population)
+                    parent1 = self._tournament_selection_multi(population, self.tournament_size)
+                    parent2 = self._tournament_selection_multi(population, self.tournament_size)
                     
                     # Crossover with probability
                     if np.random.random() < self.crossover_rate:

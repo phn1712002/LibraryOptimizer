@@ -444,3 +444,48 @@ class MultiObjectiveSolver(Solver):
         # Plot Pareto front if we have at least 2 objectives
         if self.archive and len(self.archive[0].multi_fitness) >= 2:
             self.plot_pareto_front()
+
+    def _tournament_selection_multi(self, population: List[MultiObjectiveMember], tournament_size: int) -> MultiObjectiveMember:
+        """
+        Tournament selection for multi-objective optimization using grid-based diversity
+        
+        Parameters:
+        -----------
+        population : List[MultiObjectiveMember]
+            Population to select from
+            
+        Returns:
+        --------
+        MultiObjectiveMember
+            Selected individual
+        """
+        if len(population) < tournament_size:
+            return np.random.choice(population)
+        
+        # Randomly select tournament participants
+        tournament_indices = np.random.choice(len(population), tournament_size, replace=False)
+        tournament_members = [population[i] for i in tournament_indices]
+        
+        # For multi-objective, we need a different selection criteria
+        # Use non-dominated sorting if possible, otherwise use grid-based selection
+        
+        # First, check if any members are non-dominated
+        non_dominated = [m for m in tournament_members if not m.dominated]
+        
+        if non_dominated:
+            # If we have non-dominated members, select from them using grid-based diversity
+            if len(non_dominated) > 1:
+                # Use grid index for diversity-based selection
+                grid_indices = [m.grid_index for m in non_dominated if m.grid_index is not None]
+                if grid_indices:
+                    # Select the member from the least crowded cell
+                    unique_indices, counts = np.unique(grid_indices, return_counts=True)
+                    least_crowded_idx = unique_indices[np.argmin(counts)]
+                    least_crowded_members = [m for m in non_dominated if m.grid_index == least_crowded_idx]
+                    return np.random.choice(least_crowded_members)
+            
+            # Fallback: return random non-dominated member
+            return np.random.choice(non_dominated)
+        
+        # If no non-dominated members, use random selection
+        return np.random.choice(tournament_members)
