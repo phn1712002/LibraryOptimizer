@@ -243,7 +243,7 @@ class MultiObjectiveSolver(Solver):
     
     def _sort_population(self, population: List[MultiObjectiveMember]) -> List[MultiObjectiveMember]:
         """
-        Sort population with multi fitness by selecting leaders and sorting remaining by total fitness
+        Sort population with multi fitness by selecting leaders and sorting remaining by random fitness
         
         Parameters:
         -----------
@@ -269,17 +269,17 @@ class MultiObjectiveSolver(Solver):
         # Get population members that are not in leaders
         non_leader_population = [member for member in population if member not in valid_leaders]
         
-        # Sort non-leader population by total fitness
-        # For maximization: higher total fitness is better
-        # For minimization: lower total fitness is better
+        # Sort non-leader population by random fitness
+        # For maximization: higher random fitness is better
+        # For minimization: lower random fitness is better
         
         # Sort based on optimization direction
         if self.maximize:
-            # For maximization: sort descending by total fitness
-            non_leader_population.sort(key=self.get_total_fitness, reverse=True)
+            # For maximization: sort descending by random fitness
+            non_leader_population.sort(key=self._get_random_fitness, reverse=True)
         else:
-            # For minimization: sort ascending by total fitness
-            non_leader_population.sort(key=self.get_total_fitness)
+            # For minimization: sort ascending by random fitness
+            non_leader_population.sort(key=self._get_random_fitness)
         
         # Combine leaders and sorted non-leaders
         sorted_population = valid_leaders + non_leader_population
@@ -292,8 +292,15 @@ class MultiObjectiveSolver(Solver):
         # Ensure we return exactly the population size
         return sorted_population[:n_pop]
     
-    def _get_total_fitness(member):
-        return np.sum(member.multi_fitness)
+    def _get_random_fitness(member):
+        """Get fitness value based on random dice roll"""
+        dice_roll = np.random.random()
+        if dice_roll > 0.5:
+            # If dice > 0.5, return sum of multi_fitness
+            return np.sum(member.multi_fitness) / len(member.multi_fitness)
+        else:
+            # If dice <= 0.5, return a random element from multi_fitness
+            return np.random.choice(member.multi_fitness)
     
     def _add_to_archive(self, new_solutions: List[MultiObjectiveMember]) -> None:
         """Add new solutions to archive and maintain archive size"""
