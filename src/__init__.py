@@ -34,6 +34,7 @@ from .multiobjective.dingo_optimizer import MultiObjectiveDingoOptimizer
 from .multiobjective.firefly_optimizer import MultiObjectiveFireflyOptimizer
 from .multiobjective.modifiedsocialgroup_optimizer import MultiObjectiveModifiedSocialGroupOptimizer
 from .multiobjective.shuffledfrogleaping_optimizer import MultiObjectiveShuffledFrogLeapingOptimizer
+from .multiobjective.geneticalgorithm_optimizer import MultiObjectiveGeneticAlgorithmOptimizer
 
 __version__ = "0.1.0"
 __author__ = "HoangggNam"
@@ -70,7 +71,8 @@ _SOLVER_REGISTRY: Dict[str, Type[Solver]] = {
     "MultiObjectiveDingoOptimizer": MultiObjectiveDingoOptimizer,
     "MultiObjectiveFireflyOptimizer": MultiObjectiveFireflyOptimizer,
     "MultiObjectiveModifiedSocialGroupOptimizer": MultiObjectiveModifiedSocialGroupOptimizer,
-    "MultiObjectiveShuffledFrogLeapingOptimizer": MultiObjectiveShuffledFrogLeapingOptimizer
+    "MultiObjectiveShuffledFrogLeapingOptimizer": MultiObjectiveShuffledFrogLeapingOptimizer,
+    "MultiObjectiveGeneticAlgorithmOptimizer": MultiObjectiveGeneticAlgorithmOptimizer
 }
 
 # Mapping of single-objective solvers to their multi-objective counterparts
@@ -87,6 +89,7 @@ _MULTI_OBJECTIVE_MAPPING: Dict[str, str] = {
     "FireflyOptimizer": "MultiObjectiveFireflyOptimizer",
     "ModifiedSocialGroupOptimizer": "MultiObjectiveModifiedSocialGroupOptimizer",
     "ShuffledFrogLeapingOptimizer": "MultiObjectiveShuffledFrogLeapingOptimizer",
+    "GeneticAlgorithmOptimizer": "MultiObjectiveGeneticAlgorithmOptimizer",
 }
 
 
@@ -153,3 +156,43 @@ def create_solver(
     # For solvers without multi-objective counterparts, use the standard approach
     solver_class = find_solver(solver_name)
     return solver_class(objective_func, lb, ub, dim, maximize, **kwargs)
+
+
+def show_solvers(mode: str = "all") -> None:
+    """
+    Display list of solvers by mode:
+    - 'single': Show only single-objective solvers.
+    - 'multi': Show only multi-objective solvers.
+    - 'all': Show all solvers (default).
+    """
+    mode = mode.lower().strip()
+    
+    if mode not in ["single", "multi", "all"]:
+        raise ValueError("mode must be one of: 'single', 'multi', 'all'")
+
+    single_solvers = []
+    multi_solvers = []
+
+    # Categorize solvers
+    for name in _SOLVER_REGISTRY:
+        if name.startswith("MultiObjective"):
+            multi_solvers.append(name)
+        else:
+            single_solvers.append(name)
+
+    if mode == "single":
+        print("Single-objective Solvers:")
+        for solver in sorted(single_solvers):
+            print(f"  - {solver}")
+    elif mode == "multi":
+        print("Multi-objective Solvers:")
+        for solver in sorted(multi_solvers):
+            print(f"  - {solver}")
+    else:  # all
+        print("All Solvers:")
+        print("Single-objective:")
+        for solver in sorted(single_solvers):
+            print(f"  - {solver}")
+        print("\nMulti-objective:")
+        for solver in sorted(multi_solvers):
+            print(f"  - {solver}")
