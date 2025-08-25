@@ -7,7 +7,7 @@ setup(
     name="library-optimizer",
     version="0.1.0",
     author="HoangggNam",
-    author_email="phn1712002@gmai.com",
+    author_email="phn1712002@gmail.com",
     description="A comprehensive Python library for metaheuristic optimization algorithms",
     long_description=long_description,
     long_description_content_type="text/markdown",

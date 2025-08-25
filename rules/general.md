@@ -258,7 +258,7 @@ See `rules/new-algorithm.md` for detailed template when adding new algorithms an
 
 For questions about these rules, contact:
 - Author: HoangggNam
-- Email: phn1712002@gmai.com
+- Email: phn1712002@gmail.com
 
 ---
 

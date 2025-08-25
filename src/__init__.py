@@ -32,6 +32,7 @@ from .multiobjective.artificialecosystem_optimizer import MultiObjectiveArtifici
 from .multiobjective.cuckoosearch_optimizer import MultiObjectiveCuckooSearchOptimizer
 from .multiobjective.dingo_optimizer import MultiObjectiveDingoOptimizer
 from .multiobjective.firefly_optimizer import MultiObjectiveFireflyOptimizer
+from .multiobjective.modifiedsocialgroup_optimizer import MultiObjectiveModifiedSocialGroupOptimizer
 
 __version__ = "0.1.0"
 __author__ = "HoangggNam"
@@ -66,7 +67,8 @@ _SOLVER_REGISTRY: Dict[str, Type[Solver]] = {
     "MultiObjectiveArtificialEcosystemOptimizer": MultiObjectiveArtificialEcosystemOptimizer,
     "MultiObjectiveCuckooSearchOptimizer": MultiObjectiveCuckooSearchOptimizer,
     "MultiObjectiveDingoOptimizer": MultiObjectiveDingoOptimizer,
-    "MultiObjectiveFireflyOptimizer": MultiObjectiveFireflyOptimizer
+    "MultiObjectiveFireflyOptimizer": MultiObjectiveFireflyOptimizer,
+    "MultiObjectiveModifiedSocialGroupOptimizer": MultiObjectiveModifiedSocialGroupOptimizer
 }
 
 # Mapping of single-objective solvers to their multi-objective counterparts
@@ -81,6 +83,7 @@ _MULTI_OBJECTIVE_MAPPING: Dict[str, str] = {
     "CuckooSearchOptimizer": "MultiObjectiveCuckooSearchOptimizer",
     "DingoOptimizer": "MultiObjectiveDingoOptimizer",
     "FireflyOptimizer": "MultiObjectiveFireflyOptimizer",
+    "ModifiedSocialGroupOptimizer": "MultiObjectiveModifiedSocialGroupOptimizer",
 }
 
 

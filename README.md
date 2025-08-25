@@ -115,7 +115,7 @@ If you use this library in your research, please consider citing:
 ## Contact
 
 - Author: HoangggNam
-- Email: phn1712002@gmai.com
+- Email: phn1712002@gmail.com
 - GitHub: [HoangggNam](https://github.com/HoangggNam)
 
 ## Acknowledgments
