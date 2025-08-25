@@ -285,16 +285,14 @@ class MultiObjectiveSolver(Solver):
         # Sort non-leader population by total fitness
         # For maximization: higher total fitness is better
         # For minimization: lower total fitness is better
-        def get_total_fitness(member):
-            return np.sum(member.multi_fitness)
         
         # Sort based on optimization direction
         if self.maximize:
             # For maximization: sort descending by total fitness
-            non_leader_population.sort(key=get_total_fitness, reverse=True)
+            non_leader_population.sort(key=self.get_total_fitness, reverse=True)
         else:
             # For minimization: sort ascending by total fitness
-            non_leader_population.sort(key=get_total_fitness)
+            non_leader_population.sort(key=self.get_total_fitness)
         
         # Combine leaders and sorted non-leaders
         sorted_population = valid_leaders + non_leader_population
@@ -306,6 +304,9 @@ class MultiObjectiveSolver(Solver):
         
         # Ensure we return exactly the population size
         return sorted_population[:n_pop]
+    
+    def get_total_fitness(member):
+        return np.sum(member.multi_fitness)
     
     def _add_to_archive(self, new_solutions: List[MultiObjectiveMember]) -> None:
         """Add new solutions to archive and maintain archive size"""
@@ -443,3 +444,9 @@ class MultiObjectiveSolver(Solver):
                 if self.maximize:
                     print(f"Objective {i+1}: worst={np.min(costs[i]):.6f}, best={np.max(costs[i]):.6f}")
                 else:
+                    print(f"Objective {i+1}: best={np.min(costs[i]):.6f}, worst={np.max(costs[i]):.6f}")
+        print("-" * 50)
+        
+        # Plot Pareto front if we have at least 2 objectives
+        if self.archive and len(self.archive[0].multi_fitness) >= 2:
+            self.plot_pareto_front()
