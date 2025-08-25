@@ -1,6 +1,6 @@
 # Library Optimizer
 
-A comprehensive Python library for metaheuristic optimization algorithms, featuring 18+ state-of-the-art optimization algorithms with both single-objective and multi-objective capabilities, all with a unified interface.
+A comprehensive Python library for metaheuristic optimization algorithms, featuring 20+ state-of-the-art optimization algorithms with both single-objective and multi-objective capabilities, all with a unified interface.
 
 ## Features
 
@@ -109,6 +109,7 @@ All algorithms are available in both single-objective and multi-objective versio
 - Prairie Dogs Optimization (PDO) / Multi-Objective PDO
 - Simulated Annealing (SA) / Multi-Objective SA
 - Genetic Algorithm (GA) / Multi-Objective GA
+- More ....
 
 The system automatically selects the appropriate version based on your objective function type.
 
