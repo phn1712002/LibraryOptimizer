@@ -305,7 +305,7 @@ class MultiObjectiveSolver(Solver):
         # Ensure we return exactly the population size
         return sorted_population[:n_pop]
     
-    def _get_total_fitness(member):
+    def _get_total_fitness(member) -> float:
         return np.sum(member.multi_fitness)
     
     def _add_to_archive(self, new_solutions: List[MultiObjectiveMember]) -> None:
