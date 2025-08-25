@@ -9,7 +9,7 @@ This document describes the automatic generation system that transforms new sing
 ### Automatic Generation Pipeline
 
 ```
-Single-Objective Algorithm → Analysis → Multi-Objective Generation → Registry Update → Testing
+Single-Objective Algorithm → Analysis → Multi-Objective Generation → Registry Update
 ```
 
 ### Key Components
