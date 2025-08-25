@@ -31,12 +31,13 @@ class Member:
     
 class Solver:
     def __init__(self, objective_func: Callable, lb: Union[float, np.ndarray], 
-                 ub: Union[float, np.ndarray], dim: int, maximize: bool = True):
+                 ub: Union[float, np.ndarray], dim: int, maximize: bool = True, **kwargs):
         self.objective_func = objective_func
         self.dim = dim
         self.lb = np.array(lb) if hasattr(lb, '__iter__') else np.full(dim, lb)
         self.ub = np.array(ub) if hasattr(ub, '__iter__') else np.full(dim, ub)
         self.maximize = maximize
+        self.show_chart = kwargs.get('show_chart', True)
         self.history_step_solver = []
         self.best_solver = Member(np.random.uniform(lb, ub, dim), -np.inf if maximize else np.inf)
         
@@ -94,8 +95,8 @@ class Solver:
         print(f"   - Position: {self.best_solver.position}")
         print(f"   - Fitness: {self.best_solver.fitness:.6f}")
         print("-" * 50)
-        
-        self.plot_history_step_solver()
+        if self.show_chart:
+            self.plot_history_step_solver()
         
     def plot_history_step_solver(self) -> None:
         if self.history_step_solver is None:

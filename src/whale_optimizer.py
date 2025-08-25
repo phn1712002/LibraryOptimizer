@@ -6,7 +6,7 @@ from utils.general import sort_population
 class WhaleOptimizer(Solver):
     def __init__(self, objective_func: Callable, lb: Union[float, np.ndarray], 
                  ub: Union[float, np.ndarray], dim: int, maximize: bool = True, **kwargs):
-        super().__init__(objective_func, lb, ub, dim, maximize)
+        super().__init__(objective_func, lb, ub, dim, maximize, **kwargs)
         # Store additional parameters for later use
         self.kwargs = kwargs
         self.name_solver = "Whale Optimizer"

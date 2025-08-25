@@ -27,7 +27,7 @@ Create your algorithm following the standard pattern:
 ```python
 class YourAlgorithmOptimizer(Solver):
     def __init__(self, objective_func, lb, ub, dim, maximize=True, **kwargs):
-        super().__init__(objective_func, lb, ub, dim, maximize)
+        super().__init__(objective_func, lb, ub, dim, maximize, **kwargs)
         self.name_solver = "Your Algorithm Optimizer"
         # Algorithm-specific parameters
         self.param1 = kwargs.get('param1', default_value)

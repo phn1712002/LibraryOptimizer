@@ -42,7 +42,7 @@ class AlgorithmNameOptimizer(Solver):
     
     def __init__(self, objective_func: Callable, lb: Union[float, np.ndarray], 
                  ub: Union[float, np.ndarray], dim: int, maximize: bool = True, **kwargs):
-        super().__init__(objective_func, lb, ub, dim, maximize)
+        super().__init__(objective_func, lb, ub, dim, maximize, **kwargs)
         
         # Store additional parameters for later use
         self.kwargs = kwargs
@@ -198,7 +198,7 @@ The library now supports automatic generation of multi-objective versions from s
 class AlgorithmNameOptimizer(Solver):
     def __init__(self, objective_func: Callable, lb: Union[float, np.ndarray], 
                  ub: Union[float, np.ndarray], dim: int, maximize: bool = True, **kwargs):
-        super().__init__(objective_func, lb, ub, dim, maximize)
+        super().__init__(objective_func, lb, ub, dim, maximize, **kwargs)
         self.name_solver = "Algorithm Name Optimizer"
         # Algorithm-specific parameters
         self.param1 = kwargs.get('param1', default_value)

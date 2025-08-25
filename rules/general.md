@@ -153,7 +153,7 @@ All optimizers must inherit from `Solver` and implement:
 ```python
 class CustomOptimizer(Solver):
     def __init__(self, objective_func, lb, ub, dim, maximize=True, **kwargs):
-        super().__init__(objective_func, lb, ub, dim, maximize)
+        super().__init__(objective_func, lb, ub, dim, maximize, **kwargs)
         self.name_solver = "Custom Optimizer Name"
         # Store additional parameters
         self.kwargs = kwargs

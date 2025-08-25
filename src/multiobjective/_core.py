@@ -26,8 +26,9 @@ class MultiObjectiveSolver(Solver):
     def __init__(self, objective_func: Callable, lb: Union[float, np.ndarray], 
                  ub: Union[float, np.ndarray], dim: int, maximize: bool = True, **kwargs):
         # Multi-objective doesn't use maximize flag in the same way
-        super().__init__(objective_func, lb, ub, dim, maximize)
-        
+        super().__init__(objective_func, lb, ub, dim, maximize, **kwargs)
+        self.show_chart = kwargs.get('show_chart', True)
+
         # Multi-objective specific parameters
         self.n_objectives = objective_func(np.random.uniform(self.lb, self.ub, self.dim)).shape[0]
         self.archive_size = kwargs.get('archive_size', 100)
@@ -442,8 +443,9 @@ class MultiObjectiveSolver(Solver):
         print("-" * 50)
         
         # Plot Pareto front if we have at least 2 objectives
-        if self.archive and len(self.archive[0].multi_fitness) >= 2:
-            self.plot_pareto_front()
+        if self.show_chart:
+            if self.archive and len(self.archive[0].multi_fitness) >= 2:
+                self.plot_pareto_front()
 
     def _tournament_selection_multi(self, population: List[MultiObjectiveMember], tournament_size: int) -> MultiObjectiveMember:
         """
