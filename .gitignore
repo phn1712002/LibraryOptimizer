@@ -211,3 +211,6 @@ docs/_build/
 
 # Windowns
 desktop.ini
+
+# Cline rules
+.clinerules/*

@@ -21,6 +21,9 @@ from .prairiedogs_optimizer import *
 from .simulatedannealing_optimizer import *
 from .geneticalgorithm_optimizer import *
 
+# Multi-objective optimizers
+from .multiobjective.artificialbeecolony_optimizer import *
+
 __version__ = "0.1.0"
 __author__ = "HoangggNam"
 __email__ = "phn1712002@gmai.com"
@@ -44,7 +47,13 @@ _SOLVER_REGISTRY: Dict[str, Type[Solver]] = {
     "TeachingLearningBasedOptimizer": TeachingLearningBasedOptimizer,
     "PrairieDogsOptimizer": PrairieDogsOptimizer,
     "SimulatedAnnealingOptimizer": SimulatedAnnealingOptimizer,
-    "GeneticAlgorithmOptimizer": GeneticAlgorithmOptimizer
+    "GeneticAlgorithmOptimizer": GeneticAlgorithmOptimizer,
+    "MultiObjectiveArtificialBeeColonyOptimizer": MultiObjectiveArtificialBeeColonyOptimizer
+}
+
+# Mapping of single-objective solvers to their multi-objective counterparts
+_MULTI_OBJECTIVE_MAPPING: Dict[str, str] = {
+    "ArtificialBeeColonyOptimizer": "MultiObjectiveArtificialBeeColonyOptimizer",
 }
 
 
@@ -60,7 +69,7 @@ def find_solver(solver_name: str) -> Type[Solver]:
 
 
 def register_solver(name: str, solver_class: Type[Solver]) -> None:
-    _SOLVER_REGISTRY[name.lower()] = solver_class
+    _SOLVER_REGISTRY[name] = solver_class
 
 
 def create_solver(
@@ -72,5 +81,43 @@ def create_solver(
     maximize: bool = True,
     **kwargs
 ) -> Solver:
+    """
+    Create a solver instance with automatic detection of objective function type.
+    
+    Automatically detects whether to use single-objective or multi-objective version
+    based on objective function output for algorithms that have both versions.
+    """
+    solver_name_lower = solver_name.strip()
+    
+    # Check if this solver has a multi-objective counterpart
+    if solver_name_lower in _MULTI_OBJECTIVE_MAPPING:
+        # Test the objective function to determine its output type
+        try:
+            # Create a test point within bounds
+            test_point = np.random.uniform(lb, ub, dim)
+            result = objective_func(test_point)
+            
+            # Check if result is a list/array (multi-objective) or scalar (single-objective)
+            if hasattr(result, '__len__') and len(result) > 1:
+                # Multi-objective function detected
+                n_objectives = len(result)
+                multi_solver_name = _MULTI_OBJECTIVE_MAPPING[solver_name_lower]
+                print(f"Detected multi-objective function with {n_objectives} objectives. Using {multi_solver_name}.")
+                solver_class = find_solver(multi_solver_name)
+                return solver_class(objective_func, lb, ub, dim, maximize, 
+                                  n_objectives=n_objectives, **kwargs)
+            else:
+                # Single-objective function detected
+                print(f"Detected single-objective function. Using {solver_name}.")
+                solver_class = find_solver(solver_name)
+                return solver_class(objective_func, lb, ub, dim, maximize, **kwargs)
+                
+        except Exception as e:
+            print(f"Warning: Could not auto-detect objective function type: {e}")
+            print(f"Falling back to single-objective {solver_name}.")
+            solver_class = find_solver(solver_name)
+            return solver_class(objective_func, lb, ub, dim, maximize, **kwargs)
+    
+    # For solvers without multi-objective counterparts, use the standard approach
     solver_class = find_solver(solver_name)
     return solver_class(objective_func, lb, ub, dim, maximize, **kwargs)
