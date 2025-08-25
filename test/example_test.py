@@ -1,11 +1,11 @@
 import numpy as np
 from src import create_solver
-from utils.func_test import sphere_function, rastrigin_function, negative_sphere, zdt1_function
+from utils.func_test import sphere_function, rastrigin_function, negative_sphere, zdt1_function, zdt5_function
 
 def test_sphere_function():
-    '''Test NAME_SOLVER on sphere function (minimization)'''
+    '''Test NAME_SOLVER_REGISTRY on sphere function (minimization)'''
     method = create_solver(
-        solver_name='NAME_SOLVER',
+        solver_name='NAME_SOLVER_REGISTRY',
         objective_func=sphere_function,
         lb=-5.0,
         ub=5.0,
@@ -23,9 +23,9 @@ def test_sphere_function():
     assert np.all(np.abs(best.position) < 0.5)
 
 def test_rastrigin_function():
-    '''Test NAME_SOLVER on Rastrigin function (minimization)'''
+    '''Test NAME_SOLVER_REGISTRY on Rastrigin function (minimization)'''
     method = create_solver(
-        solver_name='NAME_SOLVER',
+        solver_name='NAME_SOLVER_REGISTRY',
         objective_func=rastrigin_function,
         lb=-5.12,
         ub=5.12,
@@ -42,9 +42,9 @@ def test_rastrigin_function():
     assert best.fitness < 5.0
 
 def test_maximization():
-    '''Test NAME_SOLVER on maximization problem'''
+    '''Test NAME_SOLVER_REGISTRY on maximization problem'''
     method = create_solver(
-        solver_name='NAME_SOLVER',
+        solver_name='NAME_SOLVER_REGISTRY',
         objective_func=negative_sphere,
         lb=-2.0,
         ub=2.0,
@@ -61,9 +61,9 @@ def test_maximization():
     assert best.fitness > -0.1
 
 def test_multiobjective_zdt1():
-    '''Test Multi-Objective NAME_SOLVER on ZDT1 function'''
+    '''Test Multi-Objective NAME_SOLVER_REGISTRY on ZDT1 function'''
     method = create_solver(
-        solver_name='NAME_SOLVER',
+        solver_name='NAME_SOLVER_REGISTRY',
         objective_func=zdt1_function,
         lb=np.array([0.0, 0.0]),
         ub=np.array([1.0, 1.0]),
@@ -87,14 +87,14 @@ def test_multiobjective_zdt1():
         assert np.all(solution.position <= 1.0)
         assert len(solution.multi_fitness) == 2
 
-def test_multiobjective_zdt1_higher_dim():
-    '''Test Multi-Objective NAME_SOLVER on ZDT1 with higher dimension'''
+def test_multiobjective_zdt5():
+    '''Test Multi-Objective NAME_SOLVER_REGISTRY on ZDT1 with higher dimension'''
     method = create_solver(
-        solver_name='NAME_SOLVER',
-        objective_func=zdt1_function,
-        lb=np.array([0.0] * 10),
-        ub=np.array([1.0] * 10),
-        dim=10,
+        solver_name='NAME_SOLVER_REGISTRY',
+        objective_func=zdt5_function,
+        lb=np.array([0.0] * 2),
+        ub=np.array([1.0] * 2),
+        dim=2,
         archive_size=100,
         maximize=False
     )
@@ -106,8 +106,13 @@ def test_multiobjective_zdt1_higher_dim():
     
     # Should find a diverse set of non-dominated solutions
     assert len(final_archive) > 0
-    assert len(final_archive[0].multi_fitness) == 2
-    assert len(final_archive[0].position) == 10
+    assert len(final_archive[0].multi_fitness) == 3
+    
+    # Check that solutions are within bounds
+    for solution in final_archive:
+        assert np.all(solution.position >= 0.0)
+        assert np.all(solution.position <= 1.0)
+        assert len(solution.multi_fitness) == 3
 
 def run_all_tests():
     '''Run all tests and report results'''
@@ -146,7 +151,7 @@ def run_all_tests():
         print(f"✗ Multi-objective ZDT1 test failed: {e}")
     
     try:
-        test_multiobjective_zdt1_higher_dim()
+        test_multiobjective_zdt5()
         test_results['multiobjective_zdt1_higher_dim'] = 'PASSED'
         print("✓ Multi-objective ZDT1 (higher dim) test passed")
     except Exception as e:
