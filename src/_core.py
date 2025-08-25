@@ -4,53 +4,148 @@ import matplotlib.pyplot as plt
 from tqdm import tqdm
 
 class Member:
-    def __init__(self, position:np.ndarray, fitness:float):
+    """
+    Represents an individual member/solution in the population.
+    
+    Attributes:
+        position (np.ndarray): Current position in the search space
+        fitness (float): Fitness value of the current position
+    """
+    
+    def __init__(self, position: np.ndarray, fitness: float):
+        """
+        Initialize a Member with position and fitness.
+        
+        Args:
+            position (np.ndarray): Position vector in search space
+            fitness (float): Fitness value of the position
+        """
         self.position = position
         self.fitness = fitness
     
     def copy(self):
+        """
+        Create a deep copy of the Member.
+        
+        Returns:
+            Member: A new Member object with copied position and fitness
+        """
         return Member(self.position.copy(), self.fitness)
     
     def __gt__(self, other): 
+        """
+        Greater than comparison based on fitness values.
+        
+        Args:
+            other (Member): Another Member to compare with
+            
+        Returns:
+            bool: True if this member's fitness is greater than the other's
+        """
         if isinstance(other, Member):
             return self.fitness > other.fitness
         return NotImplemented
 
     def __lt__(self, other):
+        """
+        Less than comparison based on fitness values.
+        
+        Args:
+            other (Member): Another Member to compare with
+            
+        Returns:
+            bool: True if this member's fitness is less than the other's
+        """
         if isinstance(other, Member):
             return self.fitness < other.fitness
         return NotImplemented
     
     def __eq__(self, other):
+        """
+        Equality comparison based on fitness values.
+        
+        Args:
+            other (Member): Another Member to compare with
+            
+        Returns:
+            bool: True if this member's fitness equals the other's
+        """
         if isinstance(other, Member):
             return self.fitness == other.fitness
         return NotImplemented
     
     def __str__(self):
-         return f"Position: {self.position} - Fitness: {self.fitness}"
+        """
+        String representation of the Member.
+        
+        Returns:
+            str: Formatted string showing position and fitness
+        """
+        return f"Position: {self.position} - Fitness: {self.fitness}"
     
 class Solver:
+    """
+    Base class for optimization solvers.
+    
+    This abstract base class provides common functionality for all optimization
+    algorithms including population initialization, progress tracking, and
+    result visualization.
+    """
+    
     def __init__(self, objective_func: Callable, lb: Union[float, np.ndarray], 
                  ub: Union[float, np.ndarray], dim: int, maximize: bool = True, **kwargs):
+        """
+        Initialize the Solver base class.
+        
+        Args:
+            objective_func (Callable): Objective function to optimize
+            lb (Union[float, np.ndarray]): Lower bounds of search space
+            ub (Union[float, np.ndarray]): Upper bounds of search space
+            dim (int): Number of dimensions in the problem
+            maximize (bool): Whether to maximize (True) or minimize (False) objective
+            **kwargs: Additional solver parameters including:
+                - show_chart (bool): Whether to display convergence chart (default: True)
+        """
         self.objective_func = objective_func
         self.dim = dim
+        # Convert bounds to numpy arrays for vectorized operations
         self.lb = np.array(lb) if hasattr(lb, '__iter__') else np.full(dim, lb)
         self.ub = np.array(ub) if hasattr(ub, '__iter__') else np.full(dim, ub)
         self.maximize = maximize
         self.show_chart = kwargs.get('show_chart', True)
+        # Initialize optimization history and best solution
         self.history_step_solver = []
         self.best_solver = Member(np.random.uniform(lb, ub, dim), -np.inf if maximize else np.inf)
         
-        self.pbar = None
-        self.name_solver = ""
+        self.pbar = None  # Progress bar instance
+        self.name_solver = ""  # Solver name for display
 
-    def _is_better(self, member_1, menber_2) -> bool:
+    def _is_better(self, member_1, member_2) -> bool:
+        """
+        Compare two members to determine which is better based on optimization direction.
+        
+        Args:
+            member_1 (Member): First member to compare
+            member_2 (Member): Second member to compare
+            
+        Returns:
+            bool: True if member_1 is better than member_2 according to optimization direction
+        """
         if self.maximize:
-            return member_1 > menber_2
+            return member_1 > member_2
         else:
-            return member_1 < menber_2
+            return member_1 < member_2
     
     def _init_population(self, search_agents_no) -> List:
+        """
+        Initialize a population of members with random positions.
+        
+        Args:
+            search_agents_no (int): Number of members to initialize
+            
+        Returns:
+            List[Member]: List of initialized members with random positions and evaluated fitness
+        """
         population = []
         for _ in range(search_agents_no):
             position = np.random.uniform(self.lb, self.ub, self.dim)
@@ -59,6 +154,14 @@ class Solver:
         return population
     
     def _callbacks(self, iter, max_iter, best) -> None:
+        """
+        Update progress tracking during optimization.
+        
+        Args:
+            iter (int): Current iteration number
+            max_iter (int): Maximum number of iterations
+            best (Member): Current best member
+        """
         # Update progress bar with current iteration and best fitness
         self.pbar.update(1)
         self.pbar.set_postfix({
@@ -67,6 +170,12 @@ class Solver:
         })
         
     def _begin_step_solver(self, max_iter) -> None:
+        """
+        Initialize solver execution and display startup information.
+        
+        Args:
+            max_iter (int): Maximum number of iterations for the solver
+        """
         # Print algorithm start message with parameters
         print("-" * 50)
         print(f"🚀 Starting {self.name_solver} algorithm")
@@ -83,6 +192,9 @@ class Solver:
         self.pbar = tqdm(total=max_iter, desc=self.name_solver, unit="iter")
 
     def _end_step_solver(self) -> None:
+        """
+        Finalize solver execution and display results.
+        """
         # Close the progress bar
         self.pbar.close()
         print(f"\n")
@@ -96,6 +208,11 @@ class Solver:
             self.plot_history_step_solver()
         
     def plot_history_step_solver(self) -> None:
+        """
+        Plot the optimization history showing convergence over iterations.
+        
+        Displays a line plot of the best fitness value found at each iteration.
+        """
         if self.history_step_solver is None:
             print("No optimization history available. Run the solver first.")
             return
@@ -111,6 +228,7 @@ class Solver:
         plt.title('Optimization History')
         plt.grid(True)
         
+        # Add horizontal line showing the best fitness achieved
         if self.maximize:
             plt.axhline(y=max(fitness_history), color='r', linestyle='--', 
                         label=f'Max Fitness: {max(fitness_history):.6f}')
@@ -123,4 +241,12 @@ class Solver:
         plt.show()
 
     def solver(self) -> Tuple[List, Member]:
+        """
+        Get the optimization results.
+        
+        Returns:
+            Tuple[List, Member]: Tuple containing:
+                - history_step_solver: List of best solutions at each iteration
+                - best_solver: Best solution found overall
+        """
         return self.history_step_solver, self.best_solver

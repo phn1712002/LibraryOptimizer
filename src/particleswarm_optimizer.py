@@ -15,8 +15,37 @@ class Particle(Member):
         return f"Position: {self.position} - Fitness: {self.fitness} - Velocity: {self.velocity}"
 
 class ParticleSwarmOptimizer(Solver):
+    """
+    Particle Swarm Optimization (PSO) algorithm implementation.
+    
+    PSO is a population-based stochastic optimization technique inspired by
+    social behavior of bird flocking or fish schooling. Each particle in the
+    swarm represents a potential solution and moves through the search space
+    by following the current optimum particles.
+    
+    References:
+        Kennedy, J., & Eberhart, R. (1995). Particle swarm optimization.
+        Proceedings of ICNN'95-international conference on neural networks.
+    """
     def __init__(self, objective_func: Callable, lb: Union[float, np.ndarray], 
                  ub: Union[float, np.ndarray], dim: int, maximize: bool = True, **kwargs):
+        """
+        Initialize the Particle Swarm Optimizer.
+        
+        Args:
+            objective_func (Callable): Objective function to optimize
+            lb (Union[float, np.ndarray]): Lower bound for search space
+            ub (Union[float, np.ndarray]): Upper bound for search space
+            dim (int): Number of dimensions/problem variables
+            maximize (bool): Whether to maximize (True) or minimize (False) the objective
+            **kwargs: Additional PSO parameters including:
+                - w: Inertia weight (default: 1.0)
+                - wdamp: Inertia weight damping ratio (default: 0.99)
+                - c1: Personal learning coefficient (default: 1.5)
+                - c2: Global learning coefficient (default: 2.0)
+                - vel_max: Maximum velocity (default: 10% of search space range)
+                - vel_min: Minimum velocity (default: -10% of search space range)
+        """
         super().__init__(objective_func, lb, ub, dim, maximize, **kwargs)
         # Store additional parameters for later use
         self.kwargs = kwargs
@@ -34,6 +63,20 @@ class ParticleSwarmOptimizer(Solver):
         self.vel_min = kwargs.get('vel_min', -vel_range)
 
     def _init_population(self, search_agents_no) -> List:
+        """
+        Initialize the particle swarm population.
+        
+        Each particle is initialized with:
+        - Random position within bounds
+        - Random velocity within velocity limits
+        - Fitness evaluation of initial position
+        
+        Args:
+            search_agents_no (int): Number of particles in the swarm
+            
+        Returns:
+            List: List of initialized Particle objects
+        """
         population = []
         for _ in range(search_agents_no):
             position = np.random.uniform(self.lb, self.ub, self.dim)
@@ -43,7 +86,17 @@ class ParticleSwarmOptimizer(Solver):
         return population
 
     def solver(self, search_agents_no: int, max_iter: int) -> Tuple[List, Particle]:
-
+        """
+        Execute the Particle Swarm Optimization algorithm.
+        Args:
+            search_agents_no (int): Number of particles in the swarm
+            max_iter (int): Maximum number of iterations
+            
+        Returns:
+            Tuple[List, Particle]: Tuple containing:
+                - history_step_solver: List of best solutions at each iteration
+                - best_particle: Best particle (solution) found overall
+        """
         # Initialize storage variables
         history_step_solver = []
         

@@ -34,6 +34,23 @@ class WhaleOptimizer(Solver):
         self.name_solver = "Whale Optimizer"
 
     def solver(self, search_agents_no: int, max_iter: int) -> Tuple[List, Member]:
+        """
+        Execute the Whale Optimization Algorithm main loop.
+        
+        The algorithm simulates three main hunting behaviors of humpback whales:
+        1. Encircling prey: Whales move towards the best solution found so far
+        2. Bubble-net attacking: Spiral movement around the prey
+        3. Search for prey: Exploration phase using random search agents
+        
+        Args:
+            search_agents_no (int): Number of whales (search agents) in the population
+            max_iter (int): Maximum number of iterations for the optimization process
+            
+        Returns:
+            Tuple[List, Member]: A tuple containing:
+                - history_step_solver: List of best solutions found at each iteration
+                - best_solver: The best solution (whale) found during the optimization
+        """
         # Initialize the population of search agents and history_step_solver
         population = self._init_population(search_agents_no)
         

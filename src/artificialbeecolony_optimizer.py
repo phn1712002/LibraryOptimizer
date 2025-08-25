@@ -4,19 +4,76 @@ from ._core import Solver, Member
 from utils.general import roulette_wheel_selection, sort_population
 
 class Bee(Member):
+    """
+    Represents a bee individual in the Artificial Bee Colony algorithm.
+    
+    Attributes:
+        position (np.ndarray): Current position in the search space
+        fitness (float): Fitness value of the current position
+        trial (int): Counter for unsuccessful attempts, used for abandonment strategy
+    """
+    
     def __init__(self, position: np.ndarray, fitness: float, trial: int = 0):
+        """
+        Initialize a Bee with position, fitness, and trial counter.
+        
+        Args:
+            position (np.ndarray): Position vector in search space
+            fitness (float): Fitness value of the position
+            trial (int): Initial trial counter (default: 0)
+        """
         super().__init__(position, fitness)
         self.trial = trial  # Trial counter for abandonment
     
     def copy(self):
+        """
+        Create a deep copy of the Bee.
+        
+        Returns:
+            Bee: A new Bee object with copied position, fitness, and trial counter
+        """
         return Bee(self.position.copy(), self.fitness, self.trial)
     
     def __str__(self):
+        """
+        String representation of the Bee.
+        
+        Returns:
+            str: Formatted string showing position, fitness, and trial counter
+        """
         return f"Position: {self.position} - Fitness: {self.fitness} - Trial: {self.trial}"
 
 class ArtificialBeeColonyOptimizer(Solver):
+    """
+    Artificial Bee Colony (ABC) Optimization Algorithm.
+    
+    ABC is a nature-inspired optimization algorithm based on the foraging behavior
+    of honey bees. The algorithm classifies bees into three groups:
+    1. Employed bees: Exploit food sources and share information
+    2. Onlooker bees: Choose food sources based on information from employed bees
+    3. Scout bees: Explore new food sources when current ones are exhausted
+    
+    References:
+        Karaboga, D. (2005). An idea based on honey bee swarm for numerical optimization.
+        Technical Report-TR06, Erciyes University, Engineering Faculty, Computer Engineering Department.
+    """
+    
     def __init__(self, objective_func: Callable, lb: Union[float, np.ndarray], 
                  ub: Union[float, np.ndarray], dim: int, maximize: bool = True, **kwargs):
+        """
+        Initialize the Artificial Bee Colony Optimizer.
+        
+        Args:
+            objective_func (Callable): Objective function to optimize
+            lb (Union[float, np.ndarray]): Lower bounds of search space
+            ub (Union[float, np.ndarray]): Upper bounds of search space
+            dim (int): Number of dimensions in the problem
+            maximize (bool): Whether to maximize (True) or minimize (False) objective
+            **kwargs: Additional ABC parameters including:
+                - n_onlooker: Number of onlooker bees (default: search_agents_no)
+                - abandonment_limit: Maximum trials before abandonment (default: dim * 5)
+                - acceleration_coef: Acceleration coefficient for search (default: 1.0)
+        """
         super().__init__(objective_func, lb, ub, dim, maximize, **kwargs)
         # Store additional parameters for later use
         self.kwargs = kwargs
@@ -29,6 +86,15 @@ class ArtificialBeeColonyOptimizer(Solver):
         
 
     def _init_population(self, search_agents_no) -> List:
+        """
+        Initialize the bee colony population.
+        
+        Args:
+            search_agents_no (int): Number of bees (employed bees) to initialize
+            
+        Returns:
+            List[Bee]: List of initialized Bee objects with random positions
+        """
         population = []
         for _ in range(search_agents_no):
             position = np.random.uniform(self.lb, self.ub, self.dim)
@@ -37,7 +103,23 @@ class ArtificialBeeColonyOptimizer(Solver):
         return population
 
     def solver(self, search_agents_no: int, max_iter: int) -> Tuple[List, Bee]:
-       
+        """
+        Execute the Artificial Bee Colony Optimization Algorithm.
+        
+        The algorithm consists of three main phases repeated for each iteration:
+        1. Employed Bee Phase: Each employed bee searches for new solutions
+        2. Onlooker Bee Phase: Onlooker bees probabilistically choose solutions
+        3. Scout Bee Phase: Abandoned solutions are replaced with new random solutions
+        
+        Args:
+            search_agents_no (int): Number of employed bees (and initial food sources)
+            max_iter (int): Maximum number of iterations for the optimization process
+            
+        Returns:
+            Tuple[List, Bee]: A tuple containing:
+                - history_step_solver: List of best solutions found at each iteration
+                - best_bee: The best bee (solution) found during the optimization
+        """
         # Initialize storage variables
         history_step_solver = []
         

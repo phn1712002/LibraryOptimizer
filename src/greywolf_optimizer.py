@@ -5,13 +5,62 @@ from ._core import Solver, Member
 from utils.general import sort_population, sort_population
 
 class GreyWolfOptimizer(Solver):
+    """
+    Grey Wolf Optimizer (GWO) Algorithm.
+    
+    GWO is a nature-inspired metaheuristic optimization algorithm that mimics
+    the leadership hierarchy and hunting behavior of grey wolves in nature.
+    The algorithm considers the social hierarchy of wolves and simulates three
+    main steps of hunting: searching for prey, encircling prey, and attacking prey.
+    
+    The social hierarchy consists of:
+    - Alpha (α): Best solution
+    - Beta (β): Second best solution  
+    - Delta (δ): Third best solution
+    - Omega (ω): Other candidate solutions
+    
+    References:
+        Mirjalili, S., Mirjalili, S. M., & Lewis, A. (2014). Grey wolf optimizer.
+        Advances in engineering software, 69, 46-61.
+    """
+    
     def __init__(self, objective_func: Callable, lb: Union[float, np.ndarray], 
                  ub: Union[float, np.ndarray], dim: int, maximize: bool = True, **kwargs):
+        """
+        Initialize the Grey Wolf Optimizer.
+        
+        Args:
+            objective_func (Callable): Objective function to optimize
+            lb (Union[float, np.ndarray]): Lower bounds of search space
+            ub (Union[float, np.ndarray]): Upper bounds of search space
+            dim (int): Number of dimensions in the problem
+            maximize (bool): Whether to maximize (True) or minimize (False) objective
+            **kwargs: Additional algorithm parameters
+        """
         super().__init__(objective_func, lb, ub, dim, maximize, **kwargs)
         # Store additional parameters for later use
         self.kwargs = kwargs
         self.name_solver = "Grey Wolf Optimizer"
+        
     def solver(self, search_agents_no: int, max_iter: int) -> Tuple[List, Member]:
+        """
+        Execute the Grey Wolf Optimization Algorithm.
+        
+        The algorithm simulates the hunting behavior of grey wolves through
+        three main phases controlled by coefficient vectors:
+        1. Searching for prey: Exploration phase with random search agents
+        2. Encircling prey: Exploitation phase moving towards alpha, beta, delta
+        3. Attacking prey: Convergence phase as coefficients approach zero
+        
+        Args:
+            search_agents_no (int): Number of grey wolves in the pack
+            max_iter (int): Maximum number of iterations for optimization
+            
+        Returns:
+            Tuple[List, Member]: A tuple containing:
+                - history_step_solver: List of best solutions at each iteration
+                - best_member: Best solution (alpha wolf) found overall
+        """
         # Initialize the population of search agents
         population = self._init_population(search_agents_no)
 
