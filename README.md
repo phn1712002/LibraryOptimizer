@@ -1,15 +1,17 @@
 # Library Optimizer
 
-A comprehensive Python library for metaheuristic optimization algorithms, featuring 18+ state-of-the-art optimization algorithms with a unified interface.
+A comprehensive Python library for metaheuristic optimization algorithms, featuring 18+ state-of-the-art optimization algorithms with both single-objective and multi-objective capabilities, all with a unified interface.
 
 ## Features
 
 - **18+ Optimization Algorithms**: Grey Wolf Optimizer, Particle Swarm Optimization, Artificial Bee Colony, Whale Optimization, and more
-- **Unified Interface**: Consistent API across all algorithms
+- **Multi-Objective Support**: Automatic generation of multi-objective versions from single-objective algorithms
+- **Unified Interface**: Consistent API across all algorithms for both single and multi-objective optimization
 - **Visualization**: Built-in progress tracking and convergence plotting
-- **Benchmark Functions**: Ready-to-use test functions for evaluation
+- **Benchmark Functions**: Ready-to-use test functions for evaluation (single and multi-objective)
 - **Extensible**: Easy to add new algorithms following established patterns
 - **Type Hints**: Full type annotations for better development experience
+- **Automatic Detection**: System automatically detects objective function type and selects appropriate solver
 
 ## Installation
 
@@ -21,11 +23,13 @@ pip install -e .
 
 ## Quick Start
 
+### Single-Objective Optimization
+
 ```python
 import numpy as np
 from library_optimizer import create_solver
 
-# Define objective function (Sphere function)
+# Define objective function (Sphere function - single objective)
 def sphere_function(x):
     return np.sum(x**2)
 
@@ -49,26 +53,64 @@ print(f"Best solution: {best_solution.position}")
 print(f"Best fitness: {best_solution.fitness}")
 ```
 
+### Multi-Objective Optimization
+
+```python
+import numpy as np
+from library_optimizer import create_solver
+
+# Define multi-objective function (ZDT1 benchmark)
+def zdt1_function(x):
+    f1 = x[0]
+    g = 1 + 9 * np.sum(x[1:]) / (len(x) - 1)
+    h = 1 - np.sqrt(f1 / g)
+    f2 = g * h
+    return np.array([f1, f2])
+
+# Create optimizer instance - system automatically detects multi-objective function
+optimizer = create_solver(
+    solver_name='GreyWolfOptimizer',  # Same name, auto-detects multi-objective
+    objective_func=zdt1_function,
+    lb=np.array([0.0, 0.0]),  # Lower bounds
+    ub=np.array([1.0, 1.0]),  # Upper bounds
+    dim=2,                    # Problem dimension
+    archive_size=100          # Archive size for multi-objective optimization
+)
+
+# Run optimization
+history_archive, final_archive = optimizer.solver(
+    search_agents_no=100,     # Population size
+    max_iter=200              # Maximum iterations
+)
+
+print(f"Found {len(final_archive)} non-dominated solutions")
+print(f"First solution: {final_archive[0].position} -> {final_archive[0].multi_fitness}")
+```
+
 ## Available Algorithms
 
-- Grey Wolf Optimizer (GWO)
-- Whale Optimization Algorithm (WOA)
-- Particle Swarm Optimization (PSO)
-- Artificial Bee Colony (ABC)
-- Ant Colony Optimization (ACO)
-- Bat Algorithm
-- Artificial Ecosystem-based Optimization (AEO)
-- Cuckoo Search (CS)
-- Dingo Optimization Algorithm (DOA)
-- Firefly Algorithm
-- JAYA Algorithm
-- Modified Social Group Optimization (MSGO)
-- Moss Growth Optimization (MGO)
-- Shuffled Frog Leaping Algorithm (SFLA)
-- Teaching-Learning-based Optimization (TLBO)
-- Prairie Dogs Optimization (PDO)
-- Simulated Annealing (SA)
-- Genetic Algorithm (GA)
+All algorithms are available in both single-objective and multi-objective versions:
+
+- Grey Wolf Optimizer (GWO) / Multi-Objective GWO
+- Whale Optimization Algorithm (WOA) / Multi-Objective WOA
+- Particle Swarm Optimization (PSO) / Multi-Objective PSO
+- Artificial Bee Colony (ABC) / Multi-Objective ABC
+- Ant Colony Optimization (ACO) / Multi-Objective ACO
+- Bat Algorithm / Multi-Objective Bat
+- Artificial Ecosystem-based Optimization (AEO) / Multi-Objective AEO
+- Cuckoo Search (CS) / Multi-Objective CS
+- Dingo Optimization Algorithm (DOA) / Multi-Objective DOA
+- Firefly Algorithm / Multi-Objective Firefly
+- JAYA Algorithm / Multi-Objective JAYA
+- Modified Social Group Optimization (MSGO) / Multi-Objective MSGO
+- Moss Growth Optimization (MGO) / Multi-Objective MGO
+- Shuffled Frog Leaping Algorithm (SFLA) / Multi-Objective SFLA
+- Teaching-Learning-based Optimization (TLBO) / Multi-Objective TLBO
+- Prairie Dogs Optimization (PDO) / Multi-Objective PDO
+- Simulated Annealing (SA) / Multi-Objective SA
+- Genetic Algorithm (GA) / Multi-Objective GA
+
+The system automatically selects the appropriate version based on your objective function type.
 
 ## Documentation
 
@@ -86,6 +128,8 @@ To add a new optimization algorithm, follow the template in `rules/new-algorithm
 2. Implement the required interface
 3. Add comprehensive tests
 4. Update the registry in `src/__init__.py`
+
+The system will automatically generate the multi-objective version of your algorithm using the automatic generation system described in `rules/auto-generation-multi.md`.
 
 ## Testing
 
@@ -106,7 +150,7 @@ If you use this library in your research, please consider citing:
 ```bibtex
 @software{LibraryOptimizer,
   author = {HoangggNam},
-  title = {Library Optimizer: A Python Library for Metaheuristic Optimization},
+  title = {Library Optimizer: A Python Library for Metaheuristic Optimization with Multi-Objective Support},
   year = {2025},
   url = {https://github.com/HoangggNam/LibraryOptimizer}
 }
