@@ -1,133 +1,170 @@
-"""
-Test file for SimulatedAnnealingOptimizer
-"""
 import numpy as np
 from src import create_solver
+from utils.func_test import sphere_function, rastrigin_function, negative_sphere, zdt1_function
 
-
-def test_sphere_function_minimization():
-    """Test simulated annealing on sphere function (minimization)"""
-    def sphere_function(x):
-        return np.sum(x**2)
-    
+def test_sphere_function():
+    '''Test ABC on sphere function (minimization)'''
     method = create_solver(
         solver_name='SimulatedAnnealingOptimizer',
         objective_func=sphere_function,
         lb=-5.0,
         ub=5.0,
         dim=2,
-        maximize=False,
-        max_temperatures=50,
-        equilibrium_steps=100
-    )
-    
-    _, best = method.solver(
-        max_iter=50
-    )
-    
-    # Should find a solution close to [0, 0] with fitness near 0
-    print(f"Best fitness: {best.fitness}")
-    print(f"Best position: {best.position}")
-    assert best.fitness < 0.5
-    assert np.all(np.abs(best.position) < 1.0)
-
-
-def test_rastrigin_function_minimization():
-    """Test simulated annealing on Rastrigin function (minimization)"""
-    def rastrigin_function(x):
-        A = 10
-        return A * len(x) + np.sum(x**2 - A * np.cos(2 * np.pi * x))
-    
-    method = create_solver(
-        solver_name='SimulatedAnnealingOptimizer',
-        objective_func=rastrigin_function,
-        lb=-5.12,
-        ub=5.12,
-        dim=2,
-        maximize=False,
-        max_temperatures=50,
-        equilibrium_steps=100
-    )
-    
-    _, best = method.solver(
-        max_iter=50
-    )
-    
-    # Should find a solution with reasonably low fitness
-    print(f"Best fitness: {best.fitness}")
-    print(f"Best position: {best.position}")
-    assert best.fitness < 10.0
-
-
-def test_maximization():
-    """Test simulated annealing on maximization problem"""
-    def negative_sphere(x):
-        return -np.sum(x**2)
-    
-    method = create_solver(
-        solver_name='SimulatedAnnealingOptimizer',
-        objective_func=negative_sphere,
-        lb=-2.0,
-        ub=2.0,
-        dim=2,
-        maximize=True,
-        max_temperatures=50,
-        equilibrium_steps=100
-    )
-    
-    _, best = method.solver(
-        max_iter=50
-    )
-    
-    # Should find a solution with fitness near 0 (maximizing negative sphere)
-    print(f"Best fitness: {best.fitness}")
-    print(f"Best position: {best.position}")
-    assert best.fitness > -0.5
-
-
-def test_camelback_function():
-    """Test simulated annealing on six-hump camelback function"""
-    def camelback_function(x):
-        x1, x2 = x
-        term1 = (4 - 2.1*x1**2 + x1**4/3) * x1**2
-        term2 = x1*x2
-        term3 = (-4 + 4*x2**2) * x2**2
-        return term1 + term2 + term3
-    
-    method = create_solver(
-        solver_name='SimulatedAnnealingOptimizer',
-        objective_func=camelback_function,
-        lb=-3.0,
-        ub=3.0,
-        dim=2,
-        maximize=False,
-        max_temperatures=100,
-        equilibrium_steps=200
+        maximize=False
     )
     
     _, best = method.solver(
         max_iter=100
     )
     
-    # Should find one of the global minima around -1.0316
-    print(f"Best fitness: {best.fitness}")
-    print(f"Best position: {best.position}")
-    assert best.fitness < -0.5  # Should be better than most local minima
+    # Should find a solution close to [0, 0] with fitness near 0
+    assert best.fitness < 0.1
+    assert np.all(np.abs(best.position) < 0.5)
 
+def test_rastrigin_function():
+    '''Test ABC on Rastrigin function (minimization)'''
+    method = create_solver(
+        solver_name='SimulatedAnnealingOptimizer',
+        objective_func=rastrigin_function,
+        lb=-5.12,
+        ub=5.12,
+        dim=2,
+        maximize=False
+    )
+    
+    _, best = method.solver(
+        max_iter=100
+    )
+    
+    # Should find a solution with fitness reasonably low
+    assert best.fitness < 5.0
 
-if __name__ == "__main__":
-    print("Testing SimulatedAnnealingOptimizer...")
+def test_maximization():
+    '''Test ABC on maximization problem'''
+    method = create_solver(
+        solver_name='SimulatedAnnealingOptimizer',
+        objective_func=negative_sphere,
+        lb=-2.0,
+        ub=2.0,
+        dim=2,
+        maximize=True
+    )
     
-    print("\n1. Testing sphere function minimization:")
-    test_sphere_function_minimization()
+    _, best = method.solver(
+        max_iter=100
+    )
     
-    print("\n2. Testing Rastrigin function minimization:")
-    test_rastrigin_function_minimization()
+    # Should find a solution with fitness near 0 (maximizing negative sphere)
+    assert best.fitness > -0.1
+
+def test_multiobjective_zdt1():
+    '''Test Multi-Objective ABC on ZDT1 function'''
+    method = create_solver(
+        solver_name='SimulatedAnnealingOptimizer',
+        objective_func=zdt1_function,
+        lb=np.array([0.0, 0.0]),
+        ub=np.array([1.0, 1.0]),
+        dim=2,
+        archive_size=50,
+        limit_trial=50,
+        maximize=False
+    )
     
-    print("\n3. Testing maximization problem:")
-    test_maximization()
+    history_archive, final_archive = method.solver(
+        max_iter=100
+    )
     
-    print("\n4. Testing camelback function:")
-    test_camelback_function()
+    # Should find a diverse set of non-dominated solutions
+    assert len(final_archive) > 0
+    assert len(final_archive[0].multi_fitness) == 2
     
-    print("\nAll tests passed! ✅")
+    # Check that solutions are within bounds
+    for solution in final_archive:
+        assert np.all(solution.position >= 0.0)
+        assert np.all(solution.position <= 1.0)
+        assert len(solution.multi_fitness) == 2
+
+def test_multiobjective_zdt1_higher_dim():
+    '''Test Multi-Objective ABC on ZDT1 with higher dimension'''
+    method = create_solver(
+        solver_name='SimulatedAnnealingOptimizer',
+        objective_func=zdt1_function,
+        lb=np.array([0.0] * 10),
+        ub=np.array([1.0] * 10),
+        dim=10,
+        archive_size=100,
+        limit_trial=100,
+        maximize=False
+    )
+    
+    history_archive, final_archive = method.solver(
+        max_iter=200
+    )
+    
+    # Should find a diverse set of non-dominated solutions
+    assert len(final_archive) > 0
+    assert len(final_archive[0].multi_fitness) == 2
+    assert len(final_archive[0].position) == 10
+
+def run_all_tests():
+    '''Run all tests and report results'''
+    test_results = {}
+    
+    try:
+        test_sphere_function()
+        test_results['sphere_function'] = 'PASSED'
+        print("✓ Sphere function test passed")
+    except Exception as e:
+        test_results['sphere_function'] = f'FAILED: {e}'
+        print(f"✗ Sphere function test failed: {e}")
+    
+    try:
+        test_rastrigin_function()
+        test_results['rastrigin_function'] = 'PASSED'
+        print("✓ Rastrigin function test passed")
+    except Exception as e:
+        test_results['rastrigin_function'] = f'FAILED: {e}'
+        print(f"✗ Rastrigin function test failed: {e}")
+    
+    try:
+        test_maximization()
+        test_results['maximization'] = 'PASSED'
+        print("✓ Maximization test passed")
+    except Exception as e:
+        test_results['maximization'] = f'FAILED: {e}'
+        print(f"✗ Maximization test failed: {e}")
+    
+    try:
+        test_multiobjective_zdt1()
+        test_results['multiobjective_zdt1'] = 'PASSED'
+        print("✓ Multi-objective ZDT1 test passed")
+    except Exception as e:
+        test_results['multiobjective_zdt1'] = f'FAILED: {e}'
+        print(f"✗ Multi-objective ZDT1 test failed: {e}")
+    
+    try:
+        test_multiobjective_zdt1_higher_dim()
+        test_results['multiobjective_zdt1_higher_dim'] = 'PASSED'
+        print("✓ Multi-objective ZDT1 (higher dim) test passed")
+    except Exception as e:
+        test_results['multiobjective_zdt1_higher_dim'] = f'FAILED: {e}'
+        print(f"✗ Multi-objective ZDT1 (higher dim) test failed: {e}")
+    
+    # Print summary
+    print("\n" + "="*50)
+    print("TEST SUMMARY")
+    print("="*50)
+    for test_name, result in test_results.items():
+        status = "✓ PASSED" if result == 'PASSED' else "✗ FAILED"
+        print(f"{test_name:30} {status}")
+    
+    # Return True if all tests passed
+    return all(result == 'PASSED' for result in test_results.values())
+
+if __name__ == '__main__':
+    success = run_all_tests()
+    if success:
+        print('\n🎉 All tests passed!')
+    else:
+        print('\n❌ Some tests failed!')
+        exit(1)

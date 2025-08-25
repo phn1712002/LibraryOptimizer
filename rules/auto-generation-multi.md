@@ -272,46 +272,6 @@ def _update_positions(self, population, leaders):
         agent.position = new_positions[i]
 ```
 
-## Testing and Validation
-
-### Automatic Test Generation
-```python
-def test_multiobjective_algorithm():
-    """Auto-generated test for multi-objective version"""
-    # Test with standard multi-objective function
-    method = create_solver(
-        solver_name='YourAlgorithmOptimizer',
-        objective_func=zdt1_function,
-        lb=np.array([0.0, 0.0]),
-        ub=np.array([1.0, 1.0]),
-        dim=2
-    )
-    
-    # Run optimization
-    history, archive = method.solver(search_agents_no=100, max_iter=50)
-    
-    # Validation checks
-    assert len(archive) > 0, "Archive should contain solutions"
-    assert len(archive[0].multi_fitness) == 2, "Should have 2 objectives"
-    assert not np.any([agent.dominated for agent in archive]), "Archive should be non-dominated"
-```
-
-### Performance Benchmarking
-```python
-def benchmark_algorithm():
-    """Auto-generated performance benchmark"""
-    import time
-    
-    start_time = time.time()
-    method = create_solver('YourAlgorithmOptimizer', zdt1_function, [0,0], [1,1], 2)
-    history, archive = method.solver(100, 100)
-    end_time = time.time()
-    
-    print(f"Execution time: {end_time - start_time:.2f} seconds")
-    print(f"Archive size: {len(archive)}")
-    print(f"Non-dominated solutions: {sum(1 for agent in archive if not agent.dominated)}")
-```
-
 ## Best Practices for Automatic Generation
 
 ### 1. Code Consistency
