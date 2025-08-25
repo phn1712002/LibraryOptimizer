@@ -493,4 +493,12 @@ class MultiObjectiveSolver(Solver):
             print("Consider plotting pairwise scatter plots for higher dimensions.")
 
     def solver(self) -> Tuple[List, List]:
-        return self.history_step_archive, self.archive
+        """
+        Get the multi-objective optimization results.
+        
+        Returns:
+            Tuple[List, List]: Tuple containing:
+                - history_step_solver: List of best solutions found at each iteration
+                - archive: List of non-dominated solutions (Pareto front approximation)
+        """
+        return self.history_step_solver, self.archive
