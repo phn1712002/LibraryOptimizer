@@ -254,7 +254,7 @@ class MultiObjectiveSolver(Solver):
         
         return leaders
     
-    def sort_population(self, population: List[MultiObjectiveMember]) -> List[MultiObjectiveMember]:
+    def _sort_population(self, population: List[MultiObjectiveMember]) -> List[MultiObjectiveMember]:
         """
         Sort population with multi fitness by selecting leaders and sorting remaining by total fitness
         
@@ -305,7 +305,7 @@ class MultiObjectiveSolver(Solver):
         # Ensure we return exactly the population size
         return sorted_population[:n_pop]
     
-    def get_total_fitness(member):
+    def _get_total_fitness(member):
         return np.sum(member.multi_fitness)
     
     def _add_to_archive(self, new_solutions: List[MultiObjectiveMember]) -> None:
