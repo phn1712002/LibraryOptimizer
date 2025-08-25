@@ -92,7 +92,7 @@ class MultiObjectiveSimulatedAnnealingOptimizer(MultiObjectiveSolver):
         # Main optimization loop (temperature levels)
         for iter in range(actual_max_iter):
             # Calculate temperature parameter (inverse temperature)
-            T = exponential_decay(self.initial_temperature, self.max_temperatures, iter, actual_max_iter)
+            T = self._exponential_decay(self.initial_temperature, self.max_temperatures, iter, actual_max_iter)
             
             # Calculate mu parameter for perturbation scaling
             mu = 10 ** (T * self.mu_scaling)
@@ -202,3 +202,7 @@ class MultiObjectiveSimulatedAnnealingOptimizer(MultiObjectiveSolver):
             Scaled perturbation vector
         """
         return (((1 + mu) ** np.abs(y) - 1) / mu) * np.sign(y)
+
+    def _exponential_decay(self, initial_value, final_value, current_iter, max_iter):
+        """Calculate exponential decay value."""
+        return exponential_decay(initial_value, final_value, current_iter, max_iter)

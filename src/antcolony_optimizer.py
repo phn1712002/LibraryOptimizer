@@ -194,7 +194,7 @@ class AntColonyOptimizer(Solver):
             # Construct solution component by component
             for i in range(self.dim):
                 # Select Gaussian kernel using roulette wheel selection
-                l = roulette_wheel_selection(probabilities)
+                l = self._roulette_wheel_selection(probabilities)
                 
                 # Generate Gaussian random variable
                 new_position[i] = means[l, i] + sigma[l, i] * np.random.randn()
@@ -209,3 +209,7 @@ class AntColonyOptimizer(Solver):
             new_population.append(Member(new_position, new_fitness))
         
         return new_population
+
+    def _roulette_wheel_selection(self, probabilities):
+        """Perform roulette wheel selection (fitness proportionate selection)."""
+        return roulette_wheel_selection(probabilities)

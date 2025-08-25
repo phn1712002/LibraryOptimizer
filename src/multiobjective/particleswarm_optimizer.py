@@ -1,7 +1,6 @@
 import numpy as np
 from typing import Callable, Union, Tuple, List
 from ._core import MultiObjectiveSolver, MultiObjectiveMember
-from utils.general import roulette_wheel_selection
 
 class ParticleMultiMember(MultiObjectiveMember):
     def __init__(self, position: np.ndarray, fitness: np.ndarray, velocity: np.ndarray = None):

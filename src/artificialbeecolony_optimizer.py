@@ -105,7 +105,7 @@ class ArtificialBeeColonyOptimizer(Solver):
             # Phase 2: Onlooker Bees
             for m in range(self.n_onlooker):
                 # Select source site using roulette wheel selection
-                i = roulette_wheel_selection(probabilities)
+                i = self._roulette_wheel_selection(probabilities)
                 
                 # Choose a random neighbor different from current bee
                 neighbors = [j for j in range(search_agents_no) if j != i]
@@ -164,3 +164,7 @@ class ArtificialBeeColonyOptimizer(Solver):
         Sort the population based on fitness.
         """
         return sort_population(population, self.maximize)
+    
+    def _roulette_wheel_selection(self, probabilities):
+        """Perform roulette wheel selection (fitness proportionate selection)."""
+        return roulette_wheel_selection(probabilities)

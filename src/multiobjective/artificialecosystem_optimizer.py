@@ -1,7 +1,7 @@
 import numpy as np
 from typing import Callable, Union, Tuple, List
 from ._core import MultiObjectiveSolver, MultiObjectiveMember
-from utils.general import levy_flight, linear_decay
+from utils.general import levy_flight
 
 class MultiObjectiveArtificialEcosystemOptimizer(MultiObjectiveSolver):
     """
@@ -171,7 +171,7 @@ class MultiObjectiveArtificialEcosystemOptimizer(MultiObjectiveSolver):
         # Handle second organism (special case)
         if len(old_population) >= 2:
             # Generate consumption factor C using Levy flight
-            C = 0.5 * levy_flight(self.dim)
+            C = 0.5 * self._levy_flight(self.dim)
             
             # Second organism consumes from producer (first organism)
             new_position = old_population[1].position + C * (
@@ -186,7 +186,7 @@ class MultiObjectiveArtificialEcosystemOptimizer(MultiObjectiveSolver):
         # For remaining organisms (starting from third one)
         for i in range(2, len(old_population)):
             # Generate consumption factor C using Levy flight
-            C = 0.5 * levy_flight(self.dim)
+            C = 0.5 * self._levy_flight(self.dim)
             
             r = np.random.random()
             
@@ -258,3 +258,7 @@ class MultiObjectiveArtificialEcosystemOptimizer(MultiObjectiveSolver):
             new_population.append(MultiObjectiveMember(new_position, new_fitness))
         
         return new_population
+
+    def _levy_flight(self):
+        """Generate Levy flight step using utility function"""
+        return levy_flight(self.dim, self.beta)

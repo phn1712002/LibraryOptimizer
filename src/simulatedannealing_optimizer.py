@@ -1,7 +1,6 @@
 import numpy as np
 from typing import Callable, Union, Tuple, List
 from ._core import Solver, Member
-from utils.general import exponential_decay
 
 
 class SimulatedAnnealingOptimizer(Solver):

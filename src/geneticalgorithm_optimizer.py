@@ -1,7 +1,7 @@
 import numpy as np
 from typing import Callable, Union, Tuple, List
 from ._core import Solver, Member
-from utils.general import sort_population, roulette_wheel_selection
+from utils.general import sort_population
 
 
 class GeneticAlgorithmOptimizer(Solver):

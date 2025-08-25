@@ -6,6 +6,28 @@ from utils.general import sort_population
 class WhaleOptimizer(Solver):
     def __init__(self, objective_func: Callable, lb: Union[float, np.ndarray], 
                  ub: Union[float, np.ndarray], dim: int, maximize: bool = True, **kwargs):
+        """
+        Whale Optimization Algorithm (WOA) implementation.
+        
+        WOA is a nature-inspired metaheuristic optimization algorithm that mimics
+        the hunting behavior of humpback whales. The algorithm includes three main
+        phases: encircling prey, bubble-net attacking method, and search for prey.
+        
+        Parameters:
+        -----------
+        objective_func : Callable
+            Objective function to be optimized
+        lb : Union[float, np.ndarray]
+            Lower bounds of the search space
+        ub : Union[float, np.ndarray]
+            Upper bounds of the search space
+        dim : int
+            Dimension of the problem
+        maximize : bool, optional
+            Optimization direction (True for maximization, False for minimization)
+        **kwargs
+            Additional algorithm-specific parameters
+        """
         super().__init__(objective_func, lb, ub, dim, maximize, **kwargs)
         # Store additional parameters for later use
         self.kwargs = kwargs

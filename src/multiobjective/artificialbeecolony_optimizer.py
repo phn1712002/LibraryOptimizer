@@ -161,7 +161,7 @@ class MultiObjectiveArtificialBeeColonyOptimizer(MultiObjectiveSolver):
             
             for _ in range(self.n_onlooker):
                 # Select source site using roulette wheel selection
-                i = roulette_wheel_selection(probabilities)
+                i = self._roulette_wheel_selection(probabilities)
                 
                 # Choose a random neighbor different from current bee
                 neighbors = [j for j in range(search_agents_no) if j != i]
@@ -216,3 +216,7 @@ class MultiObjectiveArtificialBeeColonyOptimizer(MultiObjectiveSolver):
         """Get normalized cost matrix from population for aggregation methods"""
         costs = self._get_costs(population)
         return normalized_values(costs)
+    
+    def _roulette_wheel_selection(self, probabilities):
+        """Perform roulette wheel selection (fitness proportionate selection)."""
+        return roulette_wheel_selection(probabilities)
