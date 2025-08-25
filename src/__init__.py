@@ -33,6 +33,7 @@ from .multiobjective.cuckoosearch_optimizer import MultiObjectiveCuckooSearchOpt
 from .multiobjective.dingo_optimizer import MultiObjectiveDingoOptimizer
 from .multiobjective.firefly_optimizer import MultiObjectiveFireflyOptimizer
 from .multiobjective.modifiedsocialgroup_optimizer import MultiObjectiveModifiedSocialGroupOptimizer
+from .multiobjective.shuffledfrogleaping_optimizer import MultiObjectiveShuffledFrogLeapingOptimizer
 
 __version__ = "0.1.0"
 __author__ = "HoangggNam"
@@ -68,7 +69,8 @@ _SOLVER_REGISTRY: Dict[str, Type[Solver]] = {
     "MultiObjectiveCuckooSearchOptimizer": MultiObjectiveCuckooSearchOptimizer,
     "MultiObjectiveDingoOptimizer": MultiObjectiveDingoOptimizer,
     "MultiObjectiveFireflyOptimizer": MultiObjectiveFireflyOptimizer,
-    "MultiObjectiveModifiedSocialGroupOptimizer": MultiObjectiveModifiedSocialGroupOptimizer
+    "MultiObjectiveModifiedSocialGroupOptimizer": MultiObjectiveModifiedSocialGroupOptimizer,
+    "MultiObjectiveShuffledFrogLeapingOptimizer": MultiObjectiveShuffledFrogLeapingOptimizer
 }
 
 # Mapping of single-objective solvers to their multi-objective counterparts
@@ -84,6 +86,7 @@ _MULTI_OBJECTIVE_MAPPING: Dict[str, str] = {
     "DingoOptimizer": "MultiObjectiveDingoOptimizer",
     "FireflyOptimizer": "MultiObjectiveFireflyOptimizer",
     "ModifiedSocialGroupOptimizer": "MultiObjectiveModifiedSocialGroupOptimizer",
+    "ShuffledFrogLeapingOptimizer": "MultiObjectiveShuffledFrogLeapingOptimizer",
 }
 
 
