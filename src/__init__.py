@@ -30,6 +30,7 @@ from .multiobjective.antcolony_optimizer import MultiObjectiveAntColonyOptimizer
 from .multiobjective.bat_optimizer import MultiObjectiveBatOptimizer
 from .multiobjective.artificialecosystem_optimizer import MultiObjectiveArtificialEcosystemOptimizer
 from .multiobjective.cuckoosearch_optimizer import MultiObjectiveCuckooSearchOptimizer
+from .multiobjective.dingo_optimizer import MultiObjectiveDingoOptimizer
 
 __version__ = "0.1.0"
 __author__ = "HoangggNam"
@@ -62,7 +63,8 @@ _SOLVER_REGISTRY: Dict[str, Type[Solver]] = {
     "MultiObjectiveAntColonyOptimizer": MultiObjectiveAntColonyOptimizer,
     "MultiObjectiveBatOptimizer": MultiObjectiveBatOptimizer,
     "MultiObjectiveArtificialEcosystemOptimizer": MultiObjectiveArtificialEcosystemOptimizer,
-    "MultiObjectiveCuckooSearchOptimizer": MultiObjectiveCuckooSearchOptimizer
+    "MultiObjectiveCuckooSearchOptimizer": MultiObjectiveCuckooSearchOptimizer,
+    "MultiObjectiveDingoOptimizer": MultiObjectiveDingoOptimizer
 }
 
 # Mapping of single-objective solvers to their multi-objective counterparts
@@ -75,6 +77,7 @@ _MULTI_OBJECTIVE_MAPPING: Dict[str, str] = {
     "BatOptimizer": "MultiObjectiveBatOptimizer",
     "ArtificialEcosystemOptimizer": "MultiObjectiveArtificialEcosystemOptimizer",
     "CuckooSearchOptimizer": "MultiObjectiveCuckooSearchOptimizer",
+    "DingoOptimizer": "MultiObjectiveDingoOptimizer",
 }
 
 

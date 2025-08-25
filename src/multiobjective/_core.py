@@ -296,8 +296,8 @@ class MultiObjectiveSolver(Solver):
         """Get fitness value based on random dice roll"""
         dice_roll = np.random.random()
         if dice_roll > 0.5:
-            # If dice > 0.5, return sum of multi_fitness
-            return np.sum(member.multi_fitness) / len(member.multi_fitness)
+            # If dice > 0.5, return average of multi_fitness
+            return np.average(member.multi_fitness)
         else:
             # If dice <= 0.5, return a random element from multi_fitness
             return np.random.choice(member.multi_fitness)
