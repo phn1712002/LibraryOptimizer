@@ -1,7 +1,7 @@
 import numpy as np
 from typing import Callable, Union, Tuple, List
 from ._core import Solver, Member
-from utils.general import sort_population, sort_population
+from utils.general import sort_population
 
 class WhaleOptimizer(Solver):
     def __init__(self, objective_func: Callable, lb: Union[float, np.ndarray], 
