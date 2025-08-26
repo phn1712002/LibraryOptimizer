@@ -1,4 +1,3 @@
-
 from typing import Dict, Type, Callable, Union
 import numpy as np
 from ._core import *
@@ -26,6 +25,7 @@ from .biogeographybased_optimizer import *
 from .seagull_optimizer import *
 from .harmonysearch_optimizer import *
 from .glowwormswarm_optimizer import *
+from .electromagneticchargedparticles_optimizer import *
 
 # Multi-objective optimizers
 from .multiobjective.artificialbeecolony_optimizer import *
@@ -50,6 +50,7 @@ from .multiobjective.biogeographybased_optimizer import *
 from .multiobjective.seagull_optimizer import *
 from .multiobjective.harmonysearch_optimizer import *
 from .multiobjective.glowwormswarm_optimizer import *
+from .multiobjective.electromagneticchargedparticles_optimizer import *
 
 
 __version__ = "1.0.0"
@@ -81,6 +82,7 @@ _SOLVER_REGISTRY: Dict[str, Type[Solver]] = {
     "SeagullOptimizer": SeagullOptimizer,
     "HarmonySearchOptimizer": HarmonySearchOptimizer,
     "GlowwormSwarmOptimizer": GlowwormSwarmOptimizer,
+    "ElectromagneticChargedParticlesOptimizer": ElectromagneticChargedParticlesOptimizer,
     # Multi
     "MultiObjectiveArtificialBeeColonyOptimizer": MultiObjectiveArtificialBeeColonyOptimizer,
     "MultiObjectiveGreyWolfOptimizer": MultiObjectiveGreyWolfOptimizer,
@@ -103,7 +105,8 @@ _SOLVER_REGISTRY: Dict[str, Type[Solver]] = {
     'MultiObjectiveBiogeographyBasedOptimizer': MultiObjectiveBiogeographyBasedOptimizer,
     'MultiObjectiveSeagullOptimizer': MultiObjectiveSeagullOptimizer,
     'MultiObjectiveHarmonySearchOptimizer': MultiObjectiveHarmonySearchOptimizer,
-    'MultiObjectiveGlowwormSwarmOptimizer': MultiObjectiveGlowwormSwarmOptimizer
+    'MultiObjectiveGlowwormSwarmOptimizer': MultiObjectiveGlowwormSwarmOptimizer,
+    "MultiObjectiveElectromagneticChargedParticlesOptimizer": MultiObjectiveElectromagneticChargedParticlesOptimizer
 }
 
 # Mapping of single-objective solvers to their multi-objective counterparts
@@ -129,7 +132,8 @@ _MULTI_OBJECTIVE_MAPPING: Dict[str, str] = {
     "BiogeographyBasedOptimizer": "MultiObjectiveBiogeographyBasedOptimizer",
     "SeagullOptimizer": "MultiObjectiveSeagullOptimizer",
     "HarmonySearchOptimizer": "MultiObjectiveHarmonySearchOptimizer",
-    "GlowwormSwarmOptimizer": "MultiObjectiveGlowwormSwarmOptimizer"
+    "GlowwormSwarmOptimizer": "MultiObjectiveGlowwormSwarmOptimizer",
+    "ElectromagneticChargedParticlesOptimizer": "MultiObjectiveElectromagneticChargedParticlesOptimizer"
 }
 
 
