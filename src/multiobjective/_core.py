@@ -48,17 +48,17 @@ class MultiObjectiveSolver(Solver):
     
     def _dominates(self, x: MultiObjectiveMember, y: MultiObjectiveMember) -> bool:
         """Check if x dominates y (Pareto dominance)"""
-        x_costs = x.multi_fitness
-        y_costs = y.multi_fitness
+        x_fitsness = x.multi_fitness
+        y_fitsness = y.multi_fitness
         
         if self.maximize:
             # For maximization: x dominates y if x >= y in all objectives and > y in at least one
-            not_worse = np.all(x_costs >= y_costs)
-            better = np.any(x_costs > y_costs)
+            not_worse = np.all(x_fitsness >= y_fitsness)
+            better = np.any(x_fitsness > y_fitsness)
         else:
             # For minimization: x dominates y if x <= y in all objectives and < y in at least one
-            not_worse = np.all(x_costs <= y_costs)
-            better = np.any(x_costs < y_costs)
+            not_worse = np.all(x_fitsness <= y_fitsness)
+            better = np.any(x_fitsness < y_fitsness)
         
         return not_worse and better
     
