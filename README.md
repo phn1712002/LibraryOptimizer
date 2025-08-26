@@ -114,7 +114,7 @@ The system automatically selects the appropriate version based on your objective
 
 ## Documentation
 
-Full documentation is available at [GitHub Repository](https://github.com/HoangggNam/LibraryOptimizer).
+Full documentation is available at [GitHub Repository](https://github.com/phn1712002/LibraryOptimizer).
 
 ## Contributing
 
@@ -160,18 +160,18 @@ If you use this library in your research, please consider citing:
 
 ```bibtex
 @software{LibraryOptimizer,
-  author = {HoangggNam},
+  author = {phn1712002},
   title = {Library Optimizer: A Python Library for Metaheuristic Optimization with Multi-Objective Support},
   year = {2025},
-  url = {https://github.com/HoangggNam/LibraryOptimizer}
+  url = {https://github.com/phn1712002/LibraryOptimizer}
 }
 ```
 
 ## Contact
 
-- Author: HoangggNam
+- Author: phn1712002
 - Email: phn1712002@gmail.com
-- GitHub: [HoangggNam](https://github.com/HoangggNam)
+- GitHub: [phn1712002](https://github.com/phn1712002)
 
 ## Acknowledgments
 

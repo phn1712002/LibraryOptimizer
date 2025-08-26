@@ -15,7 +15,7 @@ Hãy vẽ sơ đồ thuật toán tối ưu đa mục tiêu cho toàn bộ các 
 - [X] Multi Objective TeachingLearningBasedOptimizer
 - [X] Multi Objective PrairieDogsOptimizer
 - [X] Multi Objective SimulatedAnnealingOptimizer
-- [ ] Multi Objective GeneticAlgorithmOptimizer
+- [X] Multi Objective GeneticAlgorithmOptimizer
 - [ ] Multi Objective GravitationalSearchOptimizer
 - [ ] Multi Objective BiogeographyBasedOptimizer
 - [ ] Multi Objective SeagullOptimizer
