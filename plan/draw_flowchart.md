@@ -8,11 +8,11 @@ Hãy vẽ sơ đồ thuật toán tối ưu đa mục tiêu cho toàn bộ các 
 # Todo List các thuật toán tối ưu vẽ flowchart
 - [X] Multi Objective DingoOptimizer
 - [X] Multi Objective FireflyOptimizer
-- [ ] Multi Objective JAYAOptimizer
+- [X] Multi Objective JAYAOptimizer
 - [X] Multi Objective ModifiedSocialGroupOptimizer
 - [X] Multi Objective MossGrowthOptimizer
-- [ ] Multi Objective ShuffledFrogLeapingOptimizer
-- [ ] Multi Objective TeachingLearningBasedOptimizer
+- [X] Multi Objective ShuffledFrogLeapingOptimizer
+- [X] Multi Objective TeachingLearningBasedOptimizer
 - [ ] Multi Objective PrairieDogsOptimizer
 - [ ] Multi Objective SimulatedAnnealingOptimizer
 - [ ] Multi Objective GeneticAlgorithmOptimizer
