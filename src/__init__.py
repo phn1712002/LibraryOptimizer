@@ -28,6 +28,7 @@ from .glowwormswarm_optimizer import *
 from .electromagneticchargedparticles_optimizer import *
 from .henrygassolubility_optimizer import *
 from .marinepredators_optimizer import *
+from .equilibrium_optimizer import *
 
 # Multi-objective optimizers
 from .multiobjective.artificialbeecolony_optimizer import *
@@ -55,6 +56,7 @@ from .multiobjective.glowwormswarm_optimizer import *
 from .multiobjective.electromagneticchargedparticles_optimizer import *
 from .multiobjective.henrygassolubility_optimizer import *
 from .multiobjective.marinepredators_optimizer import *
+from .multiobjective.equilibrium_optimizer import *
 
 __version__ = "1.0.0"
 __author__ = "HoangggNam"
@@ -88,6 +90,7 @@ _SOLVER_REGISTRY: Dict[str, Type[Solver]] = {
     "ElectromagneticChargedParticlesOptimizer": ElectromagneticChargedParticlesOptimizer,
     "HenryGasSolubilityOptimizer": HenryGasSolubilityOptimizer,
     "MarinePredatorsOptimizer": MarinePredatorsOptimizer,
+    "EquilibriumOptimizer": EquilibriumOptimizer,
     # Multi
     "MultiObjectiveArtificialBeeColonyOptimizer": MultiObjectiveArtificialBeeColonyOptimizer,
     "MultiObjectiveGreyWolfOptimizer": MultiObjectiveGreyWolfOptimizer,
@@ -114,6 +117,7 @@ _SOLVER_REGISTRY: Dict[str, Type[Solver]] = {
     "MultiObjectiveElectromagneticChargedParticlesOptimizer": MultiObjectiveElectromagneticChargedParticlesOptimizer,
     "MultiObjectiveHenryGasSolubilityOptimizer": MultiObjectiveHenryGasSolubilityOptimizer,
     "MultiObjectiveMarinePredatorsOptimizer": MultiObjectiveMarinePredatorsOptimizer,
+    "MultiObjectiveEquilibriumOptimizer": MultiObjectiveEquilibriumOptimizer,
 }
 
 # Mapping of single-objective solvers to their multi-objective counterparts
@@ -142,7 +146,8 @@ _MULTI_OBJECTIVE_MAPPING: Dict[str, str] = {
     "GlowwormSwarmOptimizer": "MultiObjectiveGlowwormSwarmOptimizer",
     "ElectromagneticChargedParticlesOptimizer": "MultiObjectiveElectromagneticChargedParticlesOptimizer",
     "HenryGasSolubilityOptimizer": "MultiObjectiveHenryGasSolubilityOptimizer",
-    "MarinePredatorsOptimizer": "MultiObjectiveMarinePredatorsOptimizer"
+    "MarinePredatorsOptimizer": "MultiObjectiveMarinePredatorsOptimizer",
+    "EquilibriumOptimizer": "MultiObjectiveEquilibriumOptimizer",
 }
 
 
@@ -265,6 +270,13 @@ def show_solvers(mode: str = "all") -> None:
             multi_solvers.append(name)
         else:
             single_solvers.append(name)
+
+    single_solvers = sorted(
+    [name for name in _SOLVER_REGISTRY if not name.startswith("MultiObjective")],
+    key=str.lower)
+    multi_solvers = sorted(
+    [name for name in _SOLVER_REGISTRY if name.startswith("MultiObjective")],
+    key=str.lower)
 
     if mode == "single":
         print("Single-objective Solvers:")
