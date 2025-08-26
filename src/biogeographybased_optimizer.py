@@ -108,7 +108,7 @@ class BiogeographyBasedOptimizer(Solver):
                             ep = ep / ep_sum  # Normalize probabilities
                             
                             # Select source habitat using roulette wheel selection
-                            j = roulette_wheel_selection(ep)
+                            j = self._roulette_wheel_selection(ep)
                             
                             # Perform migration
                             new_population[i].position[k] = (
@@ -159,3 +159,7 @@ class BiogeographyBasedOptimizer(Solver):
         Sort the population based on fitness.
         """
         return sort_population(population, self.maximize)
+
+    def _roulette_wheel_selection(self, probabilities):
+        """Perform roulette wheel selection (fitness proportionate selection)."""
+        return roulette_wheel_selection(probabilities)
