@@ -45,7 +45,7 @@ from .multiobjective.gravitationalsearch_optimizer import *
 from .multiobjective.biogeographybased_optimizer import *
 
 
-__version__ = "0.1.0"
+__version__ = "1.0.0"
 __author__ = "HoangggNam"
 __email__ = "phn1712002@gmai.com"
 
