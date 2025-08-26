@@ -38,10 +38,10 @@ class MultiObjectiveSolver(Solver):
         self.archive = []
         
         # Grid-based selection parameters
-        self.alpha = kwargs.get('alpha', 0.1)
+        self.alpha_grid = kwargs.get('alpha_grid', 0.1)
         self.n_grid = kwargs.get('n_grid', 7)
-        self.beta = kwargs.get('beta', 2)
-        self.gamma = kwargs.get('gamma', 2)
+        self.beta_leader = kwargs.get('beta', 2)
+        self.gamma_archive = kwargs.get('gamma_archive', 2)
         
         # Hypercube grid
         self.grid = None
@@ -126,7 +126,7 @@ class MultiObjectiveSolver(Solver):
             min_cj = np.min(costs[j, :])
             max_cj = np.max(costs[j, :])
             
-            dcj = self.alpha * (max_cj - min_cj)
+            dcj = self.alpha_grid * (max_cj - min_cj)
             min_cj = min_cj - dcj
             max_cj = max_cj + dcj
             
@@ -176,7 +176,7 @@ class MultiObjectiveSolver(Solver):
         occupied_cells, counts = np.unique(grid_indices, return_counts=True)
         
         # Selection probabilities (lower density cells have higher probability)
-        probabilities = np.exp(-self.beta * counts)
+        probabilities = np.exp(-self.beta_leader * counts)
         probabilities = probabilities / np.sum(probabilities)
         
         # Select a cell using roulette wheel
@@ -241,7 +241,7 @@ class MultiObjectiveSolver(Solver):
             return leaders
         
         # Selection probabilities (lower density cells have higher probability)
-        probabilities = np.exp(-self.beta * counts)
+        probabilities = np.exp(-self.beta_leader * counts)
         probabilities = probabilities / np.sum(probabilities)
         
         # Select multiple unique cells without replacement
@@ -374,7 +374,7 @@ class MultiObjectiveSolver(Solver):
             occupied_cells, counts = np.unique(grid_indices, return_counts=True)
             
             # Selection probabilities (higher density cells have higher probability of removal)
-            probabilities = counts ** self.gamma
+            probabilities = counts ** self.gamma_archive
             probabilities = probabilities / np.sum(probabilities)
             
             # Select a cell using roulette wheel
