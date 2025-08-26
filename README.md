@@ -176,3 +176,7 @@ If you use this library in your research, please consider citing:
 ## Acknowledgments
 
 This library builds upon research in metaheuristic optimization and implements algorithms from various scientific publications.
+
+## Languages
+- [English](README.md)
+- [Vietnamese](/docs/vi/README_VI.md)
