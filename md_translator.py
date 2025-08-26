@@ -31,15 +31,20 @@ def translate_text(text, source_lang, target_lang):
     return response.json()["choices"][0]["message"]["content"]
 
 
-def process_file(file_path, output_dir, source_lang, target_lang):
+def process_file(file_path, output_path, source_lang, target_lang, is_file_output=False):
     """Translate a single .md file"""
     with open(file_path, "r", encoding="utf-8") as f:
         content = f.read()
 
     translated = translate_text(content, source_lang, target_lang)
 
-    filename = os.path.basename(file_path)
-    out_path = os.path.join(output_dir, filename)
+    if is_file_output:
+        # output_path is a full file path
+        out_path = output_path
+    else:
+        # output_path is a folder
+        filename = os.path.basename(file_path)
+        out_path = os.path.join(output_path, filename)
 
     with open(out_path, "w", encoding="utf-8") as f:
         f.write(translated)
@@ -67,20 +72,25 @@ def main():
     else:
         if os.path.isfile(input_path):
             base, ext = os.path.splitext(input_path)
-            output_path = f"{base}_{target_lang}{ext}"
+            output_path = f"{base}_{target_lang}{ext}"  # full file path
         elif os.path.isdir(input_path):
-            output_path = f"{input_path.rstrip(os.sep)}_{target_lang}"
+            output_path = f"{input_path.rstrip(os.sep)}"  # folder
         else:
             print("❌ Invalid INPUT_PATH.")
             return
 
     # If input is a single file
     if os.path.isfile(input_path) and input_path.endswith(".md"):
-        if not args.output:  # output is a single file
-            process_file(input_path, os.path.dirname(output_path), source_lang, target_lang)
-        else:  # output is a folder
-            os.makedirs(output_path, exist_ok=True)
-            process_file(input_path, output_path, source_lang, target_lang)
+        if not args.output:  # no --output → full file path
+            process_file(input_path, output_path, source_lang, target_lang, is_file_output=True)
+        else:  # --output provided
+            if os.path.isdir(output_path) or output_path.endswith(os.sep):
+                os.makedirs(output_path, exist_ok=True)
+                process_file(input_path, output_path, source_lang, target_lang)
+            else:
+                # If --output is given as a file path
+                os.makedirs(os.path.dirname(output_path), exist_ok=True)
+                process_file(input_path, output_path, source_lang, target_lang, is_file_output=True)
 
     # If input is a folder → parallel processing
     elif os.path.isdir(input_path):
