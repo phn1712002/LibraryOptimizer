@@ -25,6 +25,7 @@ from .gravitationalsearch_optimizer import *
 from .biogeographybased_optimizer import *
 from .seagull_optimizer import *
 from .harmonysearch_optimizer import *
+from .glowwormswarm_optimizer import *
 
 # Multi-objective optimizers
 from .multiobjective.artificialbeecolony_optimizer import *
@@ -48,6 +49,7 @@ from .multiobjective.gravitationalsearch_optimizer import *
 from .multiobjective.biogeographybased_optimizer import *
 from .multiobjective.seagull_optimizer import *
 from .multiobjective.harmonysearch_optimizer import *
+from .multiobjective.glowwormswarm_optimizer import *
 
 
 __version__ = "1.0.0"
@@ -78,6 +80,7 @@ _SOLVER_REGISTRY: Dict[str, Type[Solver]] = {
     "BiogeographyBasedOptimizer": BiogeographyBasedOptimizer,
     "SeagullOptimizer": SeagullOptimizer,
     "HarmonySearchOptimizer": HarmonySearchOptimizer,
+    "GlowwormSwarmOptimizer": GlowwormSwarmOptimizer,
     # Multi
     "MultiObjectiveArtificialBeeColonyOptimizer": MultiObjectiveArtificialBeeColonyOptimizer,
     "MultiObjectiveGreyWolfOptimizer": MultiObjectiveGreyWolfOptimizer,
@@ -99,7 +102,8 @@ _SOLVER_REGISTRY: Dict[str, Type[Solver]] = {
     'MultiObjectiveGravitationalSearchOptimizer': MultiObjectiveGravitationalSearchOptimizer,
     'MultiObjectiveBiogeographyBasedOptimizer': MultiObjectiveBiogeographyBasedOptimizer,
     'MultiObjectiveSeagullOptimizer': MultiObjectiveSeagullOptimizer,
-    'MultiObjectiveHarmonySearchOptimizer': MultiObjectiveHarmonySearchOptimizer
+    'MultiObjectiveHarmonySearchOptimizer': MultiObjectiveHarmonySearchOptimizer,
+    'MultiObjectiveGlowwormSwarmOptimizer': MultiObjectiveGlowwormSwarmOptimizer
 }
 
 # Mapping of single-objective solvers to their multi-objective counterparts
@@ -124,7 +128,8 @@ _MULTI_OBJECTIVE_MAPPING: Dict[str, str] = {
     "GravitationalSearchOptimizer": "MultiObjectiveGravitationalSearchOptimizer",
     "BiogeographyBasedOptimizer": "MultiObjectiveBiogeographyBasedOptimizer",
     "SeagullOptimizer": "MultiObjectiveSeagullOptimizer",
-    "HarmonySearchOptimizer": "MultiObjectiveHarmonySearchOptimizer"
+    "HarmonySearchOptimizer": "MultiObjectiveHarmonySearchOptimizer",
+    "GlowwormSwarmOptimizer": "MultiObjectiveGlowwormSwarmOptimizer"
 }
 
 
