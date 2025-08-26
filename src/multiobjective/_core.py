@@ -512,7 +512,9 @@ class MultiObjectiveSolver(Solver):
         return np.random.choice(tournament_members)
     
     def plot_pareto_front(self) -> None:
-        """Plot Pareto front from archive"""
+        """Plot Pareto front from archive
+        Handles different environments including Google Colab.
+        """
         if not self.archive:
             print("No solutions in archive to plot.")
             return
@@ -529,7 +531,21 @@ class MultiObjectiveSolver(Solver):
             plt.title('Pareto Front (2D)')
             plt.grid(True)
             plt.tight_layout()
-            plt.show()
+            
+            # Handle different environments for displaying plots
+            try:
+                # Check if we're in Google Colab
+                import google.colab
+                # In Google Colab, we need to use a different approach
+                from IPython.display import display
+                plt.show()
+            except ImportError:
+                # Not in Google Colab, use standard plt.show()
+                plt.show()
+            except Exception as e:
+                # Fallback: save to file and inform user
+                plt.savefig('pareto_front_2d.png')
+                print(f"Plot could not be displayed. Saved as 'pareto_front_2d.png'. Error: {e}")
         
         elif n_objectives == 3:
             # 3D plot
@@ -542,7 +558,21 @@ class MultiObjectiveSolver(Solver):
             ax.set_title('Pareto Front (3D)')
             plt.grid(True)
             plt.tight_layout()
-            plt.show()
+            
+            # Handle different environments for displaying plots
+            try:
+                # Check if we're in Google Colab
+                import google.colab
+                # In Google Colab, we need to use a different approach
+                from IPython.display import display
+                plt.show()
+            except ImportError:
+                # Not in Google Colab, use standard plt.show()
+                plt.show()
+            except Exception as e:
+                # Fallback: save to file and inform user
+                plt.savefig('pareto_front_3d.png')
+                print(f"Plot could not be displayed. Saved as 'pareto_front_3d.png'. Error: {e}")
         
         else:
             print(f"Cannot plot Pareto front for {n_objectives} objectives. Maximum 3D visualization supported.")

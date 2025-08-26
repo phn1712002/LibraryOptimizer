@@ -223,6 +223,7 @@ class Solver:
         Plot the optimization history showing convergence over iterations.
         
         Displays a line plot of the best fitness value found at each iteration.
+        Handles different environments including Google Colab.
         """
         if self.history_step_solver is None:
             print("No optimization history available. Run the solver first.")
@@ -249,7 +250,21 @@ class Solver:
         
         plt.legend()
         plt.tight_layout()
-        plt.show()
+        
+        # Handle different environments for displaying plots
+        try:
+            # Check if we're in Google Colab
+            import google.colab
+            # In Google Colab, we need to use a different approach
+            from IPython.display import display
+            plt.show()
+        except ImportError:
+            # Not in Google Colab, use standard plt.show()
+            plt.show()
+        except Exception as e:
+            # Fallback: save to file and inform user
+            plt.savefig('optimization_history.png')
+            print(f"Plot could not be displayed. Saved as 'optimization_history.png'. Error: {e}")
 
     def solver(self) -> Tuple[List, Member]:
         """
