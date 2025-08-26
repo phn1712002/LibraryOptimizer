@@ -23,6 +23,7 @@ from .simulatedannealing_optimizer import *
 from .geneticalgorithm_optimizer import *
 from .gravitationalsearch_optimizer import *
 from .biogeographybased_optimizer import *
+from .seagull_optimizer import *
 
 # Multi-objective optimizers
 from .multiobjective.artificialbeecolony_optimizer import *
@@ -44,6 +45,7 @@ from .multiobjective.mossgrowth_optimizer import *
 from .multiobjective.simulatedannealing_optimizer import *
 from .multiobjective.gravitationalsearch_optimizer import *
 from .multiobjective.biogeographybased_optimizer import *
+from .multiobjective.seagull_optimizer import *
 
 
 __version__ = "1.0.0"
@@ -72,6 +74,7 @@ _SOLVER_REGISTRY: Dict[str, Type[Solver]] = {
     "GeneticAlgorithmOptimizer": GeneticAlgorithmOptimizer,
     "GravitationalSearchOptimizer": GravitationalSearchOptimizer,
     "BiogeographyBasedOptimizer": BiogeographyBasedOptimizer,
+    "SeagullOptimizer": SeagullOptimizer,
     # Multi
     "MultiObjectiveArtificialBeeColonyOptimizer": MultiObjectiveArtificialBeeColonyOptimizer,
     "MultiObjectiveGreyWolfOptimizer": MultiObjectiveGreyWolfOptimizer,
@@ -91,7 +94,8 @@ _SOLVER_REGISTRY: Dict[str, Type[Solver]] = {
     "MultiObjectiveMossGrowthOptimizer": MultiObjectiveMossGrowthOptimizer,
     'MultiObjectiveSimulatedAnnealingOptimizer': MultiObjectiveSimulatedAnnealingOptimizer,
     'MultiObjectiveGravitationalSearchOptimizer': MultiObjectiveGravitationalSearchOptimizer,
-    'MultiObjectiveBiogeographyBasedOptimizer': MultiObjectiveBiogeographyBasedOptimizer
+    'MultiObjectiveBiogeographyBasedOptimizer': MultiObjectiveBiogeographyBasedOptimizer,
+    'MultiObjectiveSeagullOptimizer': MultiObjectiveSeagullOptimizer
 }
 
 # Mapping of single-objective solvers to their multi-objective counterparts
@@ -114,7 +118,8 @@ _MULTI_OBJECTIVE_MAPPING: Dict[str, str] = {
     "MossGrowthOptimizer": "MultiObjectiveMossGrowthOptimizer",
     'SimulatedAnnealingOptimizer': 'MultiObjectiveSimulatedAnnealingOptimizer',
     "GravitationalSearchOptimizer": "MultiObjectiveGravitationalSearchOptimizer",
-    "BiogeographyBasedOptimizer": "MultiObjectiveBiogeographyBasedOptimizer"
+    "BiogeographyBasedOptimizer": "MultiObjectiveBiogeographyBasedOptimizer",
+    "SeagullOptimizer": "MultiObjectiveSeagullOptimizer"
 }
 
 
