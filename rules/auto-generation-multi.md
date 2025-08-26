@@ -1,61 +1,63 @@
-# Automatic Algorithm Generation System
+# Automatic Algorithm Detection System
 
 ## Overview
 
-This document describes the automatic generation system that transforms new single-objective optimization algorithms into their multi-objective counterparts, following the unified coding standards of LibraryOptimizer.
+This document describes the automatic detection system that chooses between single-objective and multi-objective versions of optimization algorithms based on objective function output, following the unified coding standards of LibraryOptimizer.
 
 ## System Architecture
 
-### Automatic Generation Pipeline
+### Automatic Detection Pipeline
 
 ```
-Single-Objective Algorithm → Analysis → Multi-Objective Generation → Registry Update
+Objective Function → Type Detection → Solver Selection → Instance Creation
 ```
 
 ### Key Components
 
-1. **Algorithm Analyzer**: Examines single-objective algorithm structure
-2. **Template Generator**: Creates multi-objective version templates
-3. **Registry Manager**: Updates solver registry automatically
-4. **Code Validator**: Ensures generated code follows library standards
+1. **Function Analyzer**: Examines objective function output type
+2. **Solver Selector**: Chooses appropriate solver version
+3. **Registry Mapper**: Maps single-objective to multi-objective solvers
+4. **Instance Creator**: Creates solver instances with proper parameters
 
-## Automatic Generation Process
+## Automatic Detection Process
 
 ### Step 1: Single-Objective Algorithm Creation
 Create your algorithm following the standard pattern:
 
 ```python
 class YourAlgorithmOptimizer(Solver):
-    def __init__(self, objective_func, lb, ub, dim, maximize=True, **kwargs):
+    def __init__(self, objective_func: Callable, lb: Union[float, np.ndarray], 
+                 ub: Union[float, np.ndarray], dim: int, maximize: bool = True, **kwargs):
         super().__init__(objective_func, lb, ub, dim, maximize, **kwargs)
         self.name_solver = "Your Algorithm Optimizer"
         # Algorithm-specific parameters
         self.param1 = kwargs.get('param1', default_value)
     
-    def solver(self, search_agents_no, max_iter):
+    def solver(self, search_agents_no: int, max_iter: int) -> Tuple[List, Member]:
         # Your algorithm implementation
         pass
 ```
 
-### Step 2: Automatic Multi-Objective Generation
-The system automatically generates:
+### Step 2: Manual Multi-Objective Implementation
+Manually create the multi-objective version following the multi-objective standards:
 
 ```python
 # File: src/multiobjective/your_algorithm_optimizer.py
 class MultiObjectiveYourAlgorithmOptimizer(MultiObjectiveSolver):
-    def __init__(self, objective_func, lb, ub, dim, maximize=True, **kwargs):
+    def __init__(self, objective_func: Callable, lb: Union[float, np.ndarray], 
+                 ub: Union[float, np.ndarray], dim: int, maximize: bool = True, **kwargs):
         super().__init__(objective_func, lb, ub, dim, maximize, **kwargs)
         self.name_solver = "Multi-Objective Your Algorithm Optimizer"
         # Copy all algorithm-specific parameters
         self.param1 = kwargs.get('param1', default_value)
     
-    def solver(self, search_agents_no, max_iter):
+    def solver(self, search_agents_no: int, max_iter: int) -> Tuple[List, List[MultiObjectiveMember]]:
         # Multi-objective implementation using inherited utilities
         pass
 ```
 
-### Step 3: Automatic Registry Updates
-The system automatically updates:
+### Step 3: Manual Registry Updates
+Manually update the registry mappings:
 
 ```python
 # In src/__init__.py
@@ -74,15 +76,17 @@ _SOLVER_REGISTRY: Dict[str, Type[Solver]] = {
 ## Automatic Features
 
 ### 1. Parameter Inheritance
-All algorithm-specific parameters are automatically copied to the multi-objective version:
+All algorithm-specific parameters are automatically passed to the appropriate version:
 
 ```python
-# Single-objective parameters
-self.population_size = kwargs.get('population_size', 50)
-self.crossover_rate = kwargs.get('crossover_rate', 0.8)
-self.mutation_rate = kwargs.get('mutation_rate', 0.1)
-
-# Automatically available in multi-objective version
+# Parameters work for both single and multi-objective
+method = create_solver(
+    'YourAlgorithmOptimizer',
+    objective_func,
+    lb, ub, dim,
+    param1=0.5,        # Algorithm-specific
+    archive_size=100   # Multi-objective specific
+)
 ```
 
 ### 2. Objective Function Detection
@@ -96,7 +100,7 @@ def sphere(x): return np.sum(x**2)
 def zdt1(x): return [x[0], 1 - np.sqrt(x[0])]
 
 # Automatic selection:
-method = create_solver('YourAlgorithm', objective_func, lb, ub, dim)
+method = create_solver('YourAlgorithmOptimizer', objective_func, lb, ub, dim)
 ```
 
 ### 3. Utility Integration
@@ -108,106 +112,23 @@ Multi-objective versions automatically inherit:
 - Progress tracking
 - Visualization tools
 
-## Generation Templates
+## Implementation Guide
 
-### Template 1: Simple Algorithm (No Custom Member)
+### For New Algorithms
+
+1. **Create Single-Objective Version**: Follow single-objective rules
+2. **Create Multi-Objective Version**: Manually implement following multi-objective standards
+3. **Update Registry**: Add mappings in `src/__init__.py`
+4. **Test**: Verify both versions work correctly
+
+### Parameter Handling
+All algorithm-specific parameters should be passed through `**kwargs` and extracted in the constructor:
+
 ```python
-class MultiObjectiveAlgorithmNameOptimizer(MultiObjectiveSolver):
-    def __init__(self, objective_func, lb, ub, dim, maximize=True, **kwargs):
-        super().__init__(objective_func, lb, ub, dim, maximize, **kwargs)
-        self.name_solver = "Multi-Objective Algorithm Name Optimizer"
-        # Copy parameters
-        for key, value in kwargs.items():
-            setattr(self, key, value)
-    
-    def solver(self, search_agents_no, max_iter):
-        # Focus on algorithm-specific update logic
-        # Use inherited multi-objective utilities
-        pass
-```
-
-### Template 2: Complex Algorithm (With Custom Member)
-```python
-class AlgorithmMultiMember(MultiObjectiveMember):
-    def __init__(self, position, fitness, additional_attr=None):
-        super().__init__(position, fitness)
-        self.additional_attr = additional_attr # Please replace with desired properties
-    
-    def copy(self):
-        return AlgorithmMultiMember(self.position.copy(), 
-                                  self.multi_fitness.copy(),
-                                  self.additional_attr)
-
-class MultiObjectiveAlgorithmNameOptimizer(MultiObjectiveSolver):
-    def __init__(self, objective_func, lb, ub, dim, maximize, **kwargs):
-        super().__init__(objective_func, lb, ub, dim, maximize, **kwargs)
-        self.name_solver = "Multi-Objective Algorithm Name Optimizer"
-        # Copy parameters
-        for key, value in kwargs.items():
-            setattr(self, key, value)
-    
-    def _init_population(self, search_agents_no):
-        population = []
-        for _ in range(search_agents_no):
-            position = np.random.uniform(self.lb, self.ub, self.dim)
-            fitness = self.objective_func(position)
-            population.append(AlgorithmMultiMember(position, fitness))
-        return population
-    
-    def solver(self, search_agents_no, max_iter):
-        # Implementation with custom member class
-        pass
-```
-
-## Implementation Patterns
-
-### Pattern A: Leader-Based Algorithms
-```python
-def solver(self, search_agents_no, max_iter):
-    # Initialize population and archive
-    population = self._init_population(search_agents_no)
-    self._add_to_archive(population)
-    
-    for iter in range(max_iter):
-        for i, agent in enumerate(population):
-            # Select leader from archive
-            leader = self._select_leader()
-            
-            # Algorithm-specific update using leader
-            new_position = self._update_position(agent, leader, iter, max_iter)
-            
-            # Update agent
-            population[i].position = new_position
-            population[i].multi_fitness = self.objective_func(new_position)
-        
-        # Update archive
-        self._add_to_archive(population)
-        
-        # Track progress
-        self._callbacks(iter, max_iter, self.archive[0] if self.archive else None)
-```
-
-### Pattern B: Population-Based Algorithms
-```python
-def solver(self, search_agents_no, max_iter):
-    # Initialize population and archive
-    population = self._init_population(search_agents_no)
-    self._add_to_archive(population)
-    
-    for iter in range(max_iter):
-        # Algorithm-specific population update
-        new_population = self._update_population(population, iter, max_iter)
-        
-        # Evaluate new population
-        for agent in new_population:
-            agent.multi_fitness = self.objective_func(agent.position)
-        
-        # Update archive
-        self._add_to_archive(new_population)
-        population = new_population
-        
-        # Track progress
-        self._callbacks(iter, max_iter, self.archive[0] if self.archive else None)
+def __init__(self, objective_func, lb, ub, dim, maximize=True, **kwargs):
+    super().__init__(objective_func, lb, ub, dim, maximize, **kwargs)
+    self.param1 = kwargs.get('param1', default_value)
+    self.param2 = kwargs.get('param2', default_value)
 ```
 
 ## Error Handling and Fallbacks
@@ -221,10 +142,10 @@ def create_solver(solver_name, objective_func, lb, ub, dim, **kwargs):
         result = objective_func(test_point)
         
         if hasattr(result, '__len__') and len(result) > 1:
-            # Multi-objective detected
+            # Multi-objective function detected
             return multi_objective_version(objective_func, lb, ub, dim, maximize, **kwargs)
         else:
-            # Single-objective detected
+            # Single-objective function detected
             return single_objective_version(objective_func, lb, ub, dim, maximize, **kwargs)
             
     except Exception as e:
@@ -233,35 +154,7 @@ def create_solver(solver_name, objective_func, lb, ub, dim, **kwargs):
         return single_objective_version(objective_func, lb, ub, dim, maximize, **kwargs)
 ```
 
-## Performance Optimization
-
-### Memory Efficiency
-```python
-def _trim_archive(self):
-    """Efficient archive trimming using grid-based selection"""
-    while len(self.archive) > self.archive_size:
-        # Grid-based removal for diversity preservation
-        self._remove_least_diverse_solution()
-```
-
-### Vectorized Operations
-```python
-def _update_positions(self, population, leaders):
-    """Vectorized position update"""
-    # Use NumPy vectorization instead of loops
-    positions = np.array([agent.position for agent in population])
-    leader_positions = np.array([leader.position for leader in leaders])
-    
-    # Vectorized update
-    new_positions = positions + self.step_size * (leader_positions - positions)
-    
-    # Update agents
-    for i, agent in enumerate(population):
-        agent.position = new_positions[i]
-```
-
-
-## Best Practices for Automatic Generation
+## Best Practices
 
 ### 1. Code Consistency
 - Follow existing naming conventions
@@ -269,7 +162,7 @@ def _update_positions(self, population, leaders):
 - Maintain same code style as library
 
 ### 2. Documentation
-- Auto-generate comprehensive docstrings
+- Comprehensive docstrings for classes and methods
 - Include examples in documentation
 - Document all parameters and returns
 
@@ -280,11 +173,11 @@ def _update_positions(self, population, leaders):
 
 ## Integration with Existing System
 
-### Registry Auto-Update
-The system automatically handles:
-- Import statement generation
-- Registry mapping updates
-- Multi-objective mapping creation
+### Registry Management
+The system uses manual registry updates:
+- Import statements must be added manually
+- Registry mappings must be updated manually
+- Multi-objective mapping must be created manually
 
 ### Backward Compatibility
 - All existing single-objective algorithms remain unchanged
@@ -339,10 +232,9 @@ method = create_solver(
    - Check that all parameters are passed through kwargs
    - Validate parameter types and ranges
 
-3. **Performance Problems**
-   - Use vectorized operations
-   - Optimize archive maintenance
-   - Consider archive size limits
+3. **Registry Mapping Errors**
+   - Verify both single and multi-objective versions are imported
+   - Check mapping entries in `_MULTI_OBJECTIVE_MAPPING`
 
 ### Debug Mode
 ```python
@@ -354,14 +246,29 @@ logging.basicConfig(level=logging.DEBUG)
 method = create_solver('YourAlgorithmOptimizer', objective_func, lb, ub, dim, maximize)
 ```
 
+## Current Implementation Status
+
+The automatic generation system currently provides:
+- ✅ Automatic objective function type detection
+- ✅ Automatic solver version selection
+- ✅ Parameter inheritance through kwargs
+- ✅ Graceful fallback to single-objective
+- ✅ Multi-objective utility integration
+
+Manual steps required:
+- ✗ Multi-objective algorithm implementation
+- ✗ Registry import statements
+- ✗ Multi-objective mapping entries
+- ✗ Custom member class implementation (if needed)
+
 ## Future Enhancements
 
 ### Planned Features
-- Automatic hyperparameter tuning
-- Adaptive archive size management
+- Automated multi-objective template generation
+- Registry auto-update scripts
+- Parameter validation system
 - Advanced visualization tools
 - Parallel execution support
-- Cloud deployment integration
 
 ### Extension Points
 - Custom dominance criteria
@@ -369,4 +276,4 @@ method = create_solver('YourAlgorithmOptimizer', objective_func, lb, ub, dim, ma
 - Specialized grid implementations
 - Hybrid algorithm support
 
-*This document was last updated: 2025-08-25*
+*This document was last updated: 2025-08-26*

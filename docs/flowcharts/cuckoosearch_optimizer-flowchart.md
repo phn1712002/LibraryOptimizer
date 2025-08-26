@@ -109,7 +109,7 @@ flowchart TD
 ## Công thức bay Levy:
 Bay Levy là một loại random walk với các bước có độ dài tuân theo phân phối xác suất nặng đuôi:
 ```python
-# Hàm levy_flight từ utils/general.py
+# Hàm levy_flight từ src/_general.py
 def levy_flight(dim, beta=1.5):
     sigma = (gamma(1 + beta) * np.sin(np.pi * beta / 2) / 
             (gamma((1 + beta) / 2) * beta * 2**((beta - 1) / 2)))**(1 / beta)

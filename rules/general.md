@@ -2,7 +2,8 @@
 
 ## 📋 Overview
 
-This document defines programming standards for the Library Optimizer, including naming conventions, commenting standards, function structure, file organization, and general rules. The system now supports automatic generation of multi-objective versions from single-objective algorithms, following these unified standards.
+This document defines programming standards for the Library Optimizer, including naming conventions, commenting standards, function structure, file organization, and general rules. The system supports automatic detection of objective function types and selection of appropriate solver versions.
+
 ## 🏷️ Naming Rules
 
 ### 1. Class Names
@@ -108,6 +109,7 @@ def solver(self, search_agents_no: int, max_iter: int) -> Tuple[List, Member]:
 src/
 ├── __init__.py             # Module exports and registry
 ├── _core.py                # Base class and common utilities
+├── _general.py             # Common utilities
 ├── algorithm1_optimizer.py  # Specific algorithm implementation
 ├── algorithm2_optimizer.py
 ├── multiobjective/         # Multi-objective optimization algorithms
@@ -120,17 +122,17 @@ src/
 
 utils/
 ├── __init__.py
-├── general.py           # Common utilities
+├── func_test.py            # Sample problems to be optimized
 └── ...
 
 rules/
-├── general.md           # General rules (this document)
-├── new-algorithm.md     # Template for new algorithms
-├── multi-objective.md   # Multi-objective optimization guidelines
-└── auto-generation-multi.md  # Automatic multi-objective generation system
+├── general.md              # General rules (this document)
+├── single-objective.md     # Template for new single-objective algorithm
+├── multi-objective.md      # Multi-objective optimization guidelines
+└── auto-generation-multi.md # Automatic detection system documentation
 
-docs/                    # Documentation
-tests/                   # Unit tests
+docs/                       # Documentation
+test/                       # Unit tests
 ```
 
 ### 2. Import Rules
@@ -145,8 +147,7 @@ from tqdm import tqdm
 
 # Local imports (relative)
 from ._core import Solver, Member
-# Note: Use inherited utilities from Solver class instead of importing from ._general
-# Only import specific utilities that are not available through inheritance
+from ._general import sort_population  # Import utilities from _general as needed
 ```
 
 ### 3. File Naming
@@ -160,7 +161,8 @@ from ._core import Solver, Member
 All optimizers must inherit from `Solver` and implement:
 ```python
 class CustomOptimizer(Solver):
-    def __init__(self, objective_func, lb, ub, dim, maximize=True, **kwargs):
+    def __init__(self, objective_func: Callable, lb: Union[float, np.ndarray], 
+                 ub: Union[float, np.ndarray], dim: int, maximize: bool = True, **kwargs):
         super().__init__(objective_func, lb, ub, dim, maximize, **kwargs)
         self.name_solver = "Custom Optimizer Name"
         # Store additional parameters
@@ -171,25 +173,38 @@ class CustomOptimizer(Solver):
         return history_step_solver, best_solver
 ```
 
-### 2. Error Handling
+### 2. Utility Usage
+- **Import sort_population**: Must import `sort_population` from `._general`
+- **Use inherited utilities**: Use `self._is_better()`, `self._begin_step_solver()`, etc. from Solver
+- **Custom sorting**: Implement `_sort_population` method using imported `sort_population`
+
+```python
+def _sort_population(self, population):
+    """
+    Sort the population based on fitness.
+    """
+    return sort_population(population, self.maximize)
+```
+
+### 3. Error Handling
 ```python
 def find_solver(solver_name: str) -> Type[Solver]:
-    solver_name_lower = solver_name.strip().lower()
-    if solver_name_lower not in _SOLVER_REGISTRY:
+    solver_name = solver_name.strip()
+    if solver_name not in _SOLVER_REGISTRY:
         available_solvers = list(_SOLVER_REGISTRY.keys())
         raise ValueError(
             f"Solver '{solver_name}' not found. "
             f"Available solvers: {available_solvers}"
         )
-    return _SOLVER_REGISTRY[solver_name_lower]
+    return _SOLVER_REGISTRY[solver_name]
 ```
 
-### 3. Performance Considerations
+### 4. Performance Considerations
 - Use NumPy vectorization instead of Python loops
 - Avoid unnecessary copying of large arrays
 - Use pre-allocation when possible
 
-### 4. Testing Requirements
+### 5. Testing Requirements
 Each optimizer must have:
 - Unit tests for main functions
 - Integration tests with different objective functions
@@ -229,7 +244,7 @@ function_call( arg1, arg2 )
 
 ### 1. Code Reusability
 - Use inheritance from base `Solver` class
-- Reuse utilities from inherited methods instead of importing from ._general
+- Import and use utilities from `._general` as needed
 - Avoid code duplication
 
 ### 2. Maintainability
@@ -249,13 +264,17 @@ function_call( arg1, arg2 )
 
 ## 📋 Template for New Algorithms
 
-See `rules/new-algorithm.md` for detailed template when adding new algorithms and `rules/auto-generation-multi.md` for automatic multi-objective generation system.
+To add a new optimization algorithm, follow the template in `rules/single-objective.md`.
+If you need to implement multi-objective optimization, follow the template in `rules/multi-objective.md`.
+The system will automatically detect objective function types and choose the appropriate version using the detection system described in `rules/auto-generation-multi.md`.
 
 ## 🔍 Code Review Checklist
 
 - [ ] Follow naming conventions
 - [ ] Complete docstrings
 - [ ] Type hints for all public functions
+- [ ] Import `sort_population` from `._general`
+- [ ] Implement `_sort_population` method
 - [ ] No magic numbers
 - [ ] Proper error handling
 - [ ] Unit tests written
@@ -270,4 +289,4 @@ For questions about these rules, contact:
 
 ---
 
-*This document was last updated: 2025-08-23*
+*This document was last updated: 2025-08-26*

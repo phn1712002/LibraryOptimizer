@@ -29,7 +29,7 @@ We welcome suggestions for new features or improvements. Please include:
 
 To add a new optimization algorithm:
 
-1. **Follow the Template**: Use the template in `rules/new-algorithm.md`
+1. **Follow the Template**: Use the template in `rules/single-objective.md`
 2. **Inherit from Solver**: Your algorithm must inherit from the base `Solver` class
 3. **Implement Required Methods**: Ensure you implement the `solver()` method
 4. **Add Tests**: Include comprehensive tests in the `test/` directory

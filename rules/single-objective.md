@@ -14,8 +14,7 @@ Each new algorithm must follow these rules to ensure consistency with the librar
 import numpy as np
 from typing import Callable, Union, Tuple, List
 from ._core import Solver, Member
-# Note: Use inherited utilities from Solver class instead of importing from ._general
-# Only import specific utilities that are not available through inheritance
+from ._general import sort_population  # Note: Import sort_population from _general
 ```
 
 ### 3. Algorithm Class Structure
@@ -139,15 +138,15 @@ def _init_population(self, search_agents_no) -> List:
 
 ### 7. Utility Methods (Use inherited utilities)
 ```python
-# Use inherited methods from Solver class instead of importing external functions
-# For example, use self._sort_population() instead of importing sort_population
-# Use self._is_better() for comparison, self._begin_step_solver() for progress tracking, etc.
+# Use inherited methods from Solver class for most utilities
+# For sorting, import and use sort_population from _general
+def _sort_population(self, population):
+    """
+    Sort the population based on fitness.
+    """
+    return sort_population(population, self.maximize)
 
-# If you need to override a method, inherit and extend functionality
-def _init_population(self, search_agents_no) -> List:
-    # Override to provide custom initialization if needed
-    # Otherwise, use the inherited method
-    return super()._init_population(search_agents_no)
+# Use self._is_better() for comparison, self._begin_step_solver() for progress tracking, etc.
 ```
 
 ### 8. Register Algorithm
@@ -165,7 +164,6 @@ _SOLVER_REGISTRY: Dict[str, Type[Solver]] = {
 
 ### Utility Methods
 - `_is_better(member1, member2)`: Compare two solutions
-- `_sort_population(population)`: Sort population using utility function
 - `_begin_step_solver(max_iter)`: Initialize progress bar
 - `_callbacks(iter, max_iter, best)`: Update progress
 - `_end_step_solver()`: Close progress bar and plot history
@@ -180,7 +178,7 @@ _SOLVER_REGISTRY: Dict[str, Type[Solver]] = {
 ## Automatic Algorithm Generation System
 
 ### Automatic Single-Objective to Multi-Objective Conversion
-The library now supports automatic generation of multi-objective versions from single-objective algorithms. When you provide a new single-objective algorithm, the system can automatically create its multi-objective counterpart.
+The library supports automatic generation of multi-objective versions from single-objective algorithms. When you provide a new single-objective algorithm, the system can automatically create its multi-objective counterpart.
 
 ### Automatic Code Generation Process
 
@@ -261,7 +259,7 @@ method2 = create_solver(
 )
 ```
 
-See `rules/multi-objective.md` for detailed multi-objective implementation guidelines and `rules/auto-generation.md` for complete automatic generation system documentation.
+See `rules/multi-objective.md` for detailed multi-objective implementation guidelines and `rules/auto-generation-multi.md` for complete automatic generation system documentation.
 
 ## Automatic Generation Quick Reference
 
@@ -296,8 +294,7 @@ import matplotlib.pyplot as plt
 
 # Local imports (relative)
 from ._core import Solver, Member
-# Note: Use inherited utilities from Solver class instead of importing from ._general
-# Only import specific utilities that are not available through inheritance
+from ._general import sort_population  # Import sort_population from _general
 ```
 
 ### Type Hints
@@ -325,16 +322,19 @@ history_step_solver.append(best_solution.copy())
 - No custom Member class
 - Basic population initialization
 - Simple update rules in main loop
+- Import sort_population from _general
 
 ### Pattern 2: Algorithm with Custom Member (PSO, ABC)
 - Custom Member class with additional attributes
 - Specialized initialization
 - Complex update logic requiring additional state
+- Import sort_population from _general
 
 ### Pattern 3: Complex Algorithm (SFLA, MGO)
 - Multiple phases or complex update strategies
 - Additional utility methods
 - Sophisticated parameter handling
+- Import sort_population from _general
 
 ## Best Practices
 
@@ -379,18 +379,16 @@ def test_sphere_function():
 
 ## Utility Functions Available
 
-Note: These utility functions should be accessed through inherited methods from the Solver class rather than imported directly:
-- `self._sort_population()`: For sorting population (inherited from Solver)
+Note: These utility functions should be accessed through the appropriate imports:
+- `sort_population()`: For sorting population (import from _general)
 - `self._is_better()`: For comparing solutions (inherited from Solver)
 - `self._begin_step_solver()`: For progress tracking (inherited from Solver)
 - `self._callbacks()`: For iteration callbacks (inherited from Solver)
 - `self._end_step_solver()`: For finalizing solver (inherited from Solver)
 
-Only import specific utilities from `utils/general.py` if they are not available through inheritance and are truly needed for the algorithm.
-
 ## Common Implementation Issues to Avoid
 
-1. **Direct import of utility functions**: Use inherited methods from Solver class instead of importing from ._general
+1. **Missing sort_population import**: Must import sort_population from _general
 2. **Missing type hints**: Always include complete type annotations
 3. **Incomplete docstrings**: Follow the established documentation pattern
 4. **Hard-coded parameters**: Use kwargs with defaults instead
@@ -406,4 +404,4 @@ Check existing files for reference:
 
 By following these updated rules, new algorithms will integrate well with the existing library and maintain consistency with your implementation patterns.
 
-*This document was last updated: 2025-08-23*
+*This document was last updated: 2025-08-26*

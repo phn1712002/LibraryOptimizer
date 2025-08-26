@@ -122,7 +122,7 @@ We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.
 
 ### Adding New Algorithms
 
-To add a new optimization algorithm, follow the template in `rules/new-algorithm.md`.
+To add a new optimization algorithm, follow the template in `rules/single-objective.md`.
 If you need to implement multiple fitness, follow the template in `rules/multi-objective.md`.
 Or the system will automatically generate the multi-objective version of your algorithm using the automatic generation system described in `rules/auto-generation-multi.md`.
 
