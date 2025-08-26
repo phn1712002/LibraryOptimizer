@@ -57,6 +57,7 @@ from .multiobjective.electromagneticchargedparticles_optimizer import *
 from .multiobjective.henrygassolubility_optimizer import *
 from .multiobjective.marinepredators_optimizer import *
 from .multiobjective.equilibrium_optimizer import *
+from .multiobjective.jaya_optimizer import *
 
 __version__ = "1.0.0"
 __author__ = "HoangggNam"
@@ -118,6 +119,7 @@ _SOLVER_REGISTRY: Dict[str, Type[Solver]] = {
     "MultiObjectiveHenryGasSolubilityOptimizer": MultiObjectiveHenryGasSolubilityOptimizer,
     "MultiObjectiveMarinePredatorsOptimizer": MultiObjectiveMarinePredatorsOptimizer,
     "MultiObjectiveEquilibriumOptimizer": MultiObjectiveEquilibriumOptimizer,
+    "MultiObjectiveJAYAOptimizer": MultiObjectiveJAYAOptimizer,
 }
 
 # Mapping of single-objective solvers to their multi-objective counterparts
@@ -148,6 +150,7 @@ _MULTI_OBJECTIVE_MAPPING: Dict[str, str] = {
     "HenryGasSolubilityOptimizer": "MultiObjectiveHenryGasSolubilityOptimizer",
     "MarinePredatorsOptimizer": "MultiObjectiveMarinePredatorsOptimizer",
     "EquilibriumOptimizer": "MultiObjectiveEquilibriumOptimizer",
+    "JAYAOptimizer": "MultiObjectiveJAYAOptimizer",
 }
 
 
