@@ -535,7 +535,6 @@ class MultiObjectiveSolver(Solver):
             # Handle different environments for displaying plots
             try:
                 # Check if we're in Google Colab
-                import google.colab
                 # In Google Colab, we need to use a different approach
                 from IPython.display import display
                 plt.show()
@@ -562,7 +561,6 @@ class MultiObjectiveSolver(Solver):
             # Handle different environments for displaying plots
             try:
                 # Check if we're in Google Colab
-                import google.colab
                 # In Google Colab, we need to use a different approach
                 from IPython.display import display
                 plt.show()
