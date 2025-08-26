@@ -13,8 +13,8 @@ Hãy vẽ sơ đồ thuật toán tối ưu đa mục tiêu cho toàn bộ các 
 - [X] Multi Objective MossGrowthOptimizer
 - [X] Multi Objective ShuffledFrogLeapingOptimizer
 - [X] Multi Objective TeachingLearningBasedOptimizer
-- [ ] Multi Objective PrairieDogsOptimizer
-- [ ] Multi Objective SimulatedAnnealingOptimizer
+- [X] Multi Objective PrairieDogsOptimizer
+- [X] Multi Objective SimulatedAnnealingOptimizer
 - [ ] Multi Objective GeneticAlgorithmOptimizer
 - [ ] Multi Objective GravitationalSearchOptimizer
 - [ ] Multi Objective BiogeographyBasedOptimizer
