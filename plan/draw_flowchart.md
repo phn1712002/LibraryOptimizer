@@ -6,11 +6,11 @@ Hãy vẽ sơ đồ thuật toán tối ưu đa mục tiêu cho toàn bộ các 
 3. Mọi quy định viết sơ đồ thuật toán bạn sẽ được cung cấp, hãy bám nó, sử dụng source để viết không sử dụng nội dung bên ngoài source code. 
 
 # Todo List các thuật toán tối ưu vẽ flowchart
-- [ ] Multi Objective DingoOptimizer
-- [ ] Multi Objective FireflyOptimizer
+- [X] Multi Objective DingoOptimizer
+- [X] Multi Objective FireflyOptimizer
 - [ ] Multi Objective JAYAOptimizer
-- [ ] Multi Objective ModifiedSocialGroupOptimizer
-- [ ] Multi Objective MossGrowthOptimizer
+- [X] Multi Objective ModifiedSocialGroupOptimizer
+- [X] Multi Objective MossGrowthOptimizer
 - [ ] Multi Objective ShuffledFrogLeapingOptimizer
 - [ ] Multi Objective TeachingLearningBasedOptimizer
 - [ ] Multi Objective PrairieDogsOptimizer
