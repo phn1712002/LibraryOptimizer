@@ -1,7 +1,7 @@
 import numpy as np
 from typing import Callable, Union, Tuple, List
 from ._core import Solver, Member
-from utils.general import roulette_wheel_selection, sort_population
+from ._general import roulette_wheel_selection, sort_population
 
 
 class AntColonyOptimizer(Solver):

@@ -145,7 +145,7 @@ from tqdm import tqdm
 
 # Local imports (relative)
 from ._core import Solver, Member
-# Note: Use inherited utilities from Solver class instead of importing from utils.general
+# Note: Use inherited utilities from Solver class instead of importing from ._general
 # Only import specific utilities that are not available through inheritance
 ```
 
@@ -229,7 +229,7 @@ function_call( arg1, arg2 )
 
 ### 1. Code Reusability
 - Use inheritance from base `Solver` class
-- Reuse utilities from inherited methods instead of importing from utils.general
+- Reuse utilities from inherited methods instead of importing from ._general
 - Avoid code duplication
 
 ### 2. Maintainability

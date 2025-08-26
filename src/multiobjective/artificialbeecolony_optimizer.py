@@ -1,7 +1,7 @@
 import numpy as np
 from typing import Callable, Union, Tuple, List
 from ._core import MultiObjectiveSolver, MultiObjectiveMember
-from utils.general import roulette_wheel_selection, normalized_values
+from .._general import roulette_wheel_selection, normalized_values
 
 class BeeMulti(MultiObjectiveMember):
     def __init__(self, position: np.ndarray, fitness: np.ndarray, trial: int = 0):

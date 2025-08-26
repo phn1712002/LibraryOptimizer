@@ -1,7 +1,7 @@
 import numpy as np
 from typing import Callable, Union, Tuple, List
 from ._core import Solver, Member
-from utils.general import sort_population
+from ._general import sort_population
 
 class Particle(Member):
     def __init__(self, position: np.ndarray, fitness: float, velocity: np.ndarray = None):

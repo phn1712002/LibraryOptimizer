@@ -1,7 +1,7 @@
 import numpy as np
 from typing import Callable, Union, Tuple, List
 from ._core import MultiObjectiveSolver, MultiObjectiveMember
-from utils.general import levy_flight
+from .._general import levy_flight
 
 
 class MultiObjectiveCuckooSearchOptimizer(MultiObjectiveSolver):

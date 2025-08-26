@@ -1,7 +1,7 @@
 import numpy as np
 from typing import Callable, Union, Tuple, List
 from ._core import Solver, Member
-from utils.general import sort_population, levy_flight
+from ._general import sort_population, levy_flight
 
 class PrairieDogsOptimizer(Solver):
     """

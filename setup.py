@@ -4,7 +4,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setup(
-    name="library_optimizer",
+    name="LibraryOptimizer",
     version="1.0.0",
     author="HoangggNam",
     author_email="phn1712002@gmail.com",
@@ -13,6 +13,10 @@ setup(
     long_description_content_type="text/markdown",
     url="https://github.com/HoangggNam/LibraryOptimizer",
     packages=find_packages(),
+    package_dir={
+        'LibraryOptimizer': 'src',
+        'LibraryOptimizer': 'utils',
+    },
     classifiers=[
         "Development Status :: 4 - Beta",
         "Intended Audience :: Science/Research",

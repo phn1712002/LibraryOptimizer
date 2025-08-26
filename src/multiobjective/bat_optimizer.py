@@ -1,7 +1,7 @@
 import numpy as np
 from typing import Callable, Union, Tuple, List
 from ._core import MultiObjectiveSolver, MultiObjectiveMember
-from utils.general import linear_decay
+from .._general import linear_decay
 
 class BatMultiMember(MultiObjectiveMember):
     """

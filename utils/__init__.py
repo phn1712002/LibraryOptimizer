@@ -8,20 +8,6 @@ optimization algorithms, including:
 - Statistical calculations
 - Test functions for benchmarking
 """
-
-from .general import (
-    sort_population,
-    roulette_wheel_selection,
-    tournament_selection,
-    get_best_solution,
-    get_worst_solution,
-    calculate_population_statistics,
-    levy_flight,
-    exponential_decay,
-    linear_decay,
-    normalized_values
-)
-
 from .func_test import (
     sphere_function,
     rastrigin_function,
@@ -31,16 +17,6 @@ from .func_test import (
 )
 
 __all__ = [
-    'sort_population',
-    'roulette_wheel_selection',
-    'tournament_selection',
-    'get_best_solution',
-    'get_worst_solution',
-    'calculate_population_statistics',
-    'levy_flight',
-    'exponential_decay',
-    'linear_decay',
-    'normalized_values',
     'sphere_function',
     'rastrigin_function',
     'negative_sphere',

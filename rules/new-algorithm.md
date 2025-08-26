@@ -14,7 +14,7 @@ Each new algorithm must follow these rules to ensure consistency with the librar
 import numpy as np
 from typing import Callable, Union, Tuple, List
 from ._core import Solver, Member
-# Note: Use inherited utilities from Solver class instead of importing from utils.general
+# Note: Use inherited utilities from Solver class instead of importing from ._general
 # Only import specific utilities that are not available through inheritance
 ```
 
@@ -296,7 +296,7 @@ import matplotlib.pyplot as plt
 
 # Local imports (relative)
 from ._core import Solver, Member
-# Note: Use inherited utilities from Solver class instead of importing from utils.general
+# Note: Use inherited utilities from Solver class instead of importing from ._general
 # Only import specific utilities that are not available through inheritance
 ```
 
@@ -390,7 +390,7 @@ Only import specific utilities from `utils/general.py` if they are not available
 
 ## Common Implementation Issues to Avoid
 
-1. **Direct import of utility functions**: Use inherited methods from Solver class instead of importing from utils.general
+1. **Direct import of utility functions**: Use inherited methods from Solver class instead of importing from ._general
 2. **Missing type hints**: Always include complete type annotations
 3. **Incomplete docstrings**: Follow the established documentation pattern
 4. **Hard-coded parameters**: Use kwargs with defaults instead

@@ -218,7 +218,7 @@ The `create_solver()` function automatically detects objective function type:
 import numpy as np
 from typing import Callable, Union, Tuple, List
 from ._core import MultiObjectiveSolver, MultiObjectiveMember
-from utils.general import roulette_wheel_selection
+from ._general import roulette_wheel_selection
 
 class AlgorithmMultiMember(MultiObjectiveMember):
     def __init__(self, position: np.ndarray, fitness: np.ndarray, additional_attr=None):
