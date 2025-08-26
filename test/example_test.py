@@ -1,11 +1,20 @@
+import argparse
 import numpy as np
-from src import create_solver
+import sys
+import os
+
+# Add the current directory to Python path to allow imports from utils and src
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)) + '/..')
+
+from src import create_solver, show_solvers
 from utils.func_test import sphere_function, rastrigin_function, negative_sphere, zdt1_function, zdt5_function
 
+# Global variable to store the algorithm name
+SOLVER_NAME = "{SOLVER_NAME}"
+
 def test_sphere_function():
-    '''Test NAME_SOLVER_REGISTRY on sphere function (minimization)'''
     method = create_solver(
-        solver_name='NAME_SOLVER_REGISTRY',
+        solver_name=SOLVER_NAME,
         objective_func=sphere_function,
         lb=-5.0,
         ub=5.0,
@@ -23,9 +32,8 @@ def test_sphere_function():
     assert np.all(np.abs(best.position) < 0.5)
 
 def test_rastrigin_function():
-    '''Test NAME_SOLVER_REGISTRY on Rastrigin function (minimization)'''
     method = create_solver(
-        solver_name='NAME_SOLVER_REGISTRY',
+        solver_name=SOLVER_NAME,
         objective_func=rastrigin_function,
         lb=-5.12,
         ub=5.12,
@@ -42,9 +50,8 @@ def test_rastrigin_function():
     assert best.fitness < 5.0
 
 def test_maximization():
-    '''Test NAME_SOLVER_REGISTRY on maximization problem'''
     method = create_solver(
-        solver_name='NAME_SOLVER_REGISTRY',
+        solver_name=SOLVER_NAME,
         objective_func=negative_sphere,
         lb=-2.0,
         ub=2.0,
@@ -61,9 +68,8 @@ def test_maximization():
     assert best.fitness > -0.1
 
 def test_multiobjective_zdt1():
-    '''Test Multi-Objective NAME_SOLVER_REGISTRY on ZDT1 function'''
     method = create_solver(
-        solver_name='NAME_SOLVER_REGISTRY',
+        solver_name=SOLVER_NAME,
         objective_func=zdt1_function,
         lb=np.array([0.0, 0.0]),
         ub=np.array([1.0, 1.0]),
@@ -88,9 +94,8 @@ def test_multiobjective_zdt1():
         assert len(solution.multi_fitness) == 2
 
 def test_multiobjective_zdt5():
-    '''Test Multi-Objective NAME_SOLVER_REGISTRY on ZDT1 with higher dimension'''
     method = create_solver(
-        solver_name='NAME_SOLVER_REGISTRY',
+        solver_name=SOLVER_NAME,
         objective_func=zdt5_function,
         lb=np.array([0.0] * 2),
         ub=np.array([1.0] * 2),
@@ -163,9 +168,39 @@ def run_all_tests():
     # Return True if all tests passed
     return all(result == 'PASSED' for result in test_results.values())
 
-if __name__ == '__main__':
-    success = run_all_tests()
-    if success:
-        print('\n🎉 All tests passed!')
+def main():
+    parser = argparse.ArgumentParser(description='Test optimization algorithms')
+    parser.add_argument('-name', type=str, help='Name of the algorithm to test')
+    parser.add_argument('-list', action='store_true', help='Show available solvers')
+    
+    args = parser.parse_args()
+    
+    if args.list:
+        show_solvers()
+        return
+    
+    if args.name:
+        # Test specific algorithm
+        SOLVER_NAME = args.name
+        print(f"Testing algorithm: {SOLVER_NAME}")
+        
+        # Update the global SOLVER_NAME for the test functions
+        globals()['SOLVER_NAME'] = SOLVER_NAME
+        
+        # Run all tests with the specified algorithm
+        success = run_all_tests()
+        if success:
+            print(f'\n🎉 All tests passed for {SOLVER_NAME}!')
+        else:
+            print(f'\n❌ Some tests failed for {SOLVER_NAME}!')
     else:
-        print('\n❌ Some tests failed!')
+        # Default behavior: run all tests with placeholder name
+        print("No algorithm specified. Running all tests with placeholder name...")
+        success = run_all_tests()
+        if success:
+            print('\n🎉 All tests passed!')
+        else:
+            print('\n❌ Some tests failed!')
+
+if __name__ == '__main__':
+    main()

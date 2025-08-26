@@ -140,6 +140,30 @@ Run the test suite:
 python -m pytest test/ -v
 ```
 
+### Example Test Script
+
+The library includes a comprehensive test script (`test/example_test.py`) that allows you to test specific optimization algorithms with various benchmark functions:
+
+```bash
+# Show available algorithms
+python test/example_test.py -list
+
+# Test a specific algorithm (e.g., GreyWolfOptimizer)
+python test/example_test.py -name GreyWolfOptimizer
+
+# Test another algorithm (e.g., ParticleSwarmOptimizer)  
+python test/example_test.py -name ParticleSwarmOptimizer
+```
+
+The test script runs the following comprehensive tests:
+- **Sphere Function**: Tests basic minimization capabilities
+- **Rastrigin Function**: Tests performance on a multimodal function
+- **Maximization**: Tests algorithm's ability to maximize functions
+- **Multi-objective ZDT1**: Tests multi-objective optimization with 2 objectives
+- **Multi-objective ZDT5**: Tests multi-objective optimization with 3 objectives
+
+Each test validates that the algorithm can find reasonable solutions and provides detailed pass/fail reporting.
+
 ## License
 
 MIT License - see [LICENSE](LICENSE) file for details.
