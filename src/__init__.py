@@ -26,6 +26,7 @@ from .seagull_optimizer import *
 from .harmonysearch_optimizer import *
 from .glowwormswarm_optimizer import *
 from .electromagneticchargedparticles_optimizer import *
+from .henrygassolubility_optimizer import *
 
 # Multi-objective optimizers
 from .multiobjective.artificialbeecolony_optimizer import *
@@ -51,7 +52,7 @@ from .multiobjective.seagull_optimizer import *
 from .multiobjective.harmonysearch_optimizer import *
 from .multiobjective.glowwormswarm_optimizer import *
 from .multiobjective.electromagneticchargedparticles_optimizer import *
-
+from .multiobjective.henrygassolubility_optimizer import *
 
 __version__ = "1.0.0"
 __author__ = "HoangggNam"
@@ -83,6 +84,7 @@ _SOLVER_REGISTRY: Dict[str, Type[Solver]] = {
     "HarmonySearchOptimizer": HarmonySearchOptimizer,
     "GlowwormSwarmOptimizer": GlowwormSwarmOptimizer,
     "ElectromagneticChargedParticlesOptimizer": ElectromagneticChargedParticlesOptimizer,
+    "HenryGasSolubilityOptimizer": HenryGasSolubilityOptimizer,
     # Multi
     "MultiObjectiveArtificialBeeColonyOptimizer": MultiObjectiveArtificialBeeColonyOptimizer,
     "MultiObjectiveGreyWolfOptimizer": MultiObjectiveGreyWolfOptimizer,
@@ -106,7 +108,8 @@ _SOLVER_REGISTRY: Dict[str, Type[Solver]] = {
     'MultiObjectiveSeagullOptimizer': MultiObjectiveSeagullOptimizer,
     'MultiObjectiveHarmonySearchOptimizer': MultiObjectiveHarmonySearchOptimizer,
     'MultiObjectiveGlowwormSwarmOptimizer': MultiObjectiveGlowwormSwarmOptimizer,
-    "MultiObjectiveElectromagneticChargedParticlesOptimizer": MultiObjectiveElectromagneticChargedParticlesOptimizer
+    "MultiObjectiveElectromagneticChargedParticlesOptimizer": MultiObjectiveElectromagneticChargedParticlesOptimizer,
+    "MultiObjectiveHenryGasSolubilityOptimizer": MultiObjectiveHenryGasSolubilityOptimizer
 }
 
 # Mapping of single-objective solvers to their multi-objective counterparts
@@ -133,7 +136,8 @@ _MULTI_OBJECTIVE_MAPPING: Dict[str, str] = {
     "SeagullOptimizer": "MultiObjectiveSeagullOptimizer",
     "HarmonySearchOptimizer": "MultiObjectiveHarmonySearchOptimizer",
     "GlowwormSwarmOptimizer": "MultiObjectiveGlowwormSwarmOptimizer",
-    "ElectromagneticChargedParticlesOptimizer": "MultiObjectiveElectromagneticChargedParticlesOptimizer"
+    "ElectromagneticChargedParticlesOptimizer": "MultiObjectiveElectromagneticChargedParticlesOptimizer",
+    "HenryGasSolubilityOptimizer": "MultiObjectiveHenryGasSolubilityOptimizer"
 }
 
 
