@@ -112,11 +112,7 @@ class MultiObjectiveGreyWolfOptimizer(MultiObjectiveSolver):
                         D = abs(C * leader.position[j] - wolf.position[j])
                         X = leader.position[j] - A * D
                         
-                        # Weighted contribution from each leader
-                        # Alpha has highest weight, beta medium, delta lowest
-                        weight = 1.0 / (leader_idx + 1)  # 1.0, 0.5, 0.333
-                        new_position[j] += weight * X
-                    
+                        new_position[j] += X
                     # Average the contributions from all leaders
                     new_position[j] /= len(leaders)
                 
