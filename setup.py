@@ -4,7 +4,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 setup(
-    name="library-optimizer",
+    name="library_optimizer",
     version="1.0.0",
     author="HoangggNam",
     author_email="phn1712002@gmail.com",
