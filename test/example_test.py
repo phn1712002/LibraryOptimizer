@@ -146,11 +146,11 @@ def run_all_tests():
     
     try:
         test_multiobjective_zdt5()
-        test_results['multiobjective_zdt1_higher_dim'] = 'PASSED'
-        print("✓ Multi-objective ZDT1 (higher dim) test passed")
+        test_results['multiobjective_zdt5'] = 'PASSED'
+        print("✓ Multi-objective ZDT5 test passed")
     except Exception as e:
-        test_results['multiobjective_zdt1_higher_dim'] = f'FAILED: {e}'
-        print(f"✗ Multi-objective ZDT1 (higher dim) test failed: {e}")
+        test_results['multiobjective_zdt5'] = f'FAILED: {e}'
+        print(f"✗ Multi-objective ZDT5 test failed: {e}")
     
     # Print summary
     print("\n" + "="*50)
