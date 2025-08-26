@@ -3,7 +3,6 @@ from typing import Callable, Union, Tuple, List
 from .._core import Solver, Member
 import matplotlib.pyplot as plt
 from tqdm import tqdm
-import os
 
 class MultiObjectiveMember(Member):
     def __init__(self, position: np.ndarray, fitness: np.ndarray):
@@ -323,7 +322,7 @@ class MultiObjectiveSolver(Solver):
         # Ensure we return exactly the population size
         return sorted_population[:n_pop]
     
-    def _get_random_fitness(self, member):
+    def _get_random_fitness(self, member: MultiObjectiveMember):
         """Get fitness value based on random dice roll"""
         dice_roll = np.random.random()
         if dice_roll > 0.5:
@@ -418,7 +417,7 @@ class MultiObjectiveSolver(Solver):
                     'Best Fitness': 'N/A'
                 })
     
-    def _begin_step_solver(self, max_iter) -> None:
+    def _begin_step_solver(self, max_iter :int) -> None:
         """
         Initialize solver execution and display startup information.
         
