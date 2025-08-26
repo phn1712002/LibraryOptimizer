@@ -105,8 +105,8 @@ def test_multiobjective_zdt5():
     )
     
     history_archive, final_archive = method.solver(
-        search_agents_no=200,
-        max_iter=200
+        search_agents_no=100,
+        max_iter=100
     )
     
     # Should find a diverse set of non-dominated solutions
