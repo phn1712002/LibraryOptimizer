@@ -26,7 +26,7 @@ cd LibraryOptimizer && pip install -e .
 
 ```python
 import numpy as np
-from library_optimizer import create_solver
+from LibraryOptimizer import create_solver
 
 # Define objective function (Sphere function - single objective)
 def sphere_function(x):
@@ -56,7 +56,7 @@ print(f"Best fitness: {best_solution.fitness}")
 
 ```python
 import numpy as np
-from library_optimizer import create_solver
+from LibraryOptimizer import create_solver
 
 # Define multi-objective function (ZDT1 benchmark)
 def zdt1_function(x):
