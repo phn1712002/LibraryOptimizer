@@ -122,22 +122,9 @@ We welcome contributions! Please see our [Contributing Guidelines](CONTRIBUTING.
 
 ### Adding New Algorithms
 
-To add a new optimization algorithm, follow the template in `rules/new-algorithm.md` and ensure:
-
-1. Inherit from the base `Solver` class
-2. Implement the required interface
-3. Add comprehensive tests
-4. Update the registry in `src/__init__.py`
-
-The system will automatically generate the multi-objective version of your algorithm using the automatic generation system described in `rules/auto-generation-multi.md`.
-
-## Testing
-
-Run the test suite:
-
-```bash
-python -m pytest test/ -v
-```
+To add a new optimization algorithm, follow the template in `rules/new-algorithm.md`.
+If you need to implement multiple fitness, follow the template in `rules/multi-objective.md`.
+Or the system will automatically generate the multi-objective version of your algorithm using the automatic generation system described in `rules/auto-generation-multi.md`.
 
 ### Example Test Script
 
