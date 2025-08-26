@@ -426,7 +426,7 @@ class MultiObjectiveSolver(Solver):
             max_iter (int): Maximum number of iterations for the solver
         """
         # Clear console for better visualization
-        os.system('cls' if os.name == 'nt' else 'clear')
+        #os.system('cls' if os.name == 'nt' else 'clear')
         
         # Print algorithm start message with parameters
         print("-" * 50)
