@@ -7,22 +7,22 @@ Hãy vẽ sơ đồ thuật toán tối ưu đơn và đa mục tiêu cho toàn 
 
 # Todo List các thuật toán tối ưu vẽ flowchart
 - [X] GreyWolfOptimizer
-- [ ] WhaleOptimizer
-- [ ] ParticleSwarmOptimizer
-- [ ] ArtificialBeeColonyOptimizer
-- [ ] AntColonyOptimizer
-- [ ] BatOptimizer
-- [ ] ArtificialEcosystemOptimizer
-- [ ] CuckooSearchOptimizer
-- [ ] DingoOptimizer
-- [ ] FireflyOptimizer
-- [ ] JAYAOptimizer
-- [ ] ModifiedSocialGroupOptimizer
-- [ ] MossGrowthOptimizer
-- [ ] ShuffledFrogLeapingOptimizer
-- [ ] TeachingLearningBasedOptimizer
-- [ ] PrairieDogsOptimizer
-- [ ] SimulatedAnnealingOptimizer
+- [X] WhaleOptimizer
+- [X] ParticleSwarmOptimizer
+- [X] ArtificialBeeColonyOptimizer
+- [X] AntColonyOptimizer
+- [X] BatOptimizer
+- [X] ArtificialEcosystemOptimizer
+- [X] CuckooSearchOptimizer
+- [X] DingoOptimizer
+- [X] FireflyOptimizer
+- [X] JAYAOptimizer
+- [X] ModifiedSocialGroupOptimizer
+- [X] MossGrowthOptimizer
+- [X] ShuffledFrogLeapingOptimizer
+- [X] TeachingLearningBasedOptimizer
+- [X] PrairieDogsOptimizer
+- [X] SimulatedAnnealingOptimizer
 - [ ] GeneticAlgorithmOptimizer
 - [ ] GravitationalSearchOptimizer
 - [ ] BiogeographyBasedOptimizer
@@ -33,4 +33,3 @@ Hãy vẽ sơ đồ thuật toán tối ưu đơn và đa mục tiêu cho toàn 
 - [ ] HenryGasSolubilityOptimizer
 - [ ] MarinePredatorsOptimizer
 - [ ] EquilibriumOptimizer
-
