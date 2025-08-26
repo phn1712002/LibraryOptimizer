@@ -6,22 +6,22 @@ Hãy vẽ sơ đồ thuật toán tối ưu đa mục tiêu cho toàn bộ các 
 3. Mọi quy định viết sơ đồ thuật toán bạn sẽ được cung cấp, hãy bám nó, sử dụng source để viết không sử dụng nội dung bên ngoài source code. 
 
 # Todo List các thuật toán tối ưu vẽ flowchart
-- [ ] DingoOptimizer
-- [ ] FireflyOptimizer
-- [ ] JAYAOptimizer
-- [ ] ModifiedSocialGroupOptimizer
-- [ ] MossGrowthOptimizer
-- [ ] ShuffledFrogLeapingOptimizer
-- [ ] TeachingLearningBasedOptimizer
-- [ ] PrairieDogsOptimizer
-- [ ] SimulatedAnnealingOptimizer
-- [ ] GeneticAlgorithmOptimizer
-- [ ] GravitationalSearchOptimizer
-- [ ] BiogeographyBasedOptimizer
-- [ ] SeagullOptimizer
-- [ ] HarmonySearchOptimizer
-- [ ] GlowwormSwarmOptimizer
-- [ ] ElectromagneticChargedParticlesOptimizer
-- [ ] HenryGasSolubilityOptimizer
-- [ ] MarinePredatorsOptimizer
-- [ ] EquilibriumOptimizer
+- [ ] Multi Objective DingoOptimizer
+- [ ] Multi Objective FireflyOptimizer
+- [ ] Multi Objective JAYAOptimizer
+- [ ] Multi Objective ModifiedSocialGroupOptimizer
+- [ ] Multi Objective MossGrowthOptimizer
+- [ ] Multi Objective ShuffledFrogLeapingOptimizer
+- [ ] Multi Objective TeachingLearningBasedOptimizer
+- [ ] Multi Objective PrairieDogsOptimizer
+- [ ] Multi Objective SimulatedAnnealingOptimizer
+- [ ] Multi Objective GeneticAlgorithmOptimizer
+- [ ] Multi Objective GravitationalSearchOptimizer
+- [ ] Multi Objective BiogeographyBasedOptimizer
+- [ ] Multi Objective SeagullOptimizer
+- [ ] Multi Objective HarmonySearchOptimizer
+- [ ] Multi Objective GlowwormSwarmOptimizer
+- [ ] Multi Objective ElectromagneticChargedParticlesOptimizer
+- [ ] Multi Objective HenryGasSolubilityOptimizer
+- [ ] Multi Objective MarinePredatorsOptimizer
+- [ ] Multi Objective EquilibriumOptimizer
