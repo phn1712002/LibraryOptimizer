@@ -54,7 +54,7 @@ Tệp Markdown gồm **3 phần chính** như sau:
 
 ```
 docs/
-└── flowcharts/           # Thư mục chứa các sơ đồ thuật toán
+└── flowcharts_vi/                         # Thư mục chứa các sơ đồ thuật toán
     ├── greywolf_optimizer.md
     ├── particleswarm_optimizer.md
     ├── artificialbeecolony_optimizer.md

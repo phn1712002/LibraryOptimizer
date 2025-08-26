@@ -65,7 +65,7 @@ The Markdown file should have **3 main sections**:
 
 ```
 docs/
-└── flowcharts_en/        # Folder containing algorithm flowcharts
+└── flowcharts/                         # Folder containing algorithm flowcharts
     ├── greywolf_optimizer.md
     ├── particleswarm_optimizer.md
     ├── artificialbeecolony_optimizer.md
