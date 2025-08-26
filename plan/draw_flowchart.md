@@ -1,4 +1,4 @@
-Hãy vẽ sơ đồ thuật toán tối ưu đơn và đa mục tiêu cho toàn bộ các thuật trong Todo list
+Hãy vẽ sơ đồ thuật toán tối đa mục tiêu cho toàn bộ các thuật trong Todo list
 
 # Quy định 
 1. Sau khi vẽ sơ đồ thuật toán nào xong thì quay lại đây để đánh dấu [X] vào thuật toán đó.
@@ -23,13 +23,13 @@ Hãy vẽ sơ đồ thuật toán tối ưu đơn và đa mục tiêu cho toàn 
 - [X] TeachingLearningBasedOptimizer
 - [X] PrairieDogsOptimizer
 - [X] SimulatedAnnealingOptimizer
-- [ ] GeneticAlgorithmOptimizer
-- [ ] GravitationalSearchOptimizer
-- [ ] BiogeographyBasedOptimizer
-- [ ] SeagullOptimizer
-- [ ] HarmonySearchOptimizer
-- [ ] GlowwormSwarmOptimizer
-- [ ] ElectromagneticChargedParticlesOptimizer
-- [ ] HenryGasSolubilityOptimizer
-- [ ] MarinePredatorsOptimizer
-- [ ] EquilibriumOptimizer
+- [X] GeneticAlgorithmOptimizer
+- [X] GravitationalSearchOptimizer
+- [X] BiogeographyBasedOptimizer
+- [X] SeagullOptimizer
+- [X] HarmonySearchOptimizer
+- [X] GlowwormSwarmOptimizer
+- [X] ElectromagneticChargedParticlesOptimizer
+- [X] HenryGasSolubilityOptimizer
+- [X] MarinePredatorsOptimizer
+- [X] EquilibriumOptimizer

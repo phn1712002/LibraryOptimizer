@@ -138,7 +138,6 @@ benchmarks/
 results/
 
 # Jupyter notebooks
-*.ipynb
 *.ipynb_checkpoints/
 
 # Virtual environments (keep one consistent pattern)

@@ -4,7 +4,7 @@ A comprehensive Python library for metaheuristic optimization algorithms, featur
 
 ## Features
 
-- **18+ Optimization Algorithms**: Grey Wolf Optimizer, Particle Swarm Optimization, Artificial Bee Colony, Whale Optimization, and more
+- **20+ Optimization Algorithms**: Grey Wolf Optimizer, Particle Swarm Optimization, Artificial Bee Colony, Whale Optimization, and more
 - **Multi-Objective Support**: Automatic generation of multi-objective versions from single-objective algorithms
 - **Unified Interface**: Consistent API across all algorithms for both single and multi-objective optimization
 - **Visualization**: Built-in progress tracking and convergence plotting

@@ -12,7 +12,7 @@ Từ mã nguồn thuật toán tối ưu hóa Python (do tôi cung cấp), hãy 
 
 ### 2. Tạo tệp Markdown lưu sơ đồ:
 - Lưu nội dung vào file có tên `{algorithm_name}-flowchart.md` tương ứng với thuật toán đang xử lý.
-- File nằm trong thư mục: `/docs/flowcharts/`
+- File nằm trong thư mục: `/docs/flowcharts_vi/`
 
 ### 3. Nhận phản hồi và chỉnh sửa:
 - Sau khi tạo nội dung cơ bản, hỏi tôi có cần chỉnh sửa hay mở rộng gì không.
