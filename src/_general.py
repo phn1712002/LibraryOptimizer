@@ -1,6 +1,6 @@
 import numpy as np
 from typing import Tuple, List
-from src._core import Member
+from ._core import Member
 import math
 
 def normalized_values(values):
