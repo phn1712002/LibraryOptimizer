@@ -41,7 +41,7 @@ function plot_history_multi_animation(history)
     for k = 1:numSteps
         % ĐẢM BẢO VẼ ĐÚNG TRÊN FIGURE ĐÃ TẠO
         figure(fig); % Chuyển focus về figure này
-        cla; % clear previous frame
+        %cla; % clear previous frame
         
         members = history{k};
 
