@@ -19,8 +19,8 @@ classdef HarmonySearchOptimizer < Solver
     dim : int
         Problem dimension
     maximize : bool
-        Optimization direction (true: maximize, false: minimize)
-    varargin : cell array
+        Optimization direction
+    **kwargs
         Additional algorithm parameters:
         - hmcr: Harmony Memory Considering Rate (default: 0.95)
         - par: Pitch Adjustment Rate (default: 0.3)
@@ -43,7 +43,7 @@ classdef HarmonySearchOptimizer < Solver
     methods
         function obj = HarmonySearchOptimizer(objective_func, lb, ub, dim, maximize, varargin)
             %{
-            HarmonySearchOptimizer constructor - Initialize the Harmony Search solver
+            HarmonySearchOptimizer constructor - Initialize the HS solver
             
             Inputs:
                 objective_func : function handle
@@ -66,10 +66,10 @@ classdef HarmonySearchOptimizer < Solver
             % Set solver name
             obj.name_solver = "Harmony Search Optimizer";
             
-            % Set algorithm-specific parameters with defaults
+            % Set default HS parameters
             obj.hmcr = obj.get_kw('hmcr', 0.95);  % Harmony Memory Considering Rate
-            obj.par = obj.get_kw('par', 0.3);  % Pitch Adjustment Rate
-            obj.bw = obj.get_kw('bw', 0.2);  % Bandwidth
+            obj.par = obj.get_kw('par', 0.3);     % Pitch Adjustment Rate
+            obj.bw = obj.get_kw('bw', 0.2);       % Bandwidth
             
             % Initialize harmony memory
             obj.harmony_memory = [];
@@ -78,21 +78,18 @@ classdef HarmonySearchOptimizer < Solver
         
         function [history_step_solver, best_solver] = solver(obj, search_agents_no, max_iter)
             %{
-            solver - Main optimization method for Harmony Search Algorithm
+            solver - Main optimization method for Harmony Search algorithm
             
-            Parameters:
-            -----------
-            search_agents_no : int
-                Number of search agents (population size)
-            max_iter : int
-                Maximum number of iterations
-                
+            Inputs:
+                search_agents_no : int
+                    Number of search agents (population size)
+                max_iter : int
+                    Maximum number of iterations
+                    
             Returns:
-            --------
-            history_step_solver : cell array
-                History of best solutions at each iteration
-            best_solver : Member
-                Best solution found overall
+                Tuple containing:
+                    - history_step_solver: Cell array of best solutions at each iteration
+                    - best_solver: Best solution found overall
             %}
             
             % Initialize storage variables
@@ -100,25 +97,27 @@ classdef HarmonySearchOptimizer < Solver
             
             % Initialize harmony memory
             obj.harmony_memory = zeros(search_agents_no, obj.dim);
-            obj.harmony_fitness = zeros(search_agents_no, 1);
+            obj.harmony_fitness = zeros(1, search_agents_no);
             
             % Initialize harmony memory with random solutions
             for i = 1:search_agents_no
-                obj.harmony_memory(i, :) = rand(1, obj.dim) .* (obj.ub - obj.lb) + obj.lb;
-                obj.harmony_fitness(i) = obj.objective_func(obj.harmony_memory(i, :));
+                position = rand(1, obj.dim) .* (obj.ub - obj.lb) + obj.lb;
+                fitness = obj.objective_func(position);
+                obj.harmony_memory(i, :) = position;
+                obj.harmony_fitness(i) = fitness;
             end
             
             % Find initial best and worst solutions
             if obj.maximize
-                [~, best_idx] = max(obj.harmony_fitness);
-                [~, worst_idx] = min(obj.harmony_fitness);
+                [best_fitness, best_idx] = max(obj.harmony_fitness);
+                [worst_fitness, worst_idx] = min(obj.harmony_fitness);
             else
-                [~, best_idx] = min(obj.harmony_fitness);
-                [~, worst_idx] = max(obj.harmony_fitness);
+                [best_fitness, best_idx] = min(obj.harmony_fitness);
+                [worst_fitness, worst_idx] = max(obj.harmony_fitness);
             end
             
-            best_solver = Member(obj.harmony_memory(best_idx, :), obj.harmony_fitness(best_idx));
-            worst_fitness = obj.harmony_fitness(worst_idx);
+            best_solver = Member(obj.harmony_memory(best_idx, :), best_fitness);
+            worst_fitness_current = worst_fitness;
             worst_idx_current = worst_idx;
             
             % Call the begin function
@@ -152,21 +151,20 @@ classdef HarmonySearchOptimizer < Solver
                 new_fitness = obj.objective_func(new_harmony);
                 
                 % Update harmony memory if new harmony is better than worst
-                if obj.is_better_fitness(new_fitness, worst_fitness)
+                if obj.is_better(new_fitness, worst_fitness_current)
                     obj.harmony_memory(worst_idx_current, :) = new_harmony;
                     obj.harmony_fitness(worst_idx_current) = new_fitness;
                     
                     % Update best and worst
                     if obj.maximize
-                        [~, best_idx] = max(obj.harmony_fitness);
-                        [~, worst_idx_current] = min(obj.harmony_fitness);
+                        [best_fitness, best_idx] = max(obj.harmony_fitness);
+                        [worst_fitness_current, worst_idx_current] = min(obj.harmony_fitness);
                     else
-                        [~, best_idx] = min(obj.harmony_fitness);
-                        [~, worst_idx_current] = max(obj.harmony_fitness);
+                        [best_fitness, best_idx] = min(obj.harmony_fitness);
+                        [worst_fitness_current, worst_idx_current] = max(obj.harmony_fitness);
                     end
                     
-                    current_best = Member(obj.harmony_memory(best_idx, :), obj.harmony_fitness(best_idx));
-                    worst_fitness = obj.harmony_fitness(worst_idx_current);
+                    current_best = Member(obj.harmony_memory(best_idx, :), best_fitness);
                     
                     % Update best solution if improved
                     if obj.is_better(current_best, best_solver)
@@ -187,65 +185,6 @@ classdef HarmonySearchOptimizer < Solver
             
             % Call the end function
             obj.end_step_solver();
-        end
-        
-        function result = is_better_fitness(obj, fitness_1, fitness_2)
-            %{
-            is_better_fitness - Compare two fitness values based on optimization direction
-            
-            Inputs:
-                fitness_1 : float
-                    First fitness value
-                fitness_2 : float
-                    Second fitness value
-                    
-            Returns:
-                result : bool
-                    true if fitness_1 is better than fitness_2 according to optimization direction
-            %}
-            
-            if obj.maximize
-                result = fitness_1 > fitness_2;
-            else
-                result = fitness_1 < fitness_2;
-            end
-        end
-        
-        function [sorted_population, sorted_indices] = sort_population(obj, population)
-            %{
-            sort_population - Sort population based on fitness
-            
-            Inputs:
-                population : cell array
-                    Population to sort
-                    
-            Returns:
-                sorted_population : cell array
-                    Sorted population
-                sorted_indices : array
-                    Indices of sorted order
-            %}
-            
-            % Extract fitness values from population
-            fitness_values = zeros(1, length(population));
-            for i = 1:length(population)
-                fitness_values(i) = population{i}.fitness;
-            end
-            
-            % Sort indices based on optimization direction
-            if obj.maximize
-                % Sort in descending order for maximization
-                [~, sorted_indices] = sort(fitness_values, 'descend');
-            else
-                % Sort in ascending order for minimization
-                [~, sorted_indices] = sort(fitness_values, 'ascend');
-            end
-            
-            % Sort population based on sorted indices
-            sorted_population = cell(1, length(population));
-            for i = 1:length(population)
-                sorted_population{i} = population{sorted_indices(i)};
-            end
         end
     end
 end

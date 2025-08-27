@@ -19,3 +19,4 @@ method = all_solver.create_solver('FireflyOptimizer', objective_func, lb, ub, di
 
 % Run optimization for ZDT1
 [history, archive] = method.solver(search_agents_no, max_iter);
+plot_history_animation(history)

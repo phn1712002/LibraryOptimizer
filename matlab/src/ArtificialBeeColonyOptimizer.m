@@ -14,9 +14,9 @@ classdef ArtificialBeeColonyOptimizer < Solver
     %}
     
     properties
-        n_onlooker         % Number of onlooker bees
-        abandonment_limit  % Maximum trials before abandonment
-        acceleration_coef  % Acceleration coefficient for search
+        n_onlooker
+        abandonment_limit
+        acceleration_coef
     end
     
     methods
@@ -36,7 +36,7 @@ classdef ArtificialBeeColonyOptimizer < Solver
                 maximize : bool
                     Whether to maximize (true) or minimize (false) objective
                 varargin : cell array
-                    Additional ABC parameters:
+                    Additional solver parameters including:
                     - n_onlooker: Number of onlooker bees (default: search_agents_no)
                     - abandonment_limit: Maximum trials before abandonment (default: dim * 5)
                     - acceleration_coef: Acceleration coefficient for search (default: 1.0)
@@ -49,26 +49,51 @@ classdef ArtificialBeeColonyOptimizer < Solver
             obj.name_solver = "Artificial Bee Colony Optimizer";
             
             % Set default ABC parameters
-            obj.n_onlooker = obj.get_kw('n_onlooker', []);  % Will be set in solver
-            obj.abandonment_limit = obj.get_kw('abandonment_limit', []);  % Will be set in solver
-            obj.acceleration_coef = obj.get_kw('acceleration_coef', 1.0);  % Acceleration coefficient
+            obj.n_onlooker = obj.get_kw('n_onlooker', []);
+            obj.abandonment_limit = obj.get_kw('abandonment_limit', []);
+            obj.acceleration_coef = obj.get_kw('acceleration_coef', 1.0);
+        end
+        
+        function population = init_population(obj, search_agents_no)
+            %{
+            init_population - Initialize the bee colony population
+            
+            Inputs:
+                search_agents_no : int
+                    Number of bees (employed bees) to initialize
+                    
+            Returns:
+                population : cell array
+                    Cell array of initialized Bee objects with random positions
+            %}
+            
+            population = cell(1, search_agents_no);
+            for i = 1:search_agents_no
+                position = rand(1, obj.dim) .* (obj.ub - obj.lb) + obj.lb;
+                fitness = obj.objective_func(position);
+                population{i} = Bee(position, fitness, 0);
+            end
         end
         
         function [history_step_solver, best_solver] = solver(obj, search_agents_no, max_iter)
             %{
             solver - Main optimization method for ABC algorithm
             
+            The algorithm consists of three main phases repeated for each iteration:
+            1. Employed Bee Phase: Each employed bee searches for new solutions
+            2. Onlooker Bee Phase: Onlooker bees probabilistically choose solutions
+            3. Scout Bee Phase: Abandoned solutions are replaced with new random solutions
+            
             Inputs:
                 search_agents_no : int
                     Number of employed bees (and initial food sources)
                 max_iter : int
-                    Maximum number of iterations for optimization
+                    Maximum number of iterations for the optimization process
                     
             Returns:
-                history_step_solver : cell array
-                    History of best solutions at each iteration
-                best_solver : Member
-                    Best solution found overall
+                Tuple containing:
+                    - history_step_solver: Cell array of best solutions at each iteration
+                    - best_solver: Best solution found overall
             %}
             
             % Initialize storage variables
@@ -103,7 +128,7 @@ classdef ArtificialBeeColonyOptimizer < Solver
                     k = neighbors(randi(length(neighbors)));
                     
                     % Define acceleration coefficient
-                    phi = obj.acceleration_coef * (-1 + 2 * rand(1, obj.dim));
+                    phi = obj.acceleration_coef * (2 * rand(1, obj.dim) - 1);
                     
                     % Generate new candidate solution
                     new_position = population{i}.position + phi .* (population{i}.position - population{k}.position);
@@ -114,10 +139,16 @@ classdef ArtificialBeeColonyOptimizer < Solver
                     % Evaluate new fitness
                     new_fitness = obj.objective_func(new_position);
                     
+                    % Create new bee for comparison
+                    new_bee = Bee(new_position, new_fitness);
+                    
                     % Comparison (greedy selection)
-                    if obj.is_better(Member(new_position, new_fitness), population{i})
+                    if obj.is_better(new_bee, population{i})
                         population{i}.position = new_position;
                         population{i}.fitness = new_fitness;
+                        population{i}.trial = 0;  % Reset trial counter
+                    else
+                        population{i}.trial = population{i}.trial + 1;  % Increase trial counter
                     end
                 end
                 
@@ -147,7 +178,7 @@ classdef ArtificialBeeColonyOptimizer < Solver
                     k = neighbors(randi(length(neighbors)));
                     
                     % Define acceleration coefficient
-                    phi = obj.acceleration_coef * (-1 + 2 * rand(1, obj.dim));
+                    phi = obj.acceleration_coef * (2 * rand(1, obj.dim) - 1);
                     
                     % Generate new candidate solution
                     new_position = population{i}.position + phi .* (population{i}.position - population{k}.position);
@@ -158,10 +189,26 @@ classdef ArtificialBeeColonyOptimizer < Solver
                     % Evaluate new fitness
                     new_fitness = obj.objective_func(new_position);
                     
+                    % Create new bee for comparison
+                    new_bee = Bee(new_position, new_fitness);
+                    
                     % Comparison (greedy selection)
-                    if obj.is_better(Member(new_position, new_fitness), population{i})
+                    if obj.is_better(new_bee, population{i})
                         population{i}.position = new_position;
                         population{i}.fitness = new_fitness;
+                        population{i}.trial = 0;  % Reset trial counter
+                    else
+                        population{i}.trial = population{i}.trial + 1;  % Increase trial counter
+                    end
+                end
+                
+                % Phase 3: Scout Bees
+                for i = 1:search_agents_no
+                    if population{i}.trial >= obj.abandonment_limit
+                        % Abandon and replace with random solution
+                        position = rand(1, obj.dim) .* (obj.ub - obj.lb) + obj.lb;
+                        fitness = obj.objective_func(position);
+                        population{i} = Bee(position, fitness, 0);  % Reset trial counter
                     end
                 end
                 
@@ -224,7 +271,7 @@ classdef ArtificialBeeColonyOptimizer < Solver
             end
         end
         
-        function index = roulette_wheel_selection(~, probabilities)
+        function selected_idx = roulette_wheel_selection(~, probabilities)
             %{
             roulette_wheel_selection - Perform roulette wheel selection
             
@@ -233,35 +280,13 @@ classdef ArtificialBeeColonyOptimizer < Solver
                     Selection probabilities for each individual
                     
             Returns:
-                index : int
+                selected_idx : int
                     Index of selected individual
             %}
             
             r = rand();
             cumulative_sum = cumsum(probabilities);
-            index = find(r <= cumulative_sum, 1);
-        end
-        
-        function value = get_kw(obj, name, default)
-            %{
-            get_kw - Get keyword argument value with default
-            
-            Inputs:
-                name : string
-                    Parameter name
-                default : any
-                    Default value if parameter not found
-                    
-            Returns:
-                value : any
-                    Parameter value or default
-            %}
-            
-            if isfield(obj.kwargs, name)
-                value = obj.kwargs.(name);
-            else
-                value = default;
-            end
+            selected_idx = find(r <= cumulative_sum, 1);
         end
     end
 end
