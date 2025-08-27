@@ -316,7 +316,8 @@ classdef MultiObjectiveSolver
         function obj = callbacks(obj, iter, max_iter, best)
             arch_size = numel(obj.archive);
             if ~isempty(best)
-                fitness_str = sprintf('[%s]', strjoin(string(num2str(best.multi_fitness(:).','%.3f')), ', '));
+                fitness_str = ['[', sprintf('%.3f ', best.multi_fitness), ']'];
+                fitness_str = regexprep(fitness_str, '\s+\]', ']'); 
             else
                 fitness_str = 'N/A';
             end
