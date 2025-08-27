@@ -117,7 +117,7 @@ method = all_solver.create_solver('MultiObjectiveShuffledFrogLeapingOptimizer', 
 
 ## 📑 Documentation
 
-* See `example_1d.m` and `example_2d.m` for usage examples.
+* See `example_1d.m`, `example_2d.m`, .... for usage examples.
 * Reference implementations:
 
   * `src/ParticleSwarmOptimizer.m` (single-objective)
