@@ -118,7 +118,7 @@ classdef MultiObjectiveCuckooSearchOptimizer < MultiObjectiveSolver
                 population = obj.update_population(population, abandoned_nests);
                 
                 % Update archive with current population
-                obj.add_to_archive(population);
+                obj = obj.add_to_archive(population);
                 
                 % Store archive state for history
                 archive_copy = cell(1, length(obj.archive));

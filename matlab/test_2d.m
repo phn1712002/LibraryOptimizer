@@ -15,8 +15,8 @@ varargin = [];
 % Create solver for ZDT1 using the factory function
 all_solver = SolverFactory();
 all_solver.show_solvers();
-method = all_solver.create_solver('BatOptimizer', objective_func, lb, ub, dim, maximize, varargin);
+method = all_solver.create_solver('GreyWolfOptimizer', objective_func, lb, ub, dim, maximize, varargin);
 
 % Run optimization for ZDT1
 [history, archive] = method.solver(search_agents_no, max_iter);
-plot_history_multi_animation(history)
+%plot_history_multi_animation(history)

@@ -15,5 +15,5 @@ varargin = [];
 % Create solver for Sphere using the factory function
 all_solver = SolverFactory();
 all_solver.show_solvers();
-method = all_solver.create_solver('BatOptimizer', objective_func, lb, ub, dim, maximize, varargin);
+method = all_solver.create_solver('CuckooSearchOptimizer', objective_func, lb, ub, dim, maximize, varargin);
 [history, archive] = method.solver(search_agents_no, max_iter);
