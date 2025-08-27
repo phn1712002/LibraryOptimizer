@@ -120,11 +120,9 @@ classdef MultiObjectiveSeagullOptimizer < MultiObjectiveSolver
                     for j = 1:obj.dim
                         % Generate random numbers
                         r1 = rand();
-                        r2 = rand();
                         
                         % Calculate A1 and C1 parameters
                         A1 = 2 * Fc * r1 - Fc;
-                        C1 = 2 * r2;
                         
                         % Calculate ll parameter
                         ll = (Fc - 1) * rand() + 1;
