@@ -249,7 +249,7 @@ classdef Solver
             
             iterations = 1:length(fitness_history);
             
-            figure;
+            figure('Name', 'History best fitness');
             plot(iterations, fitness_history, 'b-', 'LineWidth', 2, 'DisplayName', 'Fitness');
             xlabel('Iteration');
             ylabel('Best Fitness');
