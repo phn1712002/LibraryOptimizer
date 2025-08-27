@@ -31,7 +31,7 @@ class MultiObjectiveHenryGasSolubilityOptimizer(MultiObjectiveSolver):
         - beta: Constant for position update (default: 1)
         - M1: Minimum fraction of worst agents to replace (default: 0.1)
         - M2: Maximum fraction of worst agents to replace (default: 0.2)
-        - archive_size: Size of the external archive (default: 100)
+        
         - alpha_grid: Grid inflation parameter (default: 0.1)
         - n_grid: Number of grids per dimension (default: 7)
         - beta_grid: Leader selection pressure (default: 2)

@@ -19,11 +19,6 @@ classdef MultiObjectiveBatOptimizer < MultiObjectiveSolver
         Optimization direction for each objective
     varargin : cell array
         Additional parameters:
-        - archive_size: Size of the external archive (default: 100)
-        - alpha_grid: Grid inflation parameter (default: 0.1)
-        - n_grid: Number of grids per dimension (default: 7)
-        - beta_leader: Leader selection pressure (default: 2)
-        - gamma_archive: Archive removal pressure (default: 2)
         - fmin: Minimum frequency (default: 0)
         - fmax: Maximum frequency (default: 2)
         - alpha_loud: Loudness decay constant (default: 0.9)

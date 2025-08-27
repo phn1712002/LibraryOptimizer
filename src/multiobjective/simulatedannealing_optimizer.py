@@ -22,16 +22,12 @@ class MultiObjectiveSimulatedAnnealingOptimizer(MultiObjectiveSolver):
         Problem dimension
     **kwargs
         Additional parameters:
-        - archive_size: Size of the external archive (default: 100)
         - max_temperatures: Maximum number of temperature levels (default: 100)
         - tol_fun: Function tolerance for convergence (default: 1e-4)
         - safety_threshold_df: Safety threshold calculation df
         - equilibrium_steps: Number of steps per temperature level (default: 500)
         - initial_temperature: Starting temperature (default: None, auto-calculated)
-        - alpha: Grid inflation parameter (default: 0.1)
-        - n_grid: Number of grids per dimension (default: 7)
-        - beta: Leader selection pressure (default: 2)
-        - gamma: Archive removal pressure (default: 2)
+
     """
     
     def __init__(self, objective_func: Callable, lb: Union[float, np.ndarray], 

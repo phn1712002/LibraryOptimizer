@@ -22,11 +22,6 @@ class MultiObjectiveGeneticAlgorithmOptimizer(MultiObjectiveSolver):
         Problem dimension
     **kwargs
         Additional parameters:
-        - archive_size: Size of the external archive (default: 100)
-        - alpha: Grid inflation parameter (default: 0.1)
-        - n_grid: Number of grids per dimension (default: 7)
-        - beta: Leader selection pressure (default: 2)
-        - gamma: Archive removal pressure (default: 2)
         - num_groups: Number of independent populations (default: 5)
         - crossover_rate: Probability of crossover (default: 0.8)
         - mutation_rate: Probability of mutation (default: 0.1)

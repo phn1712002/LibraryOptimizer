@@ -19,11 +19,6 @@ classdef MultiObjectiveCuckooSearchOptimizer < MultiObjectiveSolver
         Optimization direction for each objective
     varargin : cell array
         Additional parameters:
-        - archive_size: Size of the external archive (default: 100)
-        - alpha_grid: Grid inflation parameter (default: 0.1)
-        - n_grid: Number of grids per dimension (default: 7)
-        - beta_leader: Leader selection pressure (default: 2)
-        - gamma_archive: Archive removal pressure (default: 2)
         - pa: Discovery rate of alien eggs/solutions (default: 0.25)
         - beta: Levy exponent for flight steps (default: 1.5)
     %}

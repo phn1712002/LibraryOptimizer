@@ -21,7 +21,6 @@ class MultiObjectiveFireflyOptimizer(MultiObjectiveSolver):
         Problem dimension
     **kwargs
         Additional parameters:
-        - archive_size: Size of the external archive (default: 100)
         - alpha: Randomness parameter (default: 0.5)
         - betamin: Minimum attractiveness (default: 0.2)
         - gamma: Absorption coefficient (default: 1.0)

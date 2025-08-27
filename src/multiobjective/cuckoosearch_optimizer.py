@@ -23,11 +23,6 @@ class MultiObjectiveCuckooSearchOptimizer(MultiObjectiveSolver):
         Problem dimension
     **kwargs
         Additional parameters:
-        - archive_size: Size of the external archive (default: 100)
-        - alpha: Grid inflation parameter (default: 0.1)
-        - n_grid: Number of grids per dimension (default: 7)
-        - beta: Leader selection pressure (default: 2)
-        - gamma: Archive removal pressure (default: 2)
         - pa: Discovery rate of alien eggs/solutions (default: 0.25)
         - beta_levy: Levy exponent for flight steps (default: 1.5)
     """

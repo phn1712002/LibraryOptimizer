@@ -27,10 +27,7 @@ class MultiObjectiveBiogeographyBasedOptimizer(MultiObjectiveSolver):
     **kwargs
         Additional algorithm parameters including:
         - archive_size: Size of external archive (default: 100)
-        - alpha: Grid inflation parameter (default: 0.1)
-        - n_grid: Number of grids per dimension (default: 7)
-        - beta: Leader selection pressure (default: 2)
-        - gamma: Archive removal pressure (default: 2)
+
         - keep_rate: Rate of habitats to keep (default: 0.2)
         - migration_alpha: Migration coefficient (default: 0.9)
         - p_mutation: Mutation probability (default: 0.1)

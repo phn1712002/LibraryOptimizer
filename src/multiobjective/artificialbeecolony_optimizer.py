@@ -38,13 +38,9 @@ class MultiObjectiveArtificialBeeColonyOptimizer(MultiObjectiveSolver):
         Problem dimension
     **kwargs
         Additional parameters:
-        - archive_size: Size of the external archive (default: 100)
         - abandonment_limit: Trial limit for scout bees (default: calculated as 0.6 * dim * population_size)
         - n_onlooker: Number of onlooker bees (default: same as population size)
-        - alpha: Grid inflation parameter (default: 0.1)
-        - n_grid: Number of grids per dimension (default: 7)
-        - beta: Leader selection pressure (default: 2)
-        - gamma: Archive removal pressure (default: 2)
+
         - acceleration_coef: Acceleration coefficient (default: 1.0)
     """
     

@@ -22,11 +22,6 @@ class MultiObjectiveMossGrowthOptimizer(MultiObjectiveSolver):
         Problem dimension
     **kwargs
         Additional parameters:
-        - archive_size: Size of the external archive (default: 100)
-        - alpha: Grid inflation parameter (default: 0.1)
-        - n_grid: Number of grids per dimension (default: 7)
-        - beta: Leader selection pressure (default: 2)
-        - gamma: Archive removal pressure (default: 2)
         - w: Inertia weight parameter (default: 2.0)
         - rec_num: Number of positions to record for cryptobiosis (default: 10)
         - divide_num: Number of dimensions to divide (default: dim/4)

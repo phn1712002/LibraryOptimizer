@@ -21,11 +21,6 @@ class MultiObjectiveGreyWolfOptimizer(MultiObjectiveSolver):
         Problem dimension
     **kwargs
         Additional parameters:
-        - archive_size: Size of the external archive (default: 100)
-        - alpha: Grid inflation parameter (default: 0.1)
-        - n_grid: Number of grids per dimension (default: 7)
-        - beta: Leader selection pressure (default: 2)
-        - gamma: Archive removal pressure (default: 2)
     """
     
     def __init__(self, objective_func: Callable, lb: Union[float, np.ndarray], 

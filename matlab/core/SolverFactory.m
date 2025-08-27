@@ -190,6 +190,7 @@ function [SOLVER_REGISTRY, MULTI_OBJECTIVE_MAPPING] = get_solver_registry()
     MULTI_OBJECTIVE_MAPPING = containers.Map();
     
     % Register solvers
+    % Multi Objective
     SOLVER_REGISTRY('MultiObjectiveGreyWolfOptimizer') = @(varargin) MultiObjectiveGreyWolfOptimizer(varargin{:});
     SOLVER_REGISTRY('MultiObjectiveParticleSwarmOptimizer') = @(varargin) MultiObjectiveParticleSwarmOptimizer(varargin{:});
     SOLVER_REGISTRY('MultiObjectiveFireflyOptimizer') = @(varargin) MultiObjectiveFireflyOptimizer(varargin{:});
@@ -198,7 +199,27 @@ function [SOLVER_REGISTRY, MULTI_OBJECTIVE_MAPPING] = get_solver_registry()
     SOLVER_REGISTRY('MultiObjectiveWhaleOptimizer') = @(varargin) MultiObjectiveWhaleOptimizer(varargin{:});
     SOLVER_REGISTRY('MultiObjectiveBatOptimizer') = @(varargin) MultiObjectiveBatOptimizer(varargin{:});
     SOLVER_REGISTRY('MultiObjectiveCuckooSearchOptimizer') = @(varargin) MultiObjectiveCuckooSearchOptimizer(varargin{:});
+    SOLVER_REGISTRY('MultiObjectiveAntColonyOptimizer') = @(varargin) MultiObjectiveAntColonyOptimizer(varargin{:});
+    SOLVER_REGISTRY('MultiObjectiveArtificialEcosystemOptimizer') = @(varargin) MultiObjectiveArtificialEcosystemOptimizer(varargin{:});
+    SOLVER_REGISTRY('MultiObjectiveDingoOptimizer') = @(varargin) MultiObjectiveDingoOptimizer(varargin{:});
+    SOLVER_REGISTRY('MultiObjectiveModifiedSocialGroupOptimizer') = @(varargin) MultiObjectiveModifiedSocialGroupOptimizer(varargin{:});
+    SOLVER_REGISTRY('MultiObjectiveShuffledFrogLeapingOptimizer') = @(varargin) MultiObjectiveShuffledFrogLeapingOptimizer(varargin{:});
+    SOLVER_REGISTRY('MultiObjectiveGeneticAlgorithmOptimizer') = @(varargin) MultiObjectiveGeneticAlgorithmOptimizer(varargin{:});
+    SOLVER_REGISTRY('MultiObjectiveTeachingLearningBasedOptimizer') = @(varargin) MultiObjectiveTeachingLearningBasedOptimizer(varargin{:});
+    SOLVER_REGISTRY('MultiObjectivePrairieDogsOptimizer') = @(varargin) MultiObjectivePrairieDogsOptimizer(varargin{:});
+    SOLVER_REGISTRY('MultiObjectiveMossGrowthOptimizer') = @(varargin) MultiObjectiveMossGrowthOptimizer(varargin{:});
+    SOLVER_REGISTRY('MultiObjectiveSimulatedAnnealingOptimizer') = @(varargin) MultiObjectiveSimulatedAnnealingOptimizer(varargin{:});
+    SOLVER_REGISTRY('MultiObjectiveGravitationalSearchOptimizer') = @(varargin) MultiObjectiveGravitationalSearchOptimizer(varargin{:});
+    SOLVER_REGISTRY('MultiObjectiveBiogeographyBasedOptimizer') = @(varargin) MultiObjectiveBiogeographyBasedOptimizer(varargin{:});
+    SOLVER_REGISTRY('MultiObjectiveSeagullOptimizer') = @(varargin) MultiObjectiveSeagullOptimizer(varargin{:});
+    SOLVER_REGISTRY('MultiObjectiveGlowwormSwarmOptimizer') = @(varargin) MultiObjectiveGlowwormSwarmOptimizer(varargin{:});
+    SOLVER_REGISTRY('MultiObjectiveElectromagneticChargedParticlesOptimizer') = @(varargin) MultiObjectiveElectromagneticChargedParticlesOptimizer(varargin{:});
+    SOLVER_REGISTRY('MultiObjectiveHenryGasSolubilityOptimizer') = @(varargin) MultiObjectiveHenryGasSolubilityOptimizer(varargin{:});
+    SOLVER_REGISTRY('MultiObjectiveMarinePredatorsOptimizer') = @(varargin) MultiObjectiveMarinePredatorsOptimizer(varargin{:});
+    SOLVER_REGISTRY('MultiObjectiveEquilibriumOptimizer') = @(varargin) MultiObjectiveEquilibriumOptimizer(varargin{:});
+    SOLVER_REGISTRY('MultiObjectiveJAYAOptimizer') = @(varargin) MultiObjectiveJAYAOptimizer(varargin{:});
     
+    % Signle Objective
     SOLVER_REGISTRY('GreyWolfOptimizer') = @(varargin) GreyWolfOptimizer(varargin{:});
     SOLVER_REGISTRY('ArtificialBeeColonyOptimizer') = @(varargin) ArtificialBeeColonyOptimizer(varargin{:});
     SOLVER_REGISTRY('ParticleSwarmOptimizer') = @(varargin) ParticleSwarmOptimizer(varargin{:});
@@ -236,7 +257,25 @@ function [SOLVER_REGISTRY, MULTI_OBJECTIVE_MAPPING] = get_solver_registry()
     MULTI_OBJECTIVE_MAPPING('WhaleOptimizer') = 'MultiObjectiveWhaleOptimizer';
     MULTI_OBJECTIVE_MAPPING('BatOptimizer') = 'MultiObjectiveBatOptimizer';
     MULTI_OBJECTIVE_MAPPING('CuckooSearchOptimizer') = 'MultiObjectiveCuckooSearchOptimizer';
-
+    MULTI_OBJECTIVE_MAPPING('AntColonyOptimizer') = 'MultiObjectiveAntColonyOptimizer';
+    MULTI_OBJECTIVE_MAPPING('ArtificialEcosystemOptimizer') = 'MultiObjectiveArtificialEcosystemOptimizer';
+    MULTI_OBJECTIVE_MAPPING('DingoOptimizer') = 'MultiObjectiveDingoOptimizer';
+    MULTI_OBJECTIVE_MAPPING('ModifiedSocialGroupOptimizer') = 'MultiObjectiveModifiedSocialGroupOptimizer';
+    MULTI_OBJECTIVE_MAPPING('ShuffledFrogLeapingOptimizer') = 'MultiObjectiveShuffledFrogLeapingOptimizer';
+    MULTI_OBJECTIVE_MAPPING('GeneticAlgorithmOptimizer') = 'MultiObjectiveGeneticAlgorithmOptimizer';
+    MULTI_OBJECTIVE_MAPPING('TeachingLearningBasedOptimizer') = 'MultiObjectiveTeachingLearningBasedOptimizer';
+    MULTI_OBJECTIVE_MAPPING('PrairieDogsOptimizer') = 'MultiObjectivePrairieDogsOptimizer';
+    MULTI_OBJECTIVE_MAPPING('MossGrowthOptimizer') = 'MultiObjectiveMossGrowthOptimizer';
+    MULTI_OBJECTIVE_MAPPING('SimulatedAnnealingOptimizer') = 'MultiObjectiveSimulatedAnnealingOptimizer';
+    MULTI_OBJECTIVE_MAPPING('GravitationalSearchOptimizer') = 'MultiObjectiveGravitationalSearchOptimizer';
+    MULTI_OBJECTIVE_MAPPING('BiogeographyBasedOptimizer') = 'MultiObjectiveBiogeographyBasedOptimizer';
+    MULTI_OBJECTIVE_MAPPING('SeagullOptimizer') = 'MultiObjectiveSeagullOptimizer';
+    MULTI_OBJECTIVE_MAPPING('GlowwormSwarmOptimizer') = 'MultiObjectiveGlowwormSwarmOptimizer';
+    MULTI_OBJECTIVE_MAPPING('ElectromagneticChargedParticlesOptimizer') = 'MultiObjectiveElectromagneticChargedParticlesOptimizer';
+    MULTI_OBJECTIVE_MAPPING('HenryGasSolubilityOptimizer') = 'MultiObjectiveHenryGasSolubilityOptimizer';
+    MULTI_OBJECTIVE_MAPPING('MarinePredatorsOptimizer') = 'MultiObjectiveMarinePredatorsOptimizer';
+    MULTI_OBJECTIVE_MAPPING('EquilibriumOptimizer') = 'MultiObjectiveEquilibriumOptimizer';
+    MULTI_OBJECTIVE_MAPPING('JAYAOptimizer') = 'MultiObjectiveJAYAOptimizer';
     
     % Add more solvers here as they are implemented
     % Example: SOLVER_REGISTRY('NSGA2') = @(varargin) NSGA2(varargin{:});
