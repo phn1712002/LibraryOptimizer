@@ -198,7 +198,7 @@ function [SOLVER_REGISTRY, MULTI_OBJECTIVE_MAPPING] = get_solver_registry()
     SOLVER_REGISTRY('MultiObjectiveWhaleOptimizer') = @(varargin) MultiObjectiveWhaleOptimizer(varargin{:});
     SOLVER_REGISTRY('MultiObjectiveBatOptimizer') = @(varargin) MultiObjectiveBatOptimizer(varargin{:});
     SOLVER_REGISTRY('MultiObjectiveCuckooSearchOptimizer') = @(varargin) MultiObjectiveCuckooSearchOptimizer(varargin{:});
-
+    
     SOLVER_REGISTRY('GreyWolfOptimizer') = @(varargin) GreyWolfOptimizer(varargin{:});
     SOLVER_REGISTRY('ArtificialBeeColonyOptimizer') = @(varargin) ArtificialBeeColonyOptimizer(varargin{:});
     SOLVER_REGISTRY('ParticleSwarmOptimizer') = @(varargin) ParticleSwarmOptimizer(varargin{:});
@@ -211,11 +211,15 @@ function [SOLVER_REGISTRY, MULTI_OBJECTIVE_MAPPING] = get_solver_registry()
     SOLVER_REGISTRY('ArtificialEcosystemOptimizer') = @(varargin) ArtificialEcosystemOptimizer(varargin{:});
     SOLVER_REGISTRY('BiogeographyBasedOptimizer') = @(varargin) BiogeographyBasedOptimizer(varargin{:});
     SOLVER_REGISTRY('DingoOptimizer') = @(varargin) DingoOptimizer(varargin{:});
-    
-    SOLVER_REGISTRY('DingoOptimizer') = @(varargin) DingoOptimizer(varargin{:});
-    SOLVER_REGISTRY('DingoOptimizer') = @(varargin) DingoOptimizer(varargin{:});
-    SOLVER_REGISTRY('DingoOptimizer') = @(varargin) DingoOptimizer(varargin{:});
-    SOLVER_REGISTRY('DingoOptimizer') = @(varargin) DingoOptimizer(varargin{:});
+    SOLVER_REGISTRY('ElectromagneticChargedParticlesOptimizer') = @(varargin) ElectromagneticChargedParticlesOptimizer(varargin{:});
+    SOLVER_REGISTRY('EquilibriumOptimizer') = @(varargin) EquilibriumOptimizer(varargin{:});
+    SOLVER_REGISTRY('GeneticAlgorithmOptimizer') = @(varargin) GeneticAlgorithmOptimizer(varargin{:});
+    SOLVER_REGISTRY('GlowwormSwarmOptimizer') = @(varargin) GlowwormSwarmOptimizer(varargin{:});
+
+    SOLVER_REGISTRY('ElectromagneticChargedParticlesOptimizer') = @(varargin) ElectromagneticChargedParticlesOptimizer(varargin{:});
+    SOLVER_REGISTRY('EquilibriumOptimizer') = @(varargin) EquilibriumOptimizer(varargin{:});
+    SOLVER_REGISTRY('GeneticAlgorithmOptimizer') = @(varargin) GeneticAlgorithmOptimizer(varargin{:});
+    SOLVER_REGISTRY('GlowwormSwarmOptimizer') = @(varargin) GlowwormSwarmOptimizer(varargin{:});
 
     % Add multi-objective mappings
     MULTI_OBJECTIVE_MAPPING('GreyWolfOptimizer') = 'MultiObjectiveGreyWolfOptimizer';
