@@ -307,8 +307,17 @@ classdef MultiObjectiveSolver
             fprintf('📊 Parameters:\n');
             fprintf('   - Objectives dimension: %d\n', obj.n_objectives);
             fprintf('   - Problem dimension: %d\n', obj.dim);
-            fprintf('   - Lower bounds: [%s]\n', strjoin(string(num2str(obj.lb(:).','%.4g')),' '));
-            fprintf('   - Upper bounds: [%s]\n', strjoin(string(num2str(obj.ub(:).','%.4g')),' '));
+
+            lb_str = ['[', sprintf('%.3f ', obj.lb(:).'), ']'];
+            lb_str = regexprep(lb_str, '\s+\]', ']'); 
+
+            fprintf('   - Lower bounds: [%s]\n', strjoin(string(num2str(lb_str,'%.4g')),' '));
+
+            ub_str = ['[', sprintf('%.3f ', obj.ub(:).'), ']'];
+            ub_str = regexprep(ub_str, '\s+\]', ']'); 
+
+            fprintf('   - Upper bounds: [%s]\n', strjoin(string(num2str(ub_str,'%.4g')),' '));
+            
             fprintf('   - Optimization direction: %s\n', tern(obj.maximize,'Maximize','Minimize'));
             fprintf('   - Maximum iterations: %d\n\n', max_iter);
         end

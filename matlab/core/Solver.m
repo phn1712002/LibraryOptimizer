@@ -189,8 +189,17 @@ classdef Solver
             fprintf('🚀 Starting %s algorithm\n', obj.name_solver);
             fprintf('📊 Parameters:\n');
             fprintf('   - Problem dimension: %d\n', obj.dim);
-            fprintf('   - Lower bounds: %s\n', mat2str(obj.lb));
-            fprintf('   - Upper bounds: %s\n', mat2str(obj.ub));
+            
+            lb_str = ['[', sprintf('%.3f ', obj.lb(:).'), ']'];
+            lb_str = regexprep(lb_str, '\s+\]', ']'); 
+
+            fprintf('   - Lower bounds: [%s]\n', strjoin(string(num2str(lb_str,'%.4g')),' '));
+
+            ub_str = ['[', sprintf('%.3f ', obj.ub(:).'), ']'];
+            ub_str = regexprep(ub_str, '\s+\]', ']'); 
+
+            fprintf('   - Upper bounds: [%s]\n', strjoin(string(num2str(ub_str,'%.4g')),' '));
+            
             fprintf('   - Optimization direction: %s\n', ternary(obj.maximize, 'Maximize', 'Minimize'));
             fprintf('   - Maximum iterations: %d\n', max_iter);
             fprintf('\n');
