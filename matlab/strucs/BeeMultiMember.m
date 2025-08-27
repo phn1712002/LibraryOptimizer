@@ -1,20 +1,9 @@
 classdef BeeMultiMember < MultiObjectiveMember
     %{
-    BeeMultiMember - Represents a bee individual for multi-objective Artificial Bee Colony algorithm
+    BeeMultiMember - Multi-objective bee member with trial counter
     
-    Attributes:
-        position : array
-            Current position in the search space
-        multi_fitness : array
-            Multi-objective fitness values
-        trial : int
-            Counter for unsuccessful attempts, used for abandonment strategy
-        dominated : bool
-            Whether this solution is dominated by others
-        grid_index : int
-            Grid index for archive management
-        grid_sub_index : array
-            Sub-grid indices for each objective
+    Extends MultiObjectiveMember with ABC-specific attributes:
+    - trial: Trial counter for scout bee mechanism
     %}
     
     properties
@@ -24,64 +13,62 @@ classdef BeeMultiMember < MultiObjectiveMember
     methods
         function obj = BeeMultiMember(position, fitness, trial)
             %{
-            BeeMultiMember constructor - Initialize a BeeMultiMember with position, fitness, and trial counter
+            BeeMultiMember constructor
             
             Inputs:
                 position : array
-                    Position vector in search space
+                    Current position vector
                 fitness : array
-                    Multi-objective fitness values
-                trial : int
-                    Trial counter for abandonment (default: 0)
+                    Current fitness values (multiple objectives)
+                trial : int, optional
+                    Trial counter (default: 0)
             %}
             
             % Call parent constructor
             obj@MultiObjectiveMember(position, fitness);
             
-            % Set default values if not provided
-            if nargin < 3
+            % Set trial counter
+            if nargin < 3 || isempty(trial)
                 obj.trial = 0;
             else
                 obj.trial = trial;
             end
         end
         
-        function new_bee = copy(obj)
+        function new_member = copy(obj)
             %{
-            copy - Create a deep copy of the BeeMultiMember
+            copy - Create a deep copy of the member
             
             Returns:
-                new_bee : BeeMultiMember
-                    A new BeeMultiMember object with copied properties
+                new_member : BeeMultiMember
+                    Deep copy of this member
             %}
             
-            new_bee = BeeMultiMember(...
+            new_member = BeeMultiMember(...
                 obj.position, ...
                 obj.multi_fitness, ...
                 obj.trial ...
             );
             
-            % Copy additional properties from parent
-            new_bee.dominated = obj.dominated;
-            new_bee.grid_index = obj.grid_index;
-            if ~isempty(obj.grid_sub_index)
-                new_bee.grid_sub_index = obj.grid_sub_index;
-            end
+            % Copy additional properties
+            new_member.dominated = obj.dominated;
+            new_member.grid_index = obj.grid_index;
+            new_member.grid_sub_index = obj.grid_sub_index;
         end
         
         function str = char(obj)
             %{
-            char - String representation of the BeeMultiMember
+            char - String representation of the member
             
             Returns:
-                str : string
+                str : char
                     Formatted string showing position, fitness, and trial counter
             %}
             
-            str = sprintf('Position: %s - Fitness: [%s] - Trial: %d - Dominated: %d', ...
+            str = sprintf('Position: %s - Fitness: %s - Trial: %d', ...
                 mat2str(obj.position), ...
-                strjoin(string(num2str(obj.multi_fitness(:), '%.6g')), ' '), ...
-                obj.trial, obj.dominated);
+                mat2str(obj.multi_fitness), ...
+                obj.trial);
         end
     end
 end
