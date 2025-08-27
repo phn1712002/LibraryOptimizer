@@ -215,11 +215,10 @@ function [SOLVER_REGISTRY, MULTI_OBJECTIVE_MAPPING] = get_solver_registry()
     SOLVER_REGISTRY('EquilibriumOptimizer') = @(varargin) EquilibriumOptimizer(varargin{:});
     SOLVER_REGISTRY('GeneticAlgorithmOptimizer') = @(varargin) GeneticAlgorithmOptimizer(varargin{:});
     SOLVER_REGISTRY('GlowwormSwarmOptimizer') = @(varargin) GlowwormSwarmOptimizer(varargin{:});
-
-    SOLVER_REGISTRY('ElectromagneticChargedParticlesOptimizer') = @(varargin) ElectromagneticChargedParticlesOptimizer(varargin{:});
-    SOLVER_REGISTRY('EquilibriumOptimizer') = @(varargin) EquilibriumOptimizer(varargin{:});
-    SOLVER_REGISTRY('GeneticAlgorithmOptimizer') = @(varargin) GeneticAlgorithmOptimizer(varargin{:});
-    SOLVER_REGISTRY('GlowwormSwarmOptimizer') = @(varargin) GlowwormSwarmOptimizer(varargin{:});
+    SOLVER_REGISTRY('GravitationalSearchOptimizer') = @(varargin) GravitationalSearchOptimizer(varargin{:});
+    SOLVER_REGISTRY('HenryGasSolubilityOptimizer') = @(varargin) HenryGasSolubilityOptimizer(varargin{:});
+    SOLVER_REGISTRY('JAYAOptimizer') = @(varargin) JAYAOptimizer(varargin{:});
+    SOLVER_REGISTRY('MarinePredatorsOptimizer') = @(varargin) GlowwormSwarmOptimizer(varargin{:});
 
     % Add multi-objective mappings
     MULTI_OBJECTIVE_MAPPING('GreyWolfOptimizer') = 'MultiObjectiveGreyWolfOptimizer';

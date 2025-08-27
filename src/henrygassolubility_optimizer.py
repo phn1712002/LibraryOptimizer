@@ -31,7 +31,6 @@ class HenryGasSolubilityOptimizer(Solver):
         Optimization direction, default is True (maximize)
     **kwargs
         Additional algorithm parameters:
-        - n_gases: Number of gas particles (default: 35)
         - n_types: Number of gas types/groups (default: 5)
         - l1: Constant for Henry's constant initialization (default: 5e-3)
         - l2: Constant for partial pressure initialization (default: 100)
@@ -57,7 +56,6 @@ class HenryGasSolubilityOptimizer(Solver):
         self.name_solver = "Henry Gas Solubility Optimizer"
         
         # Algorithm-specific parameters with defaults
-        search_agents_no = kwargs.get('n_gases', 35)  # Number of gas particles
         self.n_types = kwargs.get('n_types', 5)   # Number of gas types/groups
         self.l1 = kwargs.get('l1', 5e-3)          # Constant for Henry's constant
         self.l2 = kwargs.get('l2', 100)           # Constant for partial pressure
@@ -66,12 +64,6 @@ class HenryGasSolubilityOptimizer(Solver):
         self.beta = kwargs.get('beta', 1)         # Position update constant
         self.M1 = kwargs.get('M1', 0.1)           # Min fraction of worst agents
         self.M2 = kwargs.get('M2', 0.2)           # Max fraction of worst agents
-        
-        # Validate parameters
-        if search_agents_no % self.n_types != 0:
-            raise ValueError("n_gases must be divisible by n_types")
-        if search_agents_no < self.n_types:
-            raise ValueError("n_gases must be greater than or equal to n_types")
     
     def solver(self, search_agents_no: int, max_iter: int) -> Tuple[List, Member]:
         """
