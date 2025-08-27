@@ -2,7 +2,7 @@
 
 A comprehensive Python library for metaheuristic optimization algorithms, featuring 20+ state-of-the-art optimization algorithms with both single-objective and multi-objective capabilities, all with a unified interface.
 
-### And especially there is a library for MATLAB: [Libraries Optimizer for MATLAB](/matlab/README.md)
+### And especially there is a library for MATLAB: [Libraries Optimizer for MATLAB](/matlab/)
 
 
 ## Features
