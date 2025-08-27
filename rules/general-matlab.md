@@ -41,6 +41,13 @@ end
 
 ## 📝 Steps to Create a New Algorithm
 
+### Step 0: Read Template Files First!
+
+**⚠️ IMPORTANT:** Before starting, ALWAYS read the corresponding sample file:
+
+- **Single-Objective Algorithm**: Read `/matlab/src/ParticleSwarmOptimizer.m`
+- **Multi-Objective Algorithm**: Read `/matlab/src/MultiObjectiveParticleSwarmOptimizer.m`
+
 ### Step 1: Create a new file in `src/`
 
 ```matlab
@@ -78,6 +85,11 @@ end
 ```
 
 ### Step 2: Implement the `solver` method
+
+**⚠️ IMPORTANT NOTE ABOUT FUNCTION OUTPUT:** Be sure to check the output of the functions in `/matlab/core/` carefully:
+
+- **Solver.m**: `init_population()` returns **cell array** → use `population{i}`
+- **MultiObjectiveSolver.m**: `init_population()` returns **object array** → use `population(i)`
 
 ```matlab
 function [history, best] = solver(obj, search_agents_no, max_iter)
@@ -117,8 +129,14 @@ function [history, best] = solver(obj, search_agents_no, max_iter)
             new_position = max(min(new_position, obj.ub), obj.lb);
             
             % Update position & fitness
-            population(i).position = new_position;
-            population(i).fitness = obj.objective_func(new_position);
+            % ⚠️ NOTE: Check the population type (cell array or object array)
+            if iscell(population)
+                population{i}.position = new_position;
+                population{i}.fitness = obj.objective_func(new_position);
+            else
+                population(i).position = new_position;
+                population(i).fitness = obj.objective_func(new_position);
+            end
         end
         
         % Select best individual
@@ -130,10 +148,18 @@ function [history, best] = solver(obj, search_agents_no, max_iter)
         end
         
         % Update history
-        obj.history_step_solver{end+1} = population(best_idx).copy();
+        if iscell(population)
+            obj.history_step_solver{end+1} = population{best_idx}.copy();
+        else
+            obj.history_step_solver{end+1} = population(best_idx).copy();
+        end
         
         % Progress callback
-        obj.callbacks(iter, max_iter, population(best_idx));
+        if iscell(population)
+            obj.callbacks(iter, max_iter, population{best_idx});
+        else
+            obj.callbacks(iter, max_iter, population(best_idx));
+        end
     end
     
     % End algorithm
@@ -266,6 +292,40 @@ end
 * [ ] Ensure positions stay within bounds (`lb`, `ub`)
 * [ ] Correctly update history and best solution
 * [ ] Verify progress display and final results
+
+## 🧬 Inheritance in Structures (strucs/)
+
+**⚠️ IMPORTANT WHEN INHERITING CLASSES:** When creating an inherited class in the `/strucs/` folder, you must carefully read the 2 sample files:
+
+- **Single target**: Read `/matlab/strucs/Particle.m`
+- **Multi-target**: Read `/matlab/strucs/ParticleMultiMember.m`
+
+**Important difference in the copy() method:**
+
+```matlab
+% Particle.m (single objective optimization)
+function new_particle = copy(obj)
+    new_particle = Particle(obj.position, obj.fitness, obj.velocity);
+end
+
+% ParticleMultiMember.m (multi objective optimization)  
+function new_member = copy(obj)
+    new_member = ParticleMultiMember(...
+        obj.position, ...
+        obj.multi_fitness, ...
+        obj.velocity ...
+    );
+    
+    % Copy additional properties
+    new_member.dominated = obj.dominated;
+    new_member.grid_index = obj.grid_index;
+    new_member.grid_sub_index = obj.grid_sub_index;
+    new_member.personal_best_position = obj.personal_best_position;
+    new_member.personal_best_fitness = obj.personal_best_fitness;
+end
+```
+
+**⚠️ NOTE:** The copy() method in multi-target must copy ALL additional properties!
 
 ## 🆘 Support
 

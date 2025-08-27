@@ -124,6 +124,49 @@ end
 
 * MATLAB supports multiple outputs `[out1, out2]` → keep consistent with Python.
 
+### 5. ⚠️ IMPORTANT: Check the output of functions from core classes
+
+When converting from Python to MATLAB, pay special attention to the **output of functions in `/matlab/core/`**:
+
+- **Solver.m**: Functions like `init_population()` return **cell array** → use `population{i}`
+- **MultiObjectiveSolver.m**: Functions like `init_population()` return **object array** → use `population(i)`
+
+**Example of conversion from Python:**
+
+```python
+# Python code (single objective)
+population = self.init_population(search_agents_no)
+for i in range(search_agents_no):
+    particle = population[i]  # List indexing
+    # ... update logic
+```
+
+```matlab
+% MATLAB equivalent (single objective)
+population = obj.init_population(search_agents_no);
+for i = 1:search_agents_no
+    particle = population{i};  % Cell array indexing
+    % ... update logic
+end
+```
+
+```python
+# Python code (multi objective)  
+population = self.init_population(search_agents_no)
+for i in range(search_agents_no):
+    particle = population[i]  # List indexing
+    # ... update logic
+```
+
+```matlab
+% MATLAB equivalent (multi objective)
+population = obj.init_population(search_agents_no);
+for i = 1:search_agents_no
+    particle = population(i);  % Object array indexing
+    % ... update logic
+end
+```
+
 ---
 
 ## 📁 File Organization Rules
@@ -172,6 +215,65 @@ end
    * Keep naming rules from Python.
    * Algorithm logic unchanged, only syntax adapted.
 
+4. **⚠️ IMPORTANT: Class Inheritance in strucs/**
+
+When converting inherited classes from Python to MATLAB, be sure to read the 2 sample files carefully:
+
+- **Single-Target**: Read `/matlab/strucs/Particle.m`
+- **Multi-Target**: Read `/matlab/strucs/ParticleMultiMember.m`
+
+**Important difference in the copy() method:**
+
+```python
+# Python (single objective)
+def copy(self):
+    return Particle(self.position.copy(), self.fitness, self.velocity.copy())
+```
+
+```matlab
+% MATLAB (single objective)
+function new_particle = copy(obj)
+    new_particle = Particle(obj.position, obj.fitness, obj.velocity);
+end
+```
+
+```python
+# Python (multi objective)
+def copy(self):
+    new_member = ParticleMultiMember(
+        self.position.copy(), 
+        self.multi_fitness.copy(), 
+        self.velocity.copy()
+    )
+    # Copy all additional attributes
+    new_member.dominated = self.dominated
+    new_member.grid_index = self.grid_index
+    new_member.grid_sub_index = self.grid_sub_index
+    new_member.personal_best_position = self.personal_best_position.copy()
+    new_member.personal_best_fitness = self.personal_best_fitness.copy()
+    return new_member
+```
+
+```matlab
+% MATLAB (multi objective)
+function new_member = copy(obj)
+    new_member = ParticleMultiMember(...
+        obj.position, ...
+        obj.multi_fitness, ...
+        obj.velocity ...
+    );
+    
+    % Copy additional properties
+    new_member.dominated = obj.dominated;
+    new_member.grid_index = obj.grid_index;
+    new_member.grid_sub_index = obj.grid_sub_index;
+    new_member.personal_best_position = obj.personal_best_position;
+    new_member.personal_best_fitness = obj.personal_best_fitness;
+end
+```
+
+**⚠️ NOTE:** In MATLAB, the copy() method for multi-objective must copy ALL additional properties!
+
 ---
 
 ## 🔍 Code Review Checklist
@@ -183,4 +285,6 @@ end
 * [ ] NumPy replaced with MATLAB vector/matrix operations
 * [ ] Unit tests implemented in MATLAB (`runtests`)
 * [ ] Performance checked (vectorization instead of loops)
-
+* [ ] **TESTED**: Function output from core classes (cell array vs object array)
+* [ ] **TESTED**: Copy() method for inherited classes (especially multi-target)
+* [ ] **TESTED**: Read corresponding template file before starting
