@@ -25,8 +25,8 @@ function plot_history_multi_animation(history)
     % Number of objectives
     M = numel(sample{:}.multi_fitness);
 
-    % Create figure
-    figure("Name", "History Animation");
+    % Create figure và LƯU LẠI HANDLE
+    fig = figure("Name", "History Animation");
     hold on;
     grid on;
     if M == 2
@@ -39,7 +39,10 @@ function plot_history_multi_animation(history)
 
     % Animation loop
     for k = 1:numSteps
+        % ĐẢM BẢO VẼ ĐÚNG TRÊN FIGURE ĐÃ TẠO
+        figure(fig); % Chuyển focus về figure này
         cla; % clear previous frame
+        
         members = history{k};
 
         if isempty(members)

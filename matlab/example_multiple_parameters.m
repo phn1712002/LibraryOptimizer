@@ -23,3 +23,4 @@ method = all_solver.create_solver('MultiObjectiveModifiedSocialGroupOptimizer', 
 % Run optimization for ZDT1
 [history, archive] = method.solver(search_agents_no, max_iter);
 plot_history_multi_animation(history)
+export_history_archive_to_excel(history, 'matlab.xlsx')
