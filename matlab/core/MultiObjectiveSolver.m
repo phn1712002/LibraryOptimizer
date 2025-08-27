@@ -390,21 +390,7 @@ classdef MultiObjectiveSolver
         end
 
         function obj = plot_pareto_front(obj)
-            if isempty(obj.archive)
-                disp('No solutions in obj.archive to plot.'); return;
-            end
-            C = obj.get_fitness(obj.archive); % M x N
-            M = obj.n_objectives;
-            if M == 2
-                figure('Name', 'Pareto Front 2D'); scatter(C(1,:), C(2,:), 36, 'filled');
-                xlabel('Objective 1'); ylabel('Objective 2'); title('Pareto Front (2D)'); grid on;
-            elseif M == 3
-                figure('Name', 'Pareto Front 3D'); plot3(C(1,:), C(2,:), C(3,:), '.', 'MarkerSize', 18);
-                xlabel('Objective 1'); ylabel('Objective 2'); zlabel('Objective 3');
-                title('Pareto Front (3D)'); grid on;
-            else
-                warning('Cannot plot Pareto front for %d objectives (only up to 3 supported).', M);
-            end
+            plot_history_multi(obj.history_step_solver)
         end
 
         function [history, archive] = solver(obj)
