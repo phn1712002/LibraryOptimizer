@@ -1,7 +1,6 @@
 % Add current directory to path
 clear; close all; clc;
 add_lib(pwd);
-SolverFactory().show_solvers();
 
 % Parameter
 dim = 2;
