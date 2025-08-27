@@ -190,15 +190,18 @@ function [SOLVER_REGISTRY, MULTI_OBJECTIVE_MAPPING] = get_solver_registry()
     MULTI_OBJECTIVE_MAPPING = containers.Map();
     
     % Register solvers
-    SOLVER_REGISTRY('MultiObjectiveWhaleOptimizer') = @(varargin) MultiObjectiveWhaleOptimizer(varargin{:});
+    SOLVER_REGISTRY('MultiObjectiveGreyWolfOptimizer') = @(varargin) MultiObjectiveGreyWolfOptimizer(varargin{:});
+    SOLVER_REGISTRY('MultiObjectiveParticleSwarmOptimizer') = @(varargin) MultiObjectiveParticleSwarmOptimizer(varargin{:});
+
     SOLVER_REGISTRY('GreyWolfOptimizer') = @(varargin) GreyWolfOptimizer(varargin{:});
     SOLVER_REGISTRY('ArtificialBeeColonyOptimizer') = @(varargin) ArtificialBeeColonyOptimizer(varargin{:});
     SOLVER_REGISTRY('ParticleSwarmOptimizer') = @(varargin) ParticleSwarmOptimizer(varargin{:});
+    SOLVER_REGISTRY('WhaleOptimizer') = @(varargin) WhaleOptimizer(varargin{:});
     
     % Add multi-objective mappings
     MULTI_OBJECTIVE_MAPPING('GreyWolfOptimizer') = 'MultiObjectiveGreyWolfOptimizer';
-    MULTI_OBJECTIVE_MAPPING('ArtificialBeeColonyOptimizer') = 'MultiObjectiveArtificialBeeColonyOptimizer';
     MULTI_OBJECTIVE_MAPPING('ParticleSwarmOptimizer') = 'MultiObjectiveParticleSwarmOptimizer';
+
     
     % Add more solvers here as they are implemented
     % Example: SOLVER_REGISTRY('NSGA2') = @(varargin) NSGA2(varargin{:});
