@@ -17,9 +17,13 @@ A metaheuristic optimization library in **MATLAB**, featuring both **single-obje
 ```bash
 matlab/
 ├── core/           # Base classes (Solver, MultiObjectiveSolver, Member, etc.)
+├── examples/       # Contains sample scripts
+├── measurements/   # Contains evaluation functions
+├── problems/       # Contains objective functions, problem functions
 ├── src/            # Implementations of optimization algorithms
 ├── strucs/         # Data structures for individuals (Particle, MultiMember, etc.)
 ├── utils/          # Utility functions
+└── add_lib.m       # Script to add subfolders automatically
 └── main.m          # Example script to run tests
 ````
 
