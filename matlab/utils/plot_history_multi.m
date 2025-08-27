@@ -4,13 +4,13 @@ function plot_history_multi(history)
     % INPUT:
     %   history : cell array, where each element is an array of MultiObjectiveMember
     %
-    % The function plots the multi-objective fitness values of all generations
+    % The function plots the multi-objective fitness values of all iterations
     % in a single static plot (supports 2 or 3 objectives).
 
-    % Number of generations (steps)
+    % Number of iterations (steps)
     numSteps = numel(history);
 
-    % Find a valid sample để biết số objective
+    % Find a valid sample to determine the number of objectives
     sample = [];
     for k = 1:numSteps
         if ~isempty(history{k})
@@ -22,12 +22,13 @@ function plot_history_multi(history)
         error('History is empty. Nothing to plot.');
     end
 
-    % Số objective
+    % Number of objectives
     M = numel(sample{:}.multi_fitness);
 
-    % Tạo figure
-    figure("Name", "History Plot"); hold on; grid on;
-    cmap = jet(numSteps); % Gradient màu theo generation
+    % Create figure
+    figure("Name", "History Plot"); 
+    hold on; grid on;
+    cmap = jet(numSteps); % Colormap gradient by iteration
 
     if M == 2
         xlabel('Objective f1'); ylabel('Objective f2');
@@ -37,7 +38,7 @@ function plot_history_multi(history)
         error('Only 2 or 3 objectives are supported for plotting.');
     end
 
-    % Vẽ tất cả generations
+    % Plot all iterations
     for k = 1:numSteps
         members = history{k};
         if isempty(members), continue; end
@@ -54,14 +55,15 @@ function plot_history_multi(history)
         end
     end
 
+    % 3D view
     if M == 3
         view(45,30);
     end
 
-    title('All Generations');
+    title('All Iterations');
     colormap(cmap);
     cb = colorbar; 
-    cb.Label.String = 'Generation';
-    caxis([1 numSteps]); % đánh số thế hệ trên colorbar
+    cb.Label.String = 'Iteration';
+    caxis([1 numSteps]); % scale colorbar to number of generations
     hold off;
 end

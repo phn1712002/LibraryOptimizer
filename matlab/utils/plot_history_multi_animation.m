@@ -1,13 +1,13 @@
 function plot_history_multi_animation(history)
-    % plotHistoryAnimation - Animate the evolution of multi-objective solutions
+    % plot_history_multi_animation - Animate the evolution of multi-objective solutions
     %
     % INPUT:
     %   history : cell array, where each element is an array of MultiObjectiveMember
     %
-    % The function plots the multi-objective fitness values over generations
+    % The function plots the multi-objective fitness values over iterations
     % as an animation. Supports 2 or 3 objectives only.
 
-    % Number of generations (steps)
+    % Number of iterations (steps)
     numSteps = numel(history);
 
     % Find a valid sample to determine the number of objectives
@@ -25,7 +25,7 @@ function plot_history_multi_animation(history)
     % Number of objectives
     M = numel(sample{:}.multi_fitness);
 
-    % Create figure và LƯU LẠI HANDLE
+    % Create figure and save the handle
     fig = figure("Name", "History Animation");
     hold on;
     grid on;
@@ -39,14 +39,14 @@ function plot_history_multi_animation(history)
 
     % Animation loop
     for k = 1:numSteps
-        % ĐẢM BẢO VẼ ĐÚNG TRÊN FIGURE ĐÃ TẠO
-        figure(fig); % Chuyển focus về figure này
-        %cla; % clear previous frame
+        % Ensure plotting is done on the created figure
+        figure(fig);
+        % cla; % Uncomment if you want to clear previous frame
         
         members = history{k};
 
         if isempty(members)
-            title(sprintf('Generation %d/%d (empty)', k, numSteps));
+            title(sprintf('Iteration %d/%d (empty)', k, numSteps));
             drawnow;
             pause(0.3);
             continue;
@@ -62,7 +62,7 @@ function plot_history_multi_animation(history)
             view(45,30);
         end
 
-        title(sprintf('Generation %d/%d', k, numSteps));
+        title(sprintf('Iteration %d/%d', k, numSteps));
         drawnow;
         pause(0.3); % pause for animation effect
     end
