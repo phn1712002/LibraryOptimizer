@@ -219,6 +219,13 @@ function [SOLVER_REGISTRY, MULTI_OBJECTIVE_MAPPING] = get_solver_registry()
     SOLVER_REGISTRY('HenryGasSolubilityOptimizer') = @(varargin) HenryGasSolubilityOptimizer(varargin{:});
     SOLVER_REGISTRY('JAYAOptimizer') = @(varargin) JAYAOptimizer(varargin{:});
     SOLVER_REGISTRY('MarinePredatorsOptimizer') = @(varargin) GlowwormSwarmOptimizer(varargin{:});
+    SOLVER_REGISTRY('ModifiedSocialGroupOptimizer') = @(varargin) ModifiedSocialGroupOptimizer(varargin{:});
+    SOLVER_REGISTRY('MossGrowthOptimizer') = @(varargin) MossGrowthOptimizer(varargin{:});
+    SOLVER_REGISTRY('SeagullOptimizer') = @(varargin) SeagullOptimizer(varargin{:});
+    SOLVER_REGISTRY('PrairieDogsOptimizer') = @(varargin) PrairieDogsOptimizer(varargin{:});
+    SOLVER_REGISTRY('ShuffledFrogLeapingOptimizer') = @(varargin) ShuffledFrogLeapingOptimizer(varargin{:});
+    SOLVER_REGISTRY('SimulatedAnnealingOptimizer') = @(varargin) SimulatedAnnealingOptimizer(varargin{:});
+    SOLVER_REGISTRY('TeachingLearningBasedOptimizer') = @(varargin) TeachingLearningBasedOptimizer(varargin{:});
 
     % Add multi-objective mappings
     MULTI_OBJECTIVE_MAPPING('GreyWolfOptimizer') = 'MultiObjectiveGreyWolfOptimizer';
