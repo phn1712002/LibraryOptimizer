@@ -2,6 +2,9 @@
 
 A metaheuristic optimization library in **MATLAB**, featuring both **single-objective** and **multi-objective** algorithms with a unified and extensible interface.  
 
+### [Download folder](https://download-directory.github.io/?url=https%3A%2F%2Fgithub.com%2Fphn1712002%2FLibraryOptimizer%2Ftree%2Fmain%2Fmatlab)
+
+
 ## ✨ Features
 
 - **Metaheuristic Algorithms**: Particle Swarm Optimization (PSO), Grey Wolf Optimizer (GWO), Whale Optimization Algorithm (WOA), Artificial Bee Colony (ABC), and many more.  
@@ -26,8 +29,6 @@ matlab/
 └── add_lib.m       # Script to add subfolders automatically
 └── main.m          # Example script to run tests
 ````
-
----
 
 ## ⚡ Usage
 ### 1. View the algorithms available in the library (Console):
