@@ -39,7 +39,7 @@ class MultiObjectiveSolver(Solver):
         # Grid-based selection parameters
         self.alpha_grid = kwargs.get('alpha_grid', 0.1)
         self.n_grid = kwargs.get('n_grid', 7)
-        self.beta_leader = kwargs.get('beta', 2)
+        self.beta_leader = kwargs.get('beta_leader', 2)
         self.gamma_archive = kwargs.get('gamma_archive', 2)
         
         # Hypercube grid

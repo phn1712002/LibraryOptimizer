@@ -48,7 +48,7 @@ classdef MultiObjectiveSolver
             obj.archive_size = obj.get_kw('archive_size', 100);
             obj.alpha_grid   = obj.get_kw('alpha_grid', 0.1);
             obj.n_grid       = obj.get_kw('n_grid', 7);
-            obj.beta_leader  = obj.get_kw('beta', 2);
+            obj.beta_leader  = obj.get_kw('beta_leader', 2);
             obj.gamma_archive= obj.get_kw('gamma_archive', 2);
 
             % Suy ra số mục tiêu từ một đánh giá ngẫu nhiên
