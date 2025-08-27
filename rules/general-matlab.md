@@ -72,15 +72,6 @@ classdef AlgorithmName < Solver
             
             % Set algorithm name
             obj.name_solver = "Algorithm Name";
-            
-            % Parse algorithm-specific parameters
-            p = inputParser;
-            addParameter(p, 'param_1', default_value, @data_type);
-            addParameter(p, 'param_2', default_value, @data_type);
-            parse(p, varargin{:});
-            
-            obj.param_1 = p.Results.param_1;
-            obj.param_2 = p.Results.param_2;
         end
     end
 end
@@ -126,8 +117,8 @@ function [history, best] = solver(obj, search_agents_no, max_iter)
             new_position = max(min(new_position, obj.ub), obj.lb);
             
             % Update position & fitness
-            population{i}.position = new_position;
-            population{i}.fitness = obj.objective_func(new_position);
+            population(i).position = new_position;
+            population(i).fitness = obj.objective_func(new_position);
         end
         
         % Select best individual
@@ -139,10 +130,10 @@ function [history, best] = solver(obj, search_agents_no, max_iter)
         end
         
         % Update history
-        obj.history_step_solver{end+1} = population{best_idx}.copy();
+        obj.history_step_solver{end+1} = population(best_idx).copy();
         
         % Progress callback
-        obj.callbacks(iter, max_iter, population{best_idx});
+        obj.callbacks(iter, max_iter, population(best_idx));
     end
     
     % End algorithm
@@ -226,14 +217,13 @@ classdef TemplateOptimizer < Solver
             obj@Solver(objective_func, lb, ub, dim, maximize, varargin{:});
             obj.name_solver = "Template Optimizer";
             
-            % Parse custom parameters
-            p = inputParser;
-            addParameter(p, 'param_1', 0.5, @isnumeric);
-            addParameter(p, 'param_2', 1.0, @isnumeric);
-            parse(p, varargin{:});
-            
-            obj.param_1 = p.Results.param_1;
-            obj.param_2 = p.Results.param_2;
+            % Custom parameters
+            % kwargs (Name-Value pairs)
+            if ~isempty(varargin)
+                obj.kwargs = obj.nv2struct(varargin{:});
+            end
+            obj.param_1   = obj.get_kw('param_1', 0.5);
+            obj.param_2 = obj.get_kw('param_2', 1.0);
         end
         
         function [history, best] = solver(obj, search_agents_no, max_iter)
@@ -253,10 +243,10 @@ classdef TemplateOptimizer < Solver
                 else
                     [best_fitness, best_idx] = min(fitness_values);
                 end
-                obj.history_step_solver{end+1} = population{best_idx}.copy();
-                obj.best_solver = population{best_idx};
+                obj.history_step_solver{end+1} = population(best_idx).copy();
+                obj.best_solver = population(best_idx);
                 
-                obj.callbacks(iter, max_iter, population{best_idx});
+                obj.callbacks(iter, max_iter, population(best_idx));
             end
             
             obj.end_step_solver();
@@ -273,7 +263,6 @@ end
 * [ ] Inherit from the correct base class (`Solver` or `MultiObjectiveSolver`)
 * [ ] Implement the `solver` method
 * [ ] Set `obj.name_solver` in the constructor
-* [ ] Parse algorithm parameters with `inputParser`
 * [ ] Ensure positions stay within bounds (`lb`, `ub`)
 * [ ] Correctly update history and best solution
 * [ ] Verify progress display and final results
