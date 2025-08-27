@@ -301,6 +301,18 @@ classdef MultiObjectiveSolver
             end
         end
 
+        function obj = initialize_archive(obj)
+            costs = obj.get_fitness(obj.archive);
+            if ~isempty(costs)
+                obj.grid = obj.create_hypercubes(costs);
+                for k = 1:numel(obj.archive)
+                    [gi, gs] = obj.get_grid_index(obj.archive(k));
+                    obj.archive(k).grid_index = gi;
+                    obj.archive(k).grid_sub_index = gs;
+                end
+            end
+        end
+
         function begin_step_solver(obj, max_iter)
             fprintf('%s\n', repmat('-',1,50));
             fprintf('🚀 Starting %s algorithm\n', obj.name_solver);

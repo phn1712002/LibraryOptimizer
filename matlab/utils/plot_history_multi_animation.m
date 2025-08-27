@@ -1,4 +1,4 @@
-function plot_history_animation(history)
+function plot_history_multi_animation(history)
     % plotHistoryAnimation - Animate the evolution of multi-objective solutions
     %
     % INPUT:
@@ -26,7 +26,7 @@ function plot_history_animation(history)
     M = numel(sample{:}.multi_fitness);
 
     % Create figure
-    figure;
+    figure("Name", "History Animation");
     hold on;
     grid on;
     if M == 2
@@ -50,7 +50,7 @@ function plot_history_animation(history)
         end
 
         % Collect fitness values into matrix [M x N]
-        F = cell2mat(arrayfun(@(m) m{:}.multi_fitness(:), members, 'UniformOutput', false));
+        F = cell2mat(arrayfun(@(m) m.multi_fitness(:), members, 'UniformOutput', false));
 
         if M == 2
             plot(F(1,:), F(2,:), 'o', 'MarkerFaceColor', 'b');

@@ -194,6 +194,10 @@ function [SOLVER_REGISTRY, MULTI_OBJECTIVE_MAPPING] = get_solver_registry()
     SOLVER_REGISTRY('MultiObjectiveParticleSwarmOptimizer') = @(varargin) MultiObjectiveParticleSwarmOptimizer(varargin{:});
     SOLVER_REGISTRY('MultiObjectiveFireflyOptimizer') = @(varargin) MultiObjectiveFireflyOptimizer(varargin{:});
     SOLVER_REGISTRY('MultiObjectiveHarmonySearchOptimizer') = @(varargin) MultiObjectiveHarmonySearchOptimizer(varargin{:});
+    SOLVER_REGISTRY('MultiObjectiveArtificialBeeColonyOptimizer') = @(varargin) MultiObjectiveArtificialBeeColonyOptimizer(varargin{:});
+    SOLVER_REGISTRY('MultiObjectiveWhaleOptimizer') = @(varargin) MultiObjectiveWhaleOptimizer(varargin{:});
+    SOLVER_REGISTRY('MultiObjectiveBatOptimizer') = @(varargin) MultiObjectiveBatOptimizer(varargin{:});
+    SOLVER_REGISTRY('MultiObjectiveCuckooSearchOptimizer') = @(varargin) MultiObjectiveCuckooSearchOptimizer(varargin{:});
 
     SOLVER_REGISTRY('GreyWolfOptimizer') = @(varargin) GreyWolfOptimizer(varargin{:});
     SOLVER_REGISTRY('ArtificialBeeColonyOptimizer') = @(varargin) ArtificialBeeColonyOptimizer(varargin{:});
@@ -201,6 +205,8 @@ function [SOLVER_REGISTRY, MULTI_OBJECTIVE_MAPPING] = get_solver_registry()
     SOLVER_REGISTRY('WhaleOptimizer') = @(varargin) WhaleOptimizer(varargin{:});
     SOLVER_REGISTRY('FireflyOptimizer') = @(varargin) FireflyOptimizer(varargin{:});
     SOLVER_REGISTRY('HarmonySearchOptimizer') = @(varargin) HarmonySearchOptimizer(varargin{:});
+    SOLVER_REGISTRY('BatOptimizer') = @(varargin) BatOptimizer(varargin{:});
+    SOLVER_REGISTRY('CuckooSearchOptimizer') = @(varargin) CuckooSearchOptimizer(varargin{:});
     
 
     % Add multi-objective mappings
@@ -208,6 +214,10 @@ function [SOLVER_REGISTRY, MULTI_OBJECTIVE_MAPPING] = get_solver_registry()
     MULTI_OBJECTIVE_MAPPING('ParticleSwarmOptimizer') = 'MultiObjectiveParticleSwarmOptimizer';
     MULTI_OBJECTIVE_MAPPING('FireflyOptimizer') = 'MultiObjectiveFireflyOptimizer';
     MULTI_OBJECTIVE_MAPPING('HarmonySearchOptimizer') = 'MultiObjectiveHarmonySearchOptimizer';
+    MULTI_OBJECTIVE_MAPPING('ArtificialBeeColonyOptimizer') = 'MultiObjectiveArtificialBeeColonyOptimizer';
+    MULTI_OBJECTIVE_MAPPING('WhaleOptimizer') = 'MultiObjectiveWhaleOptimizer';
+    MULTI_OBJECTIVE_MAPPING('BatOptimizer') = 'MultiObjectiveBatOptimizer';
+    MULTI_OBJECTIVE_MAPPING('CuckooSearchOptimizer') = 'MultiObjectiveCuckooSearchOptimizer';
 
     
     % Add more solvers here as they are implemented
