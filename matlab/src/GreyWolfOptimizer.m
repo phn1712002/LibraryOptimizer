@@ -81,7 +81,7 @@ classdef GreyWolfOptimizer < Solver
             % Main optimization loop
             for iter = 1:max_iter
                 % Update alpha, beta, delta based on current population
-                [sorted_population, idx] = obj.sort_population(population);
+                [sorted_population, ~] = obj.sort_population(population);
                 alpha = sorted_population{1}.copy();
                 beta = sorted_population{2}.copy();
                 delta = sorted_population{3}.copy();
