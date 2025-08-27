@@ -22,7 +22,6 @@ classdef HarmonySearchOptimizer < Solver
         Optimization direction (true: maximize, false: minimize)
     varargin : cell array
         Additional algorithm parameters:
-        - hms: Harmony Memory Size (default: 100)
         - hmcr: Harmony Memory Considering Rate (default: 0.95)
         - par: Pitch Adjustment Rate (default: 0.3)
         - bw: Bandwidth (default: 0.2)
