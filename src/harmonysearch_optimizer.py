@@ -49,7 +49,6 @@ class HarmonySearchOptimizer(Solver):
         self.name_solver = "Harmony Search Optimizer"
         
         # Algorithm-specific parameters with defaults
-        self.hms = kwargs.get('hms', 100)  # Harmony Memory Size
         self.hmcr = kwargs.get('hmcr', 0.95)  # Harmony Memory Considering Rate
         self.par = kwargs.get('par', 0.3)  # Pitch Adjustment Rate
         self.bw = kwargs.get('bw', 0.2)  # Bandwidth
@@ -76,11 +75,11 @@ class HarmonySearchOptimizer(Solver):
                 - best_solver: Best solution found overall
         """
         # Initialize harmony memory
-        self.harmony_memory = np.zeros((self.hms, self.dim))
-        self.harmony_fitness = np.zeros(self.hms)
+        self.harmony_memory = np.zeros((search_agents_no, self.dim))
+        self.harmony_fitness = np.zeros(search_agents_no)
         
         # Initialize harmony memory with random solutions
-        for i in range(self.hms):
+        for i in range(search_agents_no):
             self.harmony_memory[i] = np.random.uniform(self.lb, self.ub, self.dim)
             self.harmony_fitness[i] = self.objective_func(self.harmony_memory[i])
         
@@ -110,7 +109,7 @@ class HarmonySearchOptimizer(Solver):
             for j in range(self.dim):
                 if np.random.random() < self.hmcr:
                     # Memory consideration: select from harmony memory
-                    harmony_idx = np.random.randint(0, self.hms)
+                    harmony_idx = np.random.randint(0, search_agents_no)
                     new_harmony[j] = self.harmony_memory[harmony_idx, j]
                     
                     # Pitch adjustment

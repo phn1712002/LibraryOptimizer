@@ -224,7 +224,7 @@ classdef ArtificialBeeColonyOptimizer < Solver
             end
         end
         
-        function index = roulette_wheel_selection(obj, probabilities)
+        function index = roulette_wheel_selection(~, probabilities)
             %{
             roulette_wheel_selection - Perform roulette wheel selection
             

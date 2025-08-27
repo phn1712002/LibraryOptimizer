@@ -192,15 +192,22 @@ function [SOLVER_REGISTRY, MULTI_OBJECTIVE_MAPPING] = get_solver_registry()
     % Register solvers
     SOLVER_REGISTRY('MultiObjectiveGreyWolfOptimizer') = @(varargin) MultiObjectiveGreyWolfOptimizer(varargin{:});
     SOLVER_REGISTRY('MultiObjectiveParticleSwarmOptimizer') = @(varargin) MultiObjectiveParticleSwarmOptimizer(varargin{:});
+    SOLVER_REGISTRY('MultiObjectiveFireflyOptimizer') = @(varargin) MultiObjectiveFireflyOptimizer(varargin{:});
+    SOLVER_REGISTRY('MultiObjectiveHarmonySearchOptimizer') = @(varargin) MultiObjectiveHarmonySearchOptimizer(varargin{:});
 
     SOLVER_REGISTRY('GreyWolfOptimizer') = @(varargin) GreyWolfOptimizer(varargin{:});
     SOLVER_REGISTRY('ArtificialBeeColonyOptimizer') = @(varargin) ArtificialBeeColonyOptimizer(varargin{:});
     SOLVER_REGISTRY('ParticleSwarmOptimizer') = @(varargin) ParticleSwarmOptimizer(varargin{:});
     SOLVER_REGISTRY('WhaleOptimizer') = @(varargin) WhaleOptimizer(varargin{:});
+    SOLVER_REGISTRY('FireflyOptimizer') = @(varargin) FireflyOptimizer(varargin{:});
+    SOLVER_REGISTRY('HarmonySearchOptimizer') = @(varargin) HarmonySearchOptimizer(varargin{:});
     
+
     % Add multi-objective mappings
     MULTI_OBJECTIVE_MAPPING('GreyWolfOptimizer') = 'MultiObjectiveGreyWolfOptimizer';
     MULTI_OBJECTIVE_MAPPING('ParticleSwarmOptimizer') = 'MultiObjectiveParticleSwarmOptimizer';
+    MULTI_OBJECTIVE_MAPPING('FireflyOptimizer') = 'MultiObjectiveFireflyOptimizer';
+    MULTI_OBJECTIVE_MAPPING('HarmonySearchOptimizer') = 'MultiObjectiveHarmonySearchOptimizer';
 
     
     % Add more solvers here as they are implemented

@@ -23,7 +23,6 @@ class MultiObjectiveHarmonySearchOptimizer(MultiObjectiveSolver):
         Optimization direction
     **kwargs
         Additional algorithm parameters:
-        - hms: Harmony Memory Size (default: 100)
         - hmcr: Harmony Memory Considering Rate (default: 0.95)
         - par: Pitch Adjustment Rate (default: 0.3)
         - bw: Bandwidth (default: 0.2)
@@ -42,7 +41,6 @@ class MultiObjectiveHarmonySearchOptimizer(MultiObjectiveSolver):
         self.name_solver = "Multi-Objective Harmony Search Optimizer"
         
         # Algorithm-specific parameters with defaults
-        self.hms = kwargs.get('hms', 100)  # Harmony Memory Size
         self.hmcr = kwargs.get('hmcr', 0.95)  # Harmony Memory Considering Rate
         self.par = kwargs.get('par', 0.3)  # Pitch Adjustment Rate
         self.bw = kwargs.get('bw', 0.2)  # Bandwidth
@@ -71,11 +69,11 @@ class MultiObjectiveHarmonySearchOptimizer(MultiObjectiveSolver):
         history_archive = []
         
         # Initialize harmony memory
-        self.harmony_memory = np.zeros((self.hms, self.dim))
+        self.harmony_memory = np.zeros((search_agents_no, self.dim))
         self.harmony_fitness = []
         
         # Initialize harmony memory with random solutions
-        for i in range(self.hms):
+        for i in range(search_agents_no):
             position = np.random.uniform(self.lb, self.ub, self.dim)
             fitness = self.objective_func(position)
             self.harmony_memory[i] = position
@@ -83,7 +81,7 @@ class MultiObjectiveHarmonySearchOptimizer(MultiObjectiveSolver):
         
         # Convert harmony memory to MultiObjectiveMember objects
         population = []
-        for i in range(self.hms):
+        for i in range(search_agents_no):
             member = MultiObjectiveMember(self.harmony_memory[i].copy(), np.array(self.harmony_fitness[i]))
             population.append(member)
         
@@ -110,7 +108,7 @@ class MultiObjectiveHarmonySearchOptimizer(MultiObjectiveSolver):
             for j in range(self.dim):
                 if np.random.random() < self.hmcr:
                     # Memory consideration: select from harmony memory
-                    harmony_idx = np.random.randint(0, self.hms)
+                    harmony_idx = np.random.randint(0, search_agents_no)
                     new_harmony[j] = self.harmony_memory[harmony_idx, j]
                     
                     # Pitch adjustment
@@ -153,7 +151,7 @@ class MultiObjectiveHarmonySearchOptimizer(MultiObjectiveSolver):
                     
                     # Update harmony memory: replace worst harmony with new one
                     # For simplicity, replace a random harmony
-                    replace_idx = np.random.randint(0, self.hms)
+                    replace_idx = np.random.randint(0, search_agents_no)
                     self.harmony_memory[replace_idx] = new_harmony.copy()
                     self.harmony_fitness[replace_idx] = new_fitness
                     population[replace_idx] = new_member
