@@ -250,7 +250,7 @@ classdef Solver
             iterations = 1:length(fitness_history);
             
             figure;
-            plot(iterations, fitness_history, 'b-', 'LineWidth', 2);
+            plot(iterations, fitness_history, 'b-', 'LineWidth', 2, 'DisplayName', 'Fitness');
             xlabel('Iteration');
             ylabel('Best Fitness');
             title('Optimization History');

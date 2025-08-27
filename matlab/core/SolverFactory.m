@@ -207,7 +207,15 @@ function [SOLVER_REGISTRY, MULTI_OBJECTIVE_MAPPING] = get_solver_registry()
     SOLVER_REGISTRY('HarmonySearchOptimizer') = @(varargin) HarmonySearchOptimizer(varargin{:});
     SOLVER_REGISTRY('BatOptimizer') = @(varargin) BatOptimizer(varargin{:});
     SOLVER_REGISTRY('CuckooSearchOptimizer') = @(varargin) CuckooSearchOptimizer(varargin{:});
+    SOLVER_REGISTRY('AntColonyOptimizer') = @(varargin) AntColonyOptimizer(varargin{:});
+    SOLVER_REGISTRY('ArtificialEcosystemOptimizer') = @(varargin) ArtificialEcosystemOptimizer(varargin{:});
+    SOLVER_REGISTRY('BiogeographyBasedOptimizer') = @(varargin) BiogeographyBasedOptimizer(varargin{:});
+    SOLVER_REGISTRY('DingoOptimizer') = @(varargin) DingoOptimizer(varargin{:});
     
+    SOLVER_REGISTRY('DingoOptimizer') = @(varargin) DingoOptimizer(varargin{:});
+    SOLVER_REGISTRY('DingoOptimizer') = @(varargin) DingoOptimizer(varargin{:});
+    SOLVER_REGISTRY('DingoOptimizer') = @(varargin) DingoOptimizer(varargin{:});
+    SOLVER_REGISTRY('DingoOptimizer') = @(varargin) DingoOptimizer(varargin{:});
 
     % Add multi-objective mappings
     MULTI_OBJECTIVE_MAPPING('GreyWolfOptimizer') = 'MultiObjectiveGreyWolfOptimizer';
