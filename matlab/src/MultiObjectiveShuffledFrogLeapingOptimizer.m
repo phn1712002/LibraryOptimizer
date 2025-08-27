@@ -254,7 +254,7 @@ classdef MultiObjectiveShuffledFrogLeapingOptimizer < MultiObjectiveSolver
                     
             Returns:
                 updated_memeplex : cell array
-                    Updated memeplex after FLA
+                    Updated memeplex after FLA (same size as input)
             %}
             n_pop = numel(memeplex);
             
@@ -300,12 +300,13 @@ classdef MultiObjectiveShuffledFrogLeapingOptimizer < MultiObjectiveSolver
             lower_bound = min(positions, [], 1);
             upper_bound = max(positions, [], 1);
             
-            % FLA main loop
-            parents = memeplex;
+            % FLA main loop - work on the entire memeplex, not just parents
+            updated_memeplex = memeplex;  % Start with original memeplex
+            
             for fla_iter = 1:obj.fla_beta
-                % Select parents
+                % Select parents from the current memeplex
                 parent_indices = obj.rand_sample(selection_probs, obj.fla_q);
-                parents = memeplex(parent_indices);
+                parents = updated_memeplex(parent_indices);
                 
                 % Generate offsprings
                 for offspring_idx = 1:obj.fla_alpha
@@ -315,7 +316,7 @@ classdef MultiObjectiveShuffledFrogLeapingOptimizer < MultiObjectiveSolver
                     
                     % If we don't have enough leaders, use random frogs from memeplex
                     if numel(leaders) < 3
-                        available_frogs = setdiff(memeplex, leaders);
+                        available_frogs = setdiff(updated_memeplex, leaders);
                         needed = 3 - numel(leaders);
                         if ~isempty(available_frogs)
                             additional = available_frogs(randperm(numel(available_frogs), min(needed, numel(available_frogs))));
@@ -328,10 +329,9 @@ classdef MultiObjectiveShuffledFrogLeapingOptimizer < MultiObjectiveSolver
                         leaders = leaders(1:3);
                     end
                     
-                    % Sort parents to find worst one
-                    % For multi-objective, we use crowding distance or random selection
-                    worst_idx = randi(numel(parents));
-                    worst_parent = parents(worst_idx);
+                    % Select a random parent to improve
+                    worst_idx = parent_indices(randi(numel(parent_indices)));
+                    worst_parent = updated_memeplex(worst_idx);
                     
                     % Flags for improvement steps
                     improvement_step2 = false;
@@ -349,7 +349,7 @@ classdef MultiObjectiveShuffledFrogLeapingOptimizer < MultiObjectiveSolver
                         new_sol_1.multi_fitness = new_sol_1.multi_fitness(:).';
                         % For multi-objective, we check if new solution is non-dominated
                         if ~obj.dominates(worst_parent, new_sol_1)  % New solution is not worse
-                            parents(worst_idx) = new_sol_1;
+                            updated_memeplex(worst_idx) = new_sol_1;
                         else
                             improvement_step2 = true;
                         end
@@ -371,7 +371,7 @@ classdef MultiObjectiveShuffledFrogLeapingOptimizer < MultiObjectiveSolver
                             new_sol_2.multi_fitness = obj.objective_func(new_sol_2.position);
                             new_sol_2.multi_fitness = new_sol_2.multi_fitness(:).';
                             if ~obj.dominates(worst_parent, new_sol_2)  % New solution is not worse
-                                parents(worst_idx) = new_sol_2;
+                                updated_memeplex(worst_idx) = new_sol_2;
                             else
                                 censorship = true;
                             end
@@ -385,12 +385,10 @@ classdef MultiObjectiveShuffledFrogLeapingOptimizer < MultiObjectiveSolver
                         random_position = lower_bound + (upper_bound - lower_bound) .* rand(1, obj.dim);
                         random_fitness = obj.objective_func(random_position);
                         random_fitness = random_fitness(:).';
-                        parents(worst_idx) = MultiObjectiveMember(random_position, random_fitness);
+                        updated_memeplex(worst_idx) = MultiObjectiveMember(random_position, random_fitness);
                     end
                 end
             end
-            
-            updated_memeplex = parents;
         end
     end
 end
