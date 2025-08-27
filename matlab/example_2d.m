@@ -1,6 +1,7 @@
 % Add current directory to path
 clear; close all; clc;
 add_lib(pwd);
+SolverFactory().show_solvers();
 
 % Parameter
 dim = 2;
@@ -15,8 +16,8 @@ varargin = [];
 % Create solver for ZDT1 using the factory function
 all_solver = SolverFactory();
 all_solver.show_solvers();
-method = all_solver.create_solver('MultiObjectiveTeachingLearningBasedOptimizer', objective_func, lb, ub, dim, maximize, varargin);
+method = all_solver.create_solver('MultiObjectiveElectromagneticChargedParticlesOptimizer', objective_func, lb, ub, dim, maximize, varargin);
 
 % Run optimization for ZDT1
 [history, archive] = method.solver(search_agents_no, max_iter);
-%plot_history_multi_animation(history)
+plot_history_multi_animation(history)

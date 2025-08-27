@@ -26,8 +26,15 @@ matlab/
 ---
 
 ## ⚡ Usage
+### 1. View the algorithms available in the library (Console):
+```matlab
+clear; close all; clc;
+add_lib(pwd);                   % Add all folders to MATLAB's working path
+SolverFactory().show_solvers(); % This line of code displays all the algorithms available in the library
+```
+---
 
-### 1. Single-Objective Optimization
+### 2. Single-Objective Optimization
 
 ```matlab
 % Add current directory to path
@@ -52,10 +59,9 @@ method = all_solver.create_solver('TeachingLearningBasedOptimizer', ...
 % Run optimization
 [history, best] = method.solver(search_agents_no, max_iter);
 ```
-
 ---
 
-### 2. Multi-Objective Optimization
+### 3. Multi-Objective Optimization
 
 ```matlab
 % Add current directory to path
@@ -80,7 +86,6 @@ method = all_solver.create_solver('MultiObjectiveShuffledFrogLeapingOptimizer', 
 % Run optimization
 [history, archive] = method.solver(search_agents_no, max_iter);
 ```
-
 ---
 
 ## 🛠️ Adding a New Algorithm
