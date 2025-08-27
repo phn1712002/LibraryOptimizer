@@ -8,11 +8,15 @@ The current project folder structure is:
 ```
 
 matlab/
-├── core/           # Base classes (read here first – foundation for new algorithms)
-├── src/            # Specific algorithms (all new algorithms go here)
-├── strucs/         # Data structures (place derived Member/MultiObjectiveMember classes here if needed)
-├── utils/          # Utilities
-└── main.m          # Main test script
+├── core/           # Base classes (Solver, MultiObjectiveSolver, Member, etc.)
+├── examples/       # Contains sample scripts
+├── measurements/   # Contains evaluation functions
+├── problems/       # Contains objective functions, problem functions
+├── src/            # Implementations of optimization algorithms
+├── strucs/         # Data structures for individuals (Particle, MultiMember, etc.)
+├── utils/          # Utility functions
+└── add_lib.m       # Script to add subfolders automatically
+└── main.m          # Example script to run tests
 
 ````
 
