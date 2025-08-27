@@ -191,10 +191,15 @@ function [SOLVER_REGISTRY, MULTI_OBJECTIVE_MAPPING] = get_solver_registry()
     
     % Register solvers
     SOLVER_REGISTRY('MultiObjectiveWhaleOptimizer') = @(varargin) MultiObjectiveWhaleOptimizer(varargin{:});
+    SOLVER_REGISTRY('GreyWolfOptimizer') = @(varargin) GreyWolfOptimizer(varargin{:});
+    SOLVER_REGISTRY('ArtificialBeeColonyOptimizer') = @(varargin) ArtificialBeeColonyOptimizer(varargin{:});
+    SOLVER_REGISTRY('ParticleSwarmOptimizer') = @(varargin) ParticleSwarmOptimizer(varargin{:});
+    
+    % Add multi-objective mappings
+    MULTI_OBJECTIVE_MAPPING('GreyWolfOptimizer') = 'MultiObjectiveGreyWolfOptimizer';
+    MULTI_OBJECTIVE_MAPPING('ArtificialBeeColonyOptimizer') = 'MultiObjectiveArtificialBeeColonyOptimizer';
+    MULTI_OBJECTIVE_MAPPING('ParticleSwarmOptimizer') = 'MultiObjectiveParticleSwarmOptimizer';
     
     % Add more solvers here as they are implemented
     % Example: SOLVER_REGISTRY('NSGA2') = @(varargin) NSGA2(varargin{:});
-    
-    % Add mappings here as solvers are implemented
-    % Example: MULTI_OBJECTIVE_MAPPING('WhaleOptimizer') = 'MultiObjectiveWhaleOptimizer';
 end

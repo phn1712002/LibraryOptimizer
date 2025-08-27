@@ -399,9 +399,7 @@ classdef MultiObjectiveSolver
             history = obj.history_step_solver;
             archive = obj.archive;
         end
-    end
 
-    methods (Access = private)
         function bounds = expand_bounds(~, b, dim)
             if isscalar(b), bounds = repmat(b, 1, dim);
             else, bounds = b(:).'; end

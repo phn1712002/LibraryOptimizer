@@ -13,10 +13,11 @@ classdef Solver
         lb
         ub
         maximize
-        show_chart
+        show_chart logical = true
         history_step_solver
         best_solver
         name_solver
+        kwargs struct = struct()
     end
     
     methods
@@ -59,11 +60,13 @@ classdef Solver
             obj.maximize = maximize;
             
             % Parse additional parameters
-            p = inputParser;
-            addParameter(p, 'show_chart', true, @islogical);
-            parse(p, varargin{:});
-            obj.show_chart = p.Results.show_chart;
-            
+            % kwargs (Name-Value pairs)
+            if ~isempty(varargin)
+                obj.kwargs = obj.nv2struct(varargin{:});
+            end
+
+            obj.show_chart   = obj.get_kw('show_chart', true);
+
             % Initialize optimization history and best solution
             obj.history_step_solver = [];
             if maximize
@@ -282,6 +285,23 @@ classdef Solver
             
             history = obj.history_step_solver;
             best = obj.best_solver;
+        end
+        
+        function s = get_kw(obj, name, default)
+            if isfield(obj.kwargs, name), s = obj.kwargs.(name);
+            else, s = default; end
+        end
+
+        function S = nv2struct(~, varargin)
+            S = struct();
+            if mod(numel(varargin),2) ~= 0, return; end
+            for k = 1:2:numel(varargin)
+                key = varargin{k};
+                val = varargin{k+1};
+                if ischar(key) || isstring(key)
+                    S.(matlab.lang.makeValidName(char(key))) = val;
+                end
+            end
         end
     end
 end
