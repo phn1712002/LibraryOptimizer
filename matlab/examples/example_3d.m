@@ -1,0 +1,23 @@
+% Add current directory to path
+clear; close all; clc;
+add_lib(pwd);
+SolverFactory().show_solvers();
+
+% Parameter
+dim = 5;
+lb = zeros(1, dim);
+ub = ones(1, dim);
+search_agents_no = 100;
+max_iter = 100;
+maximize = true;
+objective_func = @(x) zdt5_function(x);
+
+% Create solver for ZDT1 using the factory function
+all_solver = SolverFactory();
+all_solver.show_solvers();
+method = all_solver.create_solver('MultiObjectiveCuckooSearchOptimizer', objective_func, lb, ub, dim, maximize);
+
+% Run optimization for ZDT1
+[history, archive] = method.solver(search_agents_no, max_iter);
+plot_history_multi_animation(history)
+%export_history_archive_to_excel(history, 'matlab.xlsx')

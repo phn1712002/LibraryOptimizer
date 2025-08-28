@@ -1,15 +1,15 @@
 classdef my_fitness
     properties
-        nDim        	
-        nObj        	
+        n_dim        	
+        n_obj        	
         lb          	
         ub          	
         maximize 	
     end
     methods
         function obj = my_fitness()
-            obj.nObj = 3;
-            obj.nDim = 3;
+            obj.n_obj = 3;
+            obj.n_dim = 3;
             obj.lb = [22, 100, 0.3];
             obj.ub = [26, 140, 0.5];
             obj.maximize = false;

@@ -8,7 +8,7 @@ add_lib(pwd);
 fitness_obj = my_fitness();
 
 % Set parameters based on your fitness function properties
-dim = fitness_obj.nDim;          % Number of dimensions (3)
+dim = fitness_obj.n_dim;          % Number of dimensions (3)
 lb = fitness_obj.lb;             % Lower bounds [22, 100, 0.3]
 ub = fitness_obj.ub;             % Upper bounds [26, 140, 0.5]
 maximize = fitness_obj.maximize; % Minimization (false)
