@@ -3,6 +3,8 @@ from typing import Callable, Union, Tuple, List
 from .._core import Solver, Member
 import matplotlib.pyplot as plt
 from tqdm import tqdm
+from matplotlib.colors import Normalize
+import matplotlib.cm as cm
 
 class MultiObjectiveMember(Member):
     def __init__(self, position: np.ndarray, fitness: np.ndarray):
@@ -517,70 +519,96 @@ class MultiObjectiveSolver(Solver):
         return np.random.choice(tournament_members)
     
     def plot_pareto_front(self) -> None:
-        """Plot Pareto front from archive
+        """Plot all multi-objective solutions from history across iterations.
+        Visualizes the evolution of the population over generations with color-coded iterations.
         Handles different environments including Google Colab.
         """
-        if not self.archive:
-            print("No solutions in archive to plot.")
+        if not self.history_step_solver or all(len(gen) == 0 for gen in self.history_step_solver):
+            print("No solutions in history to plot.")
             return
-        
-        costs = self._get_fitness(self.archive)
-        n_objectives = self.n_objectives
-        
-        if n_objectives == 2:
-            # 2D plot
-            plt.figure(figsize=(10, 6))
-            plt.scatter(costs[0, :], costs[1, :], c='blue', alpha=0.7, s=50)
-            plt.xlabel('Objective 1')
-            plt.ylabel('Objective 2')
-            plt.title('Pareto Front (2D)')
-            plt.grid(True)
-            plt.tight_layout()
-            
-            # Handle different environments for displaying plots
-            try:
-                # Check if we're in Google Colab
-                # In Google Colab, we need to use a different approach
-                from IPython.display import display
-                plt.show()
-            except ImportError:
-                # Not in Google Colab, use standard plt.show()
-                plt.show()
-            except Exception as e:
-                # Fallback: save to file and inform user
-                plt.savefig('pareto_front_2d.png')
-                print(f"Plot could not be displayed. Saved as 'pareto_front_2d.png'. Error: {e}")
-        
-        elif n_objectives == 3:
-            # 3D plot
-            fig = plt.figure(figsize=(10, 8))
-            ax = fig.add_subplot(111, projection='3d')
-            ax.scatter(costs[0, :], costs[1, :], costs[2, :], c='blue', alpha=0.7, s=50)
-            ax.set_xlabel('Objective 1')
-            ax.set_ylabel('Objective 2')
-            ax.set_zlabel('Objective 3')
-            ax.set_title('Pareto Front (3D)')
-            plt.grid(True)
-            plt.tight_layout()
-            
-            # Handle different environments for displaying plots
-            try:
-                # Check if we're in Google Colab
-                # In Google Colab, we need to use a different approach
-                from IPython.display import display
-                plt.show()
-            except ImportError:
-                # Not in Google Colab, use standard plt.show()
-                plt.show()
-            except Exception as e:
-                # Fallback: save to file and inform user
-                plt.savefig('pareto_front_3d.png')
-                print(f"Plot could not be displayed. Saved as 'pareto_front_3d.png'. Error: {e}")
-        
+
+        # Lấy số lượng thế hệ
+        num_steps = len(self.history_step_solver)
+
+        # Xác định số mục tiêu từ cá thể đầu tiên không rỗng
+        n_objectives = None
+        for gen in self.history_step_solver:
+            if gen:
+                n_objectives = len(gen[0].multi_fitness)
+                break
+        if n_objectives is None:
+            print("No valid individuals found in history.")
+            return
+
+        if n_objectives not in [2, 3]:
+            print(f"Cannot plot for {n_objectives} objectives. Only 2D and 3D are supported.")
+            return
+
+        # Tạo colormap theo số thế hệ
+        cmap = cm.get_cmap('jet', num_steps)
+        norm = Normalize(vmin=1, vmax=num_steps)
+        scalar_map = cm.ScalarMappable(norm=norm, cmap=cmap)
+        scalar_map.set_array([])  # cần để colorbar hoạt động
+
+        # Tạo figure
+        plt.figure(figsize=(10, 8))
+        if n_objectives == 3:
+            ax = plt.axes(projection='3d')
         else:
-            print(f"Cannot plot Pareto front for {n_objectives} objectives. Maximum 3D visualization supported.")
-            # Optionally, you could plot pairwise scatter plots here
-            print("Consider plotting pairwise scatter plots for higher dimensions.")
+            ax = plt.gca()
+
+        # Vòng lặp qua từng thế hệ
+        for k, members in enumerate(self.history_step_solver):
+            if not members:
+                continue
+
+            # Trích xuất multi_fitness
+            try:
+                fitnesses = np.array([indiv.multi_fitness for indiv in members]).T  # shape: (n_obj, n_members)
+            except Exception as e:
+                print(f"Error extracting fitness from generation {k}: {e}")
+                continue
+
+            color = cmap(k / max(1, num_steps - 1))  # màu cho thế hệ k
+            if n_objectives == 2:
+                ax.scatter(fitnesses[0, :], fitnesses[1, :], 
+                        c=[color], s=25, edgecolors='k', alpha=0.6, linewidth=0.5)
+            elif n_objectives == 3:
+                ax.scatter(fitnesses[0, :], fitnesses[1, :], fitnesses[2, :], 
+                        c=[color], s=25, edgecolors='k', alpha=0.6, linewidth=0.5)
+
+        # Đặt nhãn
+        ax.set_xlabel('Objective f1')
+        ax.set_ylabel('Objective f2')
+        if n_objectives == 3:
+            ax.set_zlabel('Objective f3')
+            ax.view_init(elev=30, azim=45)
+
+        ax.set_title('All Iterations')
+        ax.grid(True)
+
+        # Thêm colorbar
+        cbar = plt.colorbar(scalar_map, ax=ax, shrink=0.8, aspect=20, pad=0.02)
+        cbar.set_label('Iteration', rotation=270, labelpad=15)
+        cbar.set_ticks([1, num_steps])
+        cbar.set_ticklabels(['1', str(num_steps)])
+
+        plt.tight_layout()
+
+        # Xử lý hiển thị trong các môi trường khác nhau
+        try:
+            from IPython import get_ipython
+            if 'colab' in str(get_ipython()):
+                plt.show()  # Colab xử lý tốt với plt.show()
+            else:
+                plt.show()
+        except (ImportError, NameError):
+            plt.show()
+        except Exception as e:
+            # Fallback: lưu ảnh
+            filename = f'history_plot_{n_objectives}D.png'
+            plt.savefig(filename, dpi=150, bbox_inches='tight')
+            print(f"Plot could not be displayed. Saved as '{filename}'. Error: {e}")
 
     def solver(self) -> Tuple[List, List]:
         """
