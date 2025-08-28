@@ -245,11 +245,12 @@ classdef MultiObjectiveSolver
         end
 
         function val = get_random_fitness(~, member)
-            if rand > 0.5
-                val = mean(member.multi_fitness);
-            else
-                val = member.multi_fitness(randi(numel(member.multi_fitness)));
-            end
+            m = numel(member.multi_fitness);     
+            
+            weights = rand(1, m);                
+            weights = weights / sum(weights);   
+
+            val = sum(weights .* member.multi_fitness);
         end
 
         function obj = add_to_archive(obj, newSolutions)

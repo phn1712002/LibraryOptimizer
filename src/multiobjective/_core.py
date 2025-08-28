@@ -323,15 +323,21 @@ class MultiObjectiveSolver(Solver):
         return sorted_population[:n_pop]
     
     def _get_random_fitness(self, member: MultiObjectiveMember):
-        """Get fitness value based on random dice roll"""
-        dice_roll = np.random.random()
-        if dice_roll > 0.5:
-            # If dice > 0.5, return average of multi_fitness
-            return np.average(member.multi_fitness)
-        else:
-            # If dice <= 0.5, return a random element from multi_fitness
-            return np.random.choice(member.multi_fitness)
-    
+        """
+        Adaptive scalarization: compute fitness as a weighted sum of objectives
+        with random weights.
+        """
+        m = len(member.multi_fitness)  # number of objectives
+        
+        # Generate random weights
+        weights = np.random.random(m)
+        weights = weights / np.sum(weights)  # normalize so that sum(weights) = 1
+        
+        # Compute scalar fitness as weighted sum of objectives
+        scalar_fitness = np.dot(weights, member.multi_fitness)
+        return scalar_fitness
+
+
     def _add_to_archive(self, new_solutions: List[MultiObjectiveMember]) -> None:
         """Add new solutions to archive and maintain archive size"""
         # Determine domination of new solutions
