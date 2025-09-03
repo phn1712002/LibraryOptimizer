@@ -1,43 +1,46 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-def is_pareto_efficient(costs: np.ndarray) -> np.ndarray:
+def is_pareto_efficient(costs: np.ndarray, maximize: bool = False) -> np.ndarray:
     """
-    Identify Pareto efficient points for minimization problems.
+    Identify Pareto efficient points.
     
     This function determines which points in a multi-objective optimization
-    problem are Pareto efficient (non-dominated) when minimizing all objectives.
+    problem are Pareto efficient (non-dominated).
     
-    Args:
-        costs: numpy array of shape (n_points, n_objectives) containing
-               the cost values for each point and objective. Lower values
-               are better for minimization problems.
-               
+    Parameters:
+    -----------
+    costs : np.ndarray
+        Cost matrix of shape (n_points, n_objectives) where each row represents
+        a solution and each column represents an objective value.
+    maximize : bool, optional
+        True if all objectives should be maximized, False if minimized.
+        Default is False (minimization).
+    
     Returns:
-        Boolean numpy array of shape (n_points,) where True indicates
-        that the corresponding point is Pareto efficient.
-        
-    Example:
-        >>> costs = np.array([[1, 2], [2, 1], [1.5, 1.5], [3, 3]])
-        >>> efficient_mask = is_pareto_efficient(costs)
-        >>> print(f"Efficient points: {efficient_mask}")
-        Efficient points: [ True  True False False]
-        
-    Note:
-        This implementation assumes minimization of all objectives.
-        For maximization problems, the costs should be negated first.
-    """
-    is_efficient = np.ones(costs.shape[0], dtype=bool)
+    --------
+    np.ndarray
+        Boolean array of shape (n_points,) where True indicates the corresponding
+        point is Pareto efficient.
     
+    Example:
+    --------
+    >>> costs = np.array([[1, 2], [2, 1], [3, 3]])
+    >>> is_pareto_efficient(costs)
+    array([ True,  True, False])
+    """
+    if maximize:
+        # Convert maximization to minimization by negating costs
+        costs = -costs
+    
+    # Original algorithm for minimization
+    is_efficient = np.ones(costs.shape[0], dtype=bool)
     for i in range(costs.shape[0]):
         if is_efficient[i]:
             # Remove points dominated by point i
-            # A point is dominated if all its objectives are worse or equal,
-            # and at least one objective is strictly worse
             is_efficient[is_efficient] = np.any(costs[is_efficient] < costs[i], axis=1) | \
                                          np.all(np.isclose(costs[is_efficient], costs[i]), axis=1)
-            is_efficient[i] = True  # Keep point i (it's efficient)
-            
+            is_efficient[i] = True  # Keep point i
     return is_efficient
 
 
