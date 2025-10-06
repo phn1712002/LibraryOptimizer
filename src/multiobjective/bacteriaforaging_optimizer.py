@@ -211,7 +211,7 @@ class MultiObjectiveBacteriaForagingOptimizer(MultiObjectiveSolver):
                     population[i] = BacteriaMultiMember(new_position, new_fitness)
 
             # Store archive state for history
-            history_archive.append([member.copy() for x`` in self.archive])
+            history_archive.append([member.copy() for member in self.archive])
             # Call callback for progress tracking
             self._callbacks(iter, max_iter, self.archive[0] if self.archive else None)
 

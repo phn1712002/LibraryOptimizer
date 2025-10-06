@@ -34,7 +34,6 @@ classdef BacteriaForagingOptimizer < Solver
     %}
     
     properties
-        n_elimination
         n_reproduction
         n_chemotaxis
         n_swim
@@ -185,7 +184,7 @@ classdef BacteriaForagingOptimizer < Solver
                 end
                 
                 population = new_population;
-                
+
                 % Store history
                 history_step_solver{end+1} = best_solver.copy();
                 % Callbacks
