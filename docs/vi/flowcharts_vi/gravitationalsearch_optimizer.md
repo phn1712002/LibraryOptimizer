@@ -47,7 +47,7 @@ flowchart TD
    - Chọn giải pháp tốt nhất ban đầu từ quần thể
    ```python
    self.velocities = np.zeros((search_agents_no, self.dim))
-   best_solution = sorted_population[0].copy()
+   best_solver = sorted_population[0].copy()
    ```
 
 3. **Vòng lặp chính** (max_iter lần):

@@ -63,7 +63,7 @@ class JAYAOptimizer(Solver):
         
         # Initialize best solution
         sorted_population, _ = self._sort_population(population)
-        best_solution = sorted_population[0].copy()
+        best_solver = sorted_population[0].copy()
         
         # Call the begin function
         self._begin_step_solver(max_iter)
@@ -107,22 +107,22 @@ class JAYAOptimizer(Solver):
             # Update best solution
             sorted_population, _ = self._sort_population(population)
             current_best = sorted_population[0]
-            if self._is_better(current_best, best_solution):
-                best_solution = current_best.copy()
+            if self._is_better(current_best, best_solver):
+                best_solver = current_best.copy()
             
             # Store the best solution at this iteration
-            history_step_solver.append(best_solution.copy())
+            history_step_solver.append(best_solver.copy())
             
             # Call the callbacks
-            self._callbacks(iter, max_iter, best_solution)
+            self._callbacks(iter, max_iter, best_solver)
         
         # Final evaluation and storage
         self.history_step_solver = history_step_solver
-        self.best_solver = best_solution
+        self.best_solver = best_solver
         
         # Call the end function
         self._end_step_solver()
-        return history_step_solver, best_solution
+        return history_step_solver, best_solver
     
     def _sort_population(self, population):
         """Sort population using the utility function."""

@@ -59,7 +59,7 @@ flowchart TD
    - Tính toán giá trị hàm mục tiêu objective_func(position)
 
 2. **Tìm giải pháp tốt nhất ban đầu**:
-   - Sắp xếp quần thể và chọn giải pháp tốt nhất làm best_solution
+   - Sắp xếp quần thể và chọn giải pháp tốt nhất làm best_solver
 
 3. **Khởi tạo lịch sử tối ưu hóa**:
    - Khởi tạo danh sách lưu trữ lịch sử các giải pháp tốt nhất
@@ -70,7 +70,7 @@ flowchart TD
      * Sử dụng hệ số beta = 1.5 cho Levy flight
      ```python
      step = self._levy_flight()  # Sử dụng beta = 1.5
-     step_size = 0.01 * step * (member.position - best_solution.position)
+     step_size = 0.01 * step * (member.position - best_solver.position)
      new_position = member.position + step_size * np.random.randn(self.dim)
      ```
      * Kiểm tra biên để đảm bảo vị trí nằm trong [lb, ub]
@@ -100,7 +100,7 @@ flowchart TD
      * So sánh và cập nhật nếu tìm thấy giải pháp tốt hơn
 
    - **Lưu trữ giải pháp tốt nhất hiện tại**:
-     * Lưu trữ best_solution vào lịch sử
+     * Lưu trữ best_solver vào lịch sử
 
 5. **Kết thúc**:
    - Lưu trữ kết quả cuối cùng

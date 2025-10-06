@@ -83,7 +83,7 @@ flowchart TD
 
    - **Create best position matrix for all prairie dogs**:
      ```python
-     TPD = np.tile(best_solution.position, (search_agents_no, 1))
+     TPD = np.tile(best_solver.position, (search_agents_no, 1))
      ```
 
    - **Update each prairie dog's position**:
@@ -95,25 +95,25 @@ flowchart TD
        ```python
        cpd = np.random.rand() * (TPD[i, j] - population[k].position[j]) / (TPD[i, j] + self.eps)
        P = self.rho + (population[i].position[j] - np.mean(population[i].position)) / (TPD[i, j] * (self.ub[j] - self.lb[j]) + self.eps)
-       eCB = best_solution.position[j] * P
+       eCB = best_solver.position[j] * P
        ```
 
    - **Update strategy by phase**:
      * **Phase 1 (iter < max_iter/4)**:
        ```python
-       new_position[j] = best_solution.position[j] - eCB * self.eps_pd - cpd * RL[i, j]
+       new_position[j] = best_solver.position[j] - eCB * self.eps_pd - cpd * RL[i, j]
        ```
      * **Phase 2 (iter < 2*max_iter/4)**:
        ```python
-       new_position[j] = best_solution.position[j] * population[k].position[j] * DS * RL[i, j]
+       new_position[j] = best_solver.position[j] * population[k].position[j] * DS * RL[i, j]
        ```
      * **Phase 3 (iter < 3*max_iter/4)**:
        ```python
-       new_position[j] = best_solution.position[j] * PE * np.random.rand()
+       new_position[j] = best_solver.position[j] * PE * np.random.rand()
        ```
      * **Phase 4 (iter >= 3*max_iter/4)**:
        ```python
-       new_position[j] = best_solution.position[j] - eCB * self.eps - cpd * np.random.rand()
+       new_position[j] = best_solver.position[j] - eCB * self.eps - cpd * np.random.rand()
        ```
 
    - **Check boundaries and evaluate fitness**:

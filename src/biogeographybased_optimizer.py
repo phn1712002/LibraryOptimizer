@@ -83,7 +83,7 @@ class BiogeographyBasedOptimizer(Solver):
         
         # Sort initial population and get best solution
         sorted_population, _ = self._sort_population(population)
-        best_solution = sorted_population[0].copy()
+        best_solver = sorted_population[0].copy()
         
         # Start solver (show progress bar)
         self._begin_step_solver(max_iter)
@@ -138,21 +138,21 @@ class BiogeographyBasedOptimizer(Solver):
             
             # Update best solution
             current_best = population[0]
-            if self._is_better(current_best, best_solution):
-                best_solution = current_best.copy()
+            if self._is_better(current_best, best_solver):
+                best_solver = current_best.copy()
             
             # Save history
-            history_step_solver.append(best_solution.copy())
+            history_step_solver.append(best_solver.copy())
             
             # Call callback for progress tracking
-            self._callbacks(iter, max_iter, best_solution)
+            self._callbacks(iter, max_iter, best_solver)
         
         # End solver
         self.history_step_solver = history_step_solver
-        self.best_solver = best_solution
+        self.best_solver = best_solver
         self._end_step_solver()
         
-        return history_step_solver, best_solution
+        return history_step_solver, best_solver
     
     def _sort_population(self, population):
         """

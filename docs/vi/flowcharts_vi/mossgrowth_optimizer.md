@@ -100,7 +100,7 @@ flowchart TD
 
    - **Tính toán khoảng cách và hướng gió**:
      ```python
-     D = best_solution.position - cal_positions
+     D = best_solver.position - cal_positions
      D_wind = np.mean(D, axis=0)
      ```
 
@@ -123,11 +123,11 @@ flowchart TD
    - **Tìm kiếm lan truyền kép**:
      * **Cập nhật chiều cụ thể**:
        ```python
-       new_position[dim_idx] = best_solution.position[dim_idx] + step3 * D_wind[dim_idx]
+       new_position[dim_idx] = best_solver.position[dim_idx] + step3 * D_wind[dim_idx]
        ```
      * **Cập nhật tất cả chiều với hàm kích hoạt**:
        ```python
-       new_position = (1 - act) * new_position + act * best_solution.position
+       new_position = (1 - act) * new_position + act * best_solver.position
        ```
 
    - **Kiểm tra biên và đánh giá fitness**:

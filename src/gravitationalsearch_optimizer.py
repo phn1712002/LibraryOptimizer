@@ -227,7 +227,7 @@ class GravitationalSearchOptimizer(Solver):
         
         # Initialize best solution
         sorted_population, _ = self._sort_population(population)
-        best_solution = sorted_population[0].copy()
+        best_solver = sorted_population[0].copy()
         
         # Initialize velocities
         self.velocities = np.zeros((search_agents_no, self.dim))
@@ -255,21 +255,21 @@ class GravitationalSearchOptimizer(Solver):
             # Update best solution
             sorted_population, _ = self._sort_population(population)
             current_best = sorted_population[0]
-            if self._is_better(current_best, best_solution):
-                best_solution = current_best.copy()
+            if self._is_better(current_best, best_solver):
+                best_solver = current_best.copy()
             
             # Save history
-            history_step_solver.append(best_solution.copy())
+            history_step_solver.append(best_solver.copy())
             
             # Call callback for progress tracking
-            self._callbacks(iteration, max_iter, best_solution)
+            self._callbacks(iteration, max_iter, best_solver)
         
         # End solver
         self.history_step_solver = history_step_solver
-        self.best_solver = best_solution
+        self.best_solver = best_solver
         self._end_step_solver()
         
-        return history_step_solver, best_solution
+        return history_step_solver, best_solver
     
     def _sort_population(self, population):
         """

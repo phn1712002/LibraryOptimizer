@@ -130,7 +130,7 @@ def tournament_selection(population: List, tournament_size: int = 3, maximize: b
     return sorted_tournament[0]
 
 
-def get_best_solution(population: List, maximize: bool = True) -> Member:
+def get_best_solver(population: List, maximize: bool = True) -> Member:
     """
     Get the best solution from a population.
     

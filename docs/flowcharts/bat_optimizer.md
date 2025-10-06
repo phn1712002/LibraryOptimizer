@@ -53,7 +53,7 @@ flowchart TD
    - Calculate objective function value: objective_func(position)
 
 2. **Find initial best solution**:
-   - Sort the population and select the best solution as best_solution
+   - Sort the population and select the best solution as best_solver
 
 3. **Initialize optimization history**:
    - Initialize a list to store the history of best solutions
@@ -68,7 +68,7 @@ flowchart TD
    - **Update velocity**:
      * Update velocity toward the best solution
      ```python
-     velocity = velocity + (position - best_solution.position) * frequency
+     velocity = velocity + (position - best_solver.position) * frequency
      ```
 
    - **Update position**:
@@ -85,7 +85,7 @@ flowchart TD
      ```python
      if np.random.random() > pulse_rate:
          epsilon = -1 + 2 * np.random.random()
-         new_position = best_solution.position + epsilon * mean_loudness
+         new_position = best_solver.position + epsilon * mean_loudness
      ```
 
    - **Evaluate new fitness**:

@@ -52,7 +52,7 @@ class MossGrowthOptimizer(Solver):
         
         # Initialize best solution
         sorted_population, _ = self._sort_population(population)
-        best_solution = sorted_population[0].copy()
+        best_solver = sorted_population[0].copy()
         
         # Initialize cryptobiosis mechanism
         rM = np.zeros((search_agents_no, self.dim, self.rec_num))  # Record history positions
@@ -94,7 +94,7 @@ class MossGrowthOptimizer(Solver):
                 # Divide the population and select regions with more individuals
                 div_indices = np.random.permutation(self.dim)
                 for j in range(min(self.divide_num, self.dim)):
-                    th = best_solution.position[div_indices[j]]
+                    th = best_solver.position[div_indices[j]]
                     index = cal_positions[:, div_indices[j]] > th
                     if np.sum(index) < cal_positions.shape[0] / 2:
                         index = ~index  # Choose the side of the majority
@@ -104,7 +104,7 @@ class MossGrowthOptimizer(Solver):
                 
                 if cal_positions.shape[0] > 0:
                     # Compute distance from individuals to the best
-                    D = best_solution.position - cal_positions
+                    D = best_solver.position - cal_positions
                     
                     # Calculate the mean of all distances (wind direction)
                     D_wind = np.mean(D, axis=0)
@@ -136,12 +136,12 @@ class MossGrowthOptimizer(Solver):
                             # Update specific dimension
                             if self.dim > 0:
                                 dim_idx = div_indices[0] if len(div_indices) > 0 else 0
-                                new_position[dim_idx] = (best_solution.position[dim_idx] + 
+                                new_position[dim_idx] = (best_solver.position[dim_idx] + 
                                                         step3 * D_wind[dim_idx])
                         else:
                             # Update all dimensions with activation
                             new_position = ((1 - act) * new_position + 
-                                          act * best_solution.position)
+                                          act * best_solver.position)
                     
                     # Boundary absorption
                     new_position = np.clip(new_position, self.lb, self.ub)
@@ -182,23 +182,23 @@ class MossGrowthOptimizer(Solver):
             # Update best solution
             sorted_population, _ = self._sort_population(population)
             current_best = sorted_population[0]
-            if self._is_better(current_best, best_solution):
-                best_solution = current_best.copy()
+            if self._is_better(current_best, best_solver):
+                best_solver = current_best.copy()
             
             # Store the best solution at this iteration
-            history_step_solver.append(best_solution.copy())
+            history_step_solver.append(best_solver.copy())
             
             # Call the callbacks
-            self._callbacks(iter, max_iter, best_solution)
+            self._callbacks(iter, max_iter, best_solver)
         
         # Final evaluation and storage
         self.history_step_solver = history_step_solver
-        self.best_solver = best_solution
+        self.best_solver = best_solver
         
         # Call the end function
         self._end_step_solver()
         
-        return history_step_solver, best_solution
+        return history_step_solver, best_solver
     
     def _act_cal(self, X: np.ndarray) -> np.ndarray:
         """

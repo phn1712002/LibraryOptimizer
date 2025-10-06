@@ -63,7 +63,7 @@ class CuckooSearchOptimizer(Solver):
         
         # Find initial best solution
         sorted_population, _ = sort_population(population, self.maximize)
-        best_solution = sorted_population[0].copy()
+        best_solver = sorted_population[0].copy()
         
         # Initialize history
         history_step_solver = []
@@ -74,7 +74,7 @@ class CuckooSearchOptimizer(Solver):
         # Main optimization loop
         for iter in range(max_iter):
             # Generate new solutions via Levy flights (keep current best)
-            new_population = self._get_cuckoos(population, best_solution)
+            new_population = self._get_cuckoos(population, best_solver)
             
             # Evaluate new solutions and update population
             population = self._update_population(population, new_population)
@@ -88,23 +88,23 @@ class CuckooSearchOptimizer(Solver):
             # Update best solution
             sorted_population, _ = sort_population(population, self.maximize)
             current_best = sorted_population[0]
-            if self._is_better(current_best, best_solution):
-                best_solution = current_best.copy()
+            if self._is_better(current_best, best_solver):
+                best_solver = current_best.copy()
             
             # Save history
-            history_step_solver.append(best_solution.copy())
+            history_step_solver.append(best_solver.copy())
             
             # Call callback
-            self._callbacks(iter, max_iter, best_solution)
+            self._callbacks(iter, max_iter, best_solver)
         
         # End solver
         self.history_step_solver = history_step_solver
-        self.best_solver = best_solution
+        self.best_solver = best_solver
         self._end_step_solver()
         
-        return history_step_solver, best_solution
+        return history_step_solver, best_solver
     
-    def _get_cuckoos(self, population: List[Member], best_solution: Member) -> List[Member]:
+    def _get_cuckoos(self, population: List[Member], best_solver: Member) -> List[Member]:
         """
         Generate new solutions via Levy flights.
         
@@ -112,7 +112,7 @@ class CuckooSearchOptimizer(Solver):
         -----------
         population : List[Member]
             Current population of nests
-        best_solution : Member
+        best_solver : Member
             Current best solution
             
         Returns:
@@ -127,7 +127,7 @@ class CuckooSearchOptimizer(Solver):
             step = self._levy_flight()
             
             # Scale step size (0.01 factor as in original implementation)
-            step_size = 0.01 * step * (member.position - best_solution.position)
+            step_size = 0.01 * step * (member.position - best_solver.position)
             
             # Generate new position
             new_position = member.position + step_size * np.random.randn(self.dim)

@@ -122,7 +122,7 @@ flowchart TD
 
      * **Cải thiện Bước 2: Di chuyển về phía giải pháp toàn cục tốt nhất**:
        ```python
-       step = self.fla_sigma * np.random.random(self.dim) * (best_solution.position - worst_parent.position)
+       step = self.fla_sigma * np.random.random(self.dim) * (best_solver.position - worst_parent.position)
        new_sol_2.position = worst_parent.position + step
        ```
 

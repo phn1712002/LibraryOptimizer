@@ -94,7 +94,7 @@ classdef MossGrowthOptimizer < Solver
             
             % Initialize best solution
             sorted_population = obj.sort_population(population);
-            best_solution = sorted_population{1}.copy();
+            best_solver = sorted_population{1}.copy();
             
             % Initialize cryptobiosis mechanism
             rM = zeros(search_agents_no, obj.dim, obj.rec_num);  % Record history positions
@@ -141,7 +141,7 @@ classdef MossGrowthOptimizer < Solver
                     % Divide the population and select regions with more individuals
                     div_indices = randperm(obj.dim);
                     for j = 1:min(obj.divide_num, obj.dim)
-                        th = best_solution.position(div_indices(j));
+                        th = best_solver.position(div_indices(j));
                         index = cal_positions(:, div_indices(j)) > th;
                         if sum(index) < size(cal_positions, 1) / 2
                             index = ~index;  % Choose the side of the majority
@@ -154,7 +154,7 @@ classdef MossGrowthOptimizer < Solver
                     
                     if ~isempty(cal_positions)
                         % Compute distance from individuals to the best
-                        D = repmat(best_solution.position, size(cal_positions, 1), 1) - cal_positions;
+                        D = repmat(best_solver.position, size(cal_positions, 1), 1) - cal_positions;
                         
                         % Calculate the mean of all distances (wind direction)
                         D_wind = mean(D, 1);
@@ -194,13 +194,13 @@ classdef MossGrowthOptimizer < Solver
                                 % Update specific dimension
                                 if obj.dim > 0
                                     dim_idx = div_indices(1);
-                                    new_position(dim_idx) = best_solution.position(dim_idx) + ...
+                                    new_position(dim_idx) = best_solver.position(dim_idx) + ...
                                                            step3 * D_wind(dim_idx);
                                 end
                             else
                                 % Update all dimensions with activation
                                 new_position = (1 - act) .* new_position + ...
-                                             act .* best_solution.position;
+                                             act .* best_solver.position;
                             end
                         end
                         
@@ -253,20 +253,20 @@ classdef MossGrowthOptimizer < Solver
                 % Update best solution
                 sorted_population = obj.sort_population(population);
                 current_best = sorted_population{1};
-                if obj.is_better(current_best, best_solution)
-                    best_solution = current_best.copy();
+                if obj.is_better(current_best, best_solver)
+                    best_solver = current_best.copy();
                 end
                 
                 % Store the best solution at this iteration
-                history_step_solver{end+1} = best_solution.copy();
+                history_step_solver{end+1} = best_solver.copy();
                 
                 % Call the callbacks
-                obj.callbacks(iter, max_iter, best_solution);
+                obj.callbacks(iter, max_iter, best_solver);
             end
             
             % Final evaluation and storage
             obj.history_step_solver = history_step_solver;
-            obj.best_solver = best_solution;
+            obj.best_solver = best_solver;
             
             % Call the end function
             obj.end_step_solver();

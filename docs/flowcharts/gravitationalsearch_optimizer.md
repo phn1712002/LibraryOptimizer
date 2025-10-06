@@ -47,7 +47,7 @@ flowchart TD
    - Select initial best solution from population
    ```python
    self.velocities = np.zeros((search_agents_no, self.dim))
-   best_solution = sorted_population[0].copy()
+   best_solver = sorted_population[0].copy()
    ```
 
 3. **Main loop** (max_iter times):

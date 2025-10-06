@@ -87,7 +87,7 @@ class ShuffledFrogLeapingOptimizer(Solver):
         
         # Initialize best solution
         sorted_population, _ = self._sort_population(population)
-        best_solution = sorted_population[0].copy()
+        best_solver = sorted_population[0].copy()
         
         # Initialize history
         history_step_solver = []
@@ -102,7 +102,7 @@ class ShuffledFrogLeapingOptimizer(Solver):
         for iter in range(max_iter):
             # Prepare FLA parameters
             fla_params = {
-                'BestSol': best_solution
+                'BestSol': best_solver
             }
             
             # Shuffle population (main SFLA step)
@@ -116,7 +116,7 @@ class ShuffledFrogLeapingOptimizer(Solver):
                 memeplex = population[start_idx:end_idx]
                 
                 # Run FLA on memeplex
-                updated_memeplex = self._run_fla(memeplex, best_solution)
+                updated_memeplex = self._run_fla(memeplex, best_solver)
                 
                 # Update population
                 population[start_idx:end_idx] = updated_memeplex
@@ -125,21 +125,21 @@ class ShuffledFrogLeapingOptimizer(Solver):
             sorted_population, _ = self._sort_population(population)
             current_best = sorted_population[0]
             
-            if self._is_better(current_best, best_solution):
-                best_solution = current_best.copy()
+            if self._is_better(current_best, best_solver):
+                best_solver = current_best.copy()
             
             # Store history
-            history_step_solver.append(best_solution.copy())
+            history_step_solver.append(best_solver.copy())
             
             # Call callbacks
-            self._callbacks(iter, max_iter, best_solution)
+            self._callbacks(iter, max_iter, best_solver)
         
         # Finalize optimization
         self.history_step_solver = history_step_solver
-        self.best_solver = best_solution
+        self.best_solver = best_solver
         self._end_step_solver()
         
-        return history_step_solver, best_solution
+        return history_step_solver, best_solver
     
     def _sort_population(self, population):
         """
@@ -214,7 +214,7 @@ class ShuffledFrogLeapingOptimizer(Solver):
         
         return selected_indices
 
-    def _run_fla(self, memeplex: List[Member], best_solution: Member) -> List[Member]:
+    def _run_fla(self, memeplex: List[Member], best_solver: Member) -> List[Member]:
         """
         Run Frog Leaping Algorithm on a memeplex.
         
@@ -222,7 +222,7 @@ class ShuffledFrogLeapingOptimizer(Solver):
         -----------
         memeplex : List[Member]
             Current memeplex to optimize
-        best_solution : Member
+        best_solver : Member
             Global best solution
             
         Returns:
@@ -281,7 +281,7 @@ class ShuffledFrogLeapingOptimizer(Solver):
                 if improvement_step2:
                     new_sol_2 = worst_parent.copy()
                     step = self.fla_sigma * np.random.random(self.dim) * (
-                        best_solution.position - worst_parent.position
+                        best_solver.position - worst_parent.position
                     )
                     new_sol_2.position = worst_parent.position + step
                     

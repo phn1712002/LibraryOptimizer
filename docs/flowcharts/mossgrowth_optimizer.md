@@ -100,7 +100,7 @@ flowchart TD
 
    - **Calculate Distance and Wind Direction**:
      ```python
-     D = best_solution.position - cal_positions
+     D = best_solver.position - cal_positions
      D_wind = np.mean(D, axis=0)
      ```
 
@@ -123,11 +123,11 @@ flowchart TD
    - **Double Propagation Search**:
      * **Update Specific Dimension**:
        ```python
-       new_position[dim_idx] = best_solution.position[dim_idx] + step3 * D_wind[dim_idx]
+       new_position[dim_idx] = best_solver.position[dim_idx] + step3 * D_wind[dim_idx]
        ```
      * **Update All Dimensions with Activation Function**:
        ```python
-       new_position = (1 - act) * new_position + act * best_solution.position
+       new_position = (1 - act) * new_position + act * best_solver.position
        ```
 
    - **Check Boundaries and Evaluate Fitness**:

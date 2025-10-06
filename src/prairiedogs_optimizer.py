@@ -67,7 +67,7 @@ class PrairieDogsOptimizer(Solver):
         
         # Initialize best solution
         sorted_population, _ = self._sort_population(population)
-        best_solution = sorted_population[0].copy()
+        best_solver = sorted_population[0].copy()
         
         # Call the begin function
         self._begin_step_solver(max_iter)
@@ -85,7 +85,7 @@ class PrairieDogsOptimizer(Solver):
             RL = np.array([self._levy_flight() for _ in range(search_agents_no)])
             
             # Create matrix of best positions for all prairie dogs
-            TPD = np.tile(best_solution.position, (search_agents_no, 1))
+            TPD = np.tile(best_solver.position, (search_agents_no, 1))
             
             # Update each prairie dog's position
             for i in range(search_agents_no):
@@ -98,17 +98,17 @@ class PrairieDogsOptimizer(Solver):
                     # Calculate PDO-specific parameters
                     cpd = np.random.rand() * (TPD[i, j] - population[k].position[j]) / (TPD[i, j] + self.eps)
                     P = self.rho + (population[i].position[j] - np.mean(population[i].position)) / (TPD[i, j] * (self.ub[j] - self.lb[j]) + self.eps)
-                    eCB = best_solution.position[j] * P
+                    eCB = best_solver.position[j] * P
                     
                     # Different position update strategies based on iteration phase
                     if iter < max_iter / 4:
-                        new_position[j] = best_solution.position[j] - eCB * self.eps_pd - cpd * RL[i, j]
+                        new_position[j] = best_solver.position[j] - eCB * self.eps_pd - cpd * RL[i, j]
                     elif iter < 2 * max_iter / 4:
-                        new_position[j] = best_solution.position[j] * population[k].position[j] * DS * RL[i, j]
+                        new_position[j] = best_solver.position[j] * population[k].position[j] * DS * RL[i, j]
                     elif iter < 3 * max_iter / 4:
-                        new_position[j] = best_solution.position[j] * PE * np.random.rand()
+                        new_position[j] = best_solver.position[j] * PE * np.random.rand()
                     else:
-                        new_position[j] = best_solution.position[j] - eCB * self.eps - cpd * np.random.rand()
+                        new_position[j] = best_solver.position[j] - eCB * self.eps - cpd * np.random.rand()
                 
                 # Apply bounds
                 new_position = np.clip(new_position, self.lb, self.ub)
@@ -124,26 +124,26 @@ class PrairieDogsOptimizer(Solver):
                     population[i] = new_prairie_dog
                 
                 # Update global best solution
-                if self._is_better(population[i], best_solution):
-                    best_solution = population[i].copy()
+                if self._is_better(population[i], best_solver):
+                    best_solver = population[i].copy()
             
             # Store the best solution at this iteration
-            history_step_solver.append(best_solution.copy())
+            history_step_solver.append(best_solver.copy())
             
             # Call the callbacks
-            self._callbacks(iter, max_iter, best_solution)
+            self._callbacks(iter, max_iter, best_solver)
             
             # Print progress every 50 iterations
             if (iter + 1) % 50 == 0:
-                print(f'At iteration {iter + 1}, the best solution fitness is {best_solution.fitness:.6f}')
+                print(f'At iteration {iter + 1}, the best solution fitness is {best_solver.fitness:.6f}')
         
         # Final evaluation and storage
         self.history_step_solver = history_step_solver
-        self.best_solver = best_solution
+        self.best_solver = best_solver
         
         # Call the end function
         self._end_step_solver()
-        return history_step_solver, best_solution
+        return history_step_solver, best_solver
     
     def _sort_population(self, population):
         """

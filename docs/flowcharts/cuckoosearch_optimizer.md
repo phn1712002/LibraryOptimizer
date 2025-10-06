@@ -59,7 +59,7 @@ flowchart TD
    - Calculate objective function value: objective_func(position)
 
 2. **Find initial best solution**:
-   - Sort the population and select the best solution as best_solution
+   - Sort the population and select the best solution as best_solver
 
 3. **Initialize optimization history**:
    - Initialize a list to store the history of best solutions
@@ -70,7 +70,7 @@ flowchart TD
      * Use beta coefficient = 1.5 for Levy flight
      ```python
      step = self._levy_flight()  # Using beta = 1.5
-     step_size = 0.01 * step * (member.position - best_solution.position)
+     step_size = 0.01 * step * (member.position - best_solver.position)
      new_position = member.position + step_size * np.random.randn(self.dim)
      ```
      * Check boundaries to ensure positions remain within [lb, ub]
@@ -100,7 +100,7 @@ flowchart TD
      * Compare and update if a better solution is found
 
    - **Store current best solution**:
-     * Store best_solution in history
+     * Store best_solver in history
 
 5. **End**:
    - Store final results

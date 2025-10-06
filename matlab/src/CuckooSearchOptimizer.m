@@ -124,14 +124,14 @@ classdef CuckooSearchOptimizer < Solver
             obj.end_step_solver();
         end
         
-        function new_population = get_cuckoos(obj, population, best_solution)
+        function new_population = get_cuckoos(obj, population, best_solver)
             %{
             get_cuckoos - Generate new solutions via Levy flights
             
             Inputs:
                 population : cell array
                     Current population of nests
-                best_solution : Member
+                best_solver : Member
                     Current best solution
                     
             Returns:
@@ -146,7 +146,7 @@ classdef CuckooSearchOptimizer < Solver
                 step = obj.levy_flight();
                 
                 % Scale step size (0.01 factor as in original implementation)
-                step_size = 0.01 .* step .* (population{i}.position - best_solution.position);
+                step_size = 0.01 .* step .* (population{i}.position - best_solver.position);
                 
                 % Generate new position
                 new_position = population{i}.position + step_size .* randn(1, obj.dim);

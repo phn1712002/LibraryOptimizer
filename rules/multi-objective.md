@@ -211,7 +211,7 @@ class MultiObjectiveAlgorithmNameOptimizer(MultiObjectiveSolver):
    * Multi-objective → `_dominates()` (Pareto dominance)
 
 4. **Return Types**:
-   * Single-objective → `(history, best_solution)`
+   * Single-objective → `(history, best_solver)`
    * Multi-objective → `(history_archive, final_archive)`
 
 ---

@@ -46,13 +46,13 @@ optimizer = create_solver(
 )
 
 # Run optimization
-history, best_solution = optimizer.solver(
+history, best_solver = optimizer.solver(
     search_agents_no=50,  # Population size
     max_iter=100          # Maximum iterations
 )
 
-print(f"Best solution: {best_solution.position}")
-print(f"Best fitness: {best_solution.fitness}")
+print(f"Best solution: {best_solver.position}")
+print(f"Best fitness: {best_solver.fitness}")
 ```
 
 ### Multi-Objective Optimization

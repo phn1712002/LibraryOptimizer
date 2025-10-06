@@ -144,7 +144,7 @@ class BatOptimizer(Solver):
         
         # Find initial best solution
         sorted_population, _ = self._sort_population(population)
-        best_solution = sorted_population[0].copy()
+        best_solver = sorted_population[0].copy()
         
         # Initialize history
         history_step_solver = []
@@ -160,7 +160,7 @@ class BatOptimizer(Solver):
                 population[i].frequency = self.fmin + (self.fmax - self.fmin) * np.random.random()
                 
                 # Update velocity
-                population[i].velocity = population[i].velocity + (population[i].position - best_solution.position) * population[i].frequency
+                population[i].velocity = population[i].velocity + (population[i].position - best_solver.position) * population[i].frequency
                 
                 # Update position
                 new_position = population[i].position + population[i].velocity
@@ -174,7 +174,7 @@ class BatOptimizer(Solver):
                     epsilon = -1 + 2 * np.random.random()
                     # Calculate mean loudness of all bats
                     mean_loudness = np.mean([bat.loudness for bat in population])
-                    new_position = best_solution.position + epsilon * mean_loudness
+                    new_position = best_solver.position + epsilon * mean_loudness
                     new_position = np.clip(new_position, self.lb, self.ub)
                 
                 # Evaluate new fitness
@@ -197,23 +197,23 @@ class BatOptimizer(Solver):
                     population[i].pulse_rate = self.ro * (1 - np.exp(-self.gamma * iter))
                 
                 # Update best solution if improved
-                if self._is_better(population[i], best_solution):
-                    best_solution = population[i].copy()
+                if self._is_better(population[i], best_solver):
+                    best_solver = population[i].copy()
             
             # Save history
-            history_step_solver.append(best_solution.copy())
+            history_step_solver.append(best_solver.copy())
             
             # Call callback for progress tracking
-            self._callbacks(iter, max_iter, best_solution)
+            self._callbacks(iter, max_iter, best_solver)
         
         # Store final results
         self.history_step_solver = history_step_solver
-        self.best_solver = best_solution
+        self.best_solver = best_solver
         
         # End solver
         self._end_step_solver()
         
-        return history_step_solver, best_solution
+        return history_step_solver, best_solver
 
     def _sort_population(self, population):
         return sort_population(population, self.maximize)

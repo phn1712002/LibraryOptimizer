@@ -53,7 +53,7 @@ flowchart TD
    - Tính toán giá trị hàm mục tiêu objective_func(position)
 
 2. **Tìm giải pháp tốt nhất ban đầu**:
-   - Sắp xếp quần thể và chọn giải pháp tốt nhất làm best_solution
+   - Sắp xếp quần thể và chọn giải pháp tốt nhất làm best_solver
 
 3. **Khởi tạo lịch sử tối ưu hóa**:
    - Khởi tạo danh sách lưu trữ lịch sử các giải pháp tốt nhất
@@ -68,7 +68,7 @@ flowchart TD
    - **Cập nhật vận tốc**:
      * Cập nhật vận tốc hướng về giải pháp tốt nhất
      ```python
-     velocity = velocity + (position - best_solution.position) * frequency
+     velocity = velocity + (position - best_solver.position) * frequency
      ```
 
    - **Cập nhật vị trí**:
@@ -85,7 +85,7 @@ flowchart TD
      ```python
      if np.random.random() > pulse_rate:
          epsilon = -1 + 2 * np.random.random()
-         new_position = best_solution.position + epsilon * mean_loudness
+         new_position = best_solver.position + epsilon * mean_loudness
      ```
 
    - **Đánh giá fitness mới**:

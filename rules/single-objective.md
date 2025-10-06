@@ -95,7 +95,7 @@ def solver(self, search_agents_no: int, max_iter: int) -> Tuple[List, Member]:
     
     # Initialize best solution using _sort_population
     sorted_population, _ = self._sort_population(population)
-    best_solution = sorted_population[0].copy()
+    best_solver = sorted_population[0].copy()
     
     # Start solver (show progress bar)
     self._begin_step_solver(max_iter)
@@ -107,21 +107,21 @@ def solver(self, search_agents_no: int, max_iter: int) -> Tuple[List, Member]:
         # Update best solution
         sorted_population, _ = self._sort_population(population)
         current_best = sorted_population[0]
-        if self._is_better(current_best, best_solution):
-            best_solution = current_best.copy()
+        if self._is_better(current_best, best_solver):
+            best_solver = current_best.copy()
         
         # Save history
-        history_step_solver.append(best_solution.copy())
+        history_step_solver.append(best_solver.copy())
         
         # Call callback for progress tracking
-        self._callbacks(iter, max_iter, best_solution)
+        self._callbacks(iter, max_iter, best_solver)
     
     # End solver
     self.history_step_solver = history_step_solver
-    self.best_solver = best_solution
+    self.best_solver = best_solver
     self._end_step_solver()
     
-    return history_step_solver, best_solution
+    return history_step_solver, best_solver
 ```
 
 ### 6. Population Initialization Method
@@ -312,8 +312,8 @@ new_position = np.clip(new_position, self.lb, self.ub)
 ### Copy Objects
 Always use `.copy()` when storing solutions to avoid reference issues:
 ```python
-best_solution = current_best.copy()
-history_step_solver.append(best_solution.copy())
+best_solver = current_best.copy()
+history_step_solver.append(best_solver.copy())
 ```
 
 ## Implementation Patterns from Existing Code

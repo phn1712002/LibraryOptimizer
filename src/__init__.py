@@ -29,6 +29,7 @@ from .electromagneticchargedparticles_optimizer import *
 from .henrygassolubility_optimizer import *
 from .marinepredators_optimizer import *
 from .equilibrium_optimizer import *
+from .bacteriaforaging_optimizer import *
 
 # Multi-objective optimizers
 from .multiobjective.artificialbeecolony_optimizer import *
@@ -92,6 +93,7 @@ _SOLVER_REGISTRY: Dict[str, Type[Solver]] = {
     "HenryGasSolubilityOptimizer": HenryGasSolubilityOptimizer,
     "MarinePredatorsOptimizer": MarinePredatorsOptimizer,
     "EquilibriumOptimizer": EquilibriumOptimizer,
+    "BacteriaForagingOptimizer": BacteriaForagingOptimizer,
     # Multi
     "MultiObjectiveArtificialBeeColonyOptimizer": MultiObjectiveArtificialBeeColonyOptimizer,
     "MultiObjectiveGreyWolfOptimizer": MultiObjectiveGreyWolfOptimizer,
