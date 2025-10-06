@@ -20,8 +20,6 @@ class BacteriaForagingOptimizer(Solver):
     
     Parameters:
     -----------
-    n_elimination : int
-        Number of elimination-dispersal events (Ne)
     n_reproduction : int
         Number of reproduction steps (Nr)
     n_chemotaxis : int
@@ -57,7 +55,6 @@ class BacteriaForagingOptimizer(Solver):
         self.name_solver = "Bacteria Foraging Optimizer"
         
         # Algorithm-specific parameters with defaults
-        self.n_elimination = kwargs.get('n_elimination', 4)
         self.n_reproduction = kwargs.get('n_reproduction', 4)
         self.n_chemotaxis = kwargs.get('n_chemotaxis', 10)
         self.n_swim = kwargs.get('n_swim', 4)
@@ -96,11 +93,11 @@ class BacteriaForagingOptimizer(Solver):
         self._begin_step_solver(max_iter)
         
         # Main optimization loop (elimination-dispersal events)
-        for elimination_iter in range(self.n_elimination):
+        for iter in range(max_iter):
             
             # Reproduction loop
             for reproduction_iter in range(self.n_reproduction):
-                
+
                 # Chemotaxis loop
                 for chemotaxis_iter in range(self.n_chemotaxis):
                     
@@ -143,13 +140,11 @@ class BacteriaForagingOptimizer(Solver):
                     if self._is_better(current_best, best_solver):
                         best_solver = current_best.copy()
                 
-                # Store history
-                history_step_solver.append(best_solver.copy())
                 
-                # Call callback for progress tracking
-                current_iter = (elimination_iter * self.n_reproduction * self.n_chemotaxis + 
-                              reproduction_iter * self.n_chemotaxis + chemotaxis_iter)
-                self._callbacks(current_iter, max_iter, best_solver)
+            # Store history
+            history_step_solver.append(best_solver.copy())
+            # Call callback for progress tracking
+            self._callbacks(iter, max_iter, best_solver)     
             
             # Reproduction: Keep best half and duplicate
             sorted_population, _ = self._sort_population(population)

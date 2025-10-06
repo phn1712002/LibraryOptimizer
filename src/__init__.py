@@ -59,6 +59,7 @@ from .multiobjective.henrygassolubility_optimizer import *
 from .multiobjective.marinepredators_optimizer import *
 from .multiobjective.equilibrium_optimizer import *
 from .multiobjective.jaya_optimizer import *
+from .multiobjective.bacteriaforaging_optimizer import *
 
 __version__ = "1.0.0"
 __author__ = "HoangggNam"
@@ -122,6 +123,7 @@ _SOLVER_REGISTRY: Dict[str, Type[Solver]] = {
     "MultiObjectiveMarinePredatorsOptimizer": MultiObjectiveMarinePredatorsOptimizer,
     "MultiObjectiveEquilibriumOptimizer": MultiObjectiveEquilibriumOptimizer,
     "MultiObjectiveJAYAOptimizer": MultiObjectiveJAYAOptimizer,
+    "MultiObjectiveBacteriaForagingOptimizer": MultiObjectiveBacteriaForagingOptimizer,
 }
 
 # Mapping of single-objective solvers to their multi-objective counterparts
@@ -153,6 +155,7 @@ _MULTI_OBJECTIVE_MAPPING: Dict[str, str] = {
     "MarinePredatorsOptimizer": "MultiObjectiveMarinePredatorsOptimizer",
     "EquilibriumOptimizer": "MultiObjectiveEquilibriumOptimizer",
     "JAYAOptimizer": "MultiObjectiveJAYAOptimizer",
+    "BacteriaForagingOptimizer": "MultiObjectiveBacteriaForagingOptimizer",
 }
 
 

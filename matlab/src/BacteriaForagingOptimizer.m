@@ -74,7 +74,6 @@ classdef BacteriaForagingOptimizer < Solver
             end
             
             % Algorithm-specific parameters with defaults
-            obj.n_elimination = obj.get_kw('n_elimination', 4);
             obj.n_reproduction = obj.get_kw('n_reproduction', 4);
             obj.n_chemotaxis = obj.get_kw('n_chemotaxis', 10);
             obj.n_swim = obj.get_kw('n_swim', 4);
@@ -118,7 +117,7 @@ classdef BacteriaForagingOptimizer < Solver
             obj.begin_step_solver(max_iter);
             
             % Main optimization loop (elimination-dispersal events)
-            for elimination_iter = 1:obj.n_elimination
+            for iter = 1:max_iter
                 
                 % Reproduction loop
                 for reproduction_iter = 1:obj.n_reproduction
@@ -169,14 +168,6 @@ classdef BacteriaForagingOptimizer < Solver
                         if obj.is_better(current_best, best_solver)
                             best_solver = current_best.copy();
                         end
-                        
-                        % Store history
-                        history_step_solver{end+1} = best_solver.copy();
-                        
-                        % Call callback for progress tracking
-                        current_iter = (elimination_iter - 1) * obj.n_reproduction * obj.n_chemotaxis + ...
-                                     (reproduction_iter - 1) * obj.n_chemotaxis + chemotaxis_iter;
-                        obj.callbacks(current_iter, max_iter, best_solver);
                     end
                 end
                 
@@ -194,6 +185,11 @@ classdef BacteriaForagingOptimizer < Solver
                 end
                 
                 population = new_population;
+                
+                % Store history
+                history_step_solver{end+1} = best_solver.copy();
+                % Callbacks
+                obj.callbacks(iter, max_iter, best_solver);
             end
             
             % Elimination-dispersal: Random elimination of some bacteria
